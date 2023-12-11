@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/villager"
+    app:startDestination="@id/villagerListFragment">
+    <fragment
+        android:id="@+id/villagerListFragment"
+        android:name="com.example.animalcrossing.ui.list.VillagerListFragment"
+        android:label="VillagerListFragment">
+        <action
+            android:id="@+id/action_villagerListFragment_to_villagerDetailFragment"
+            app:destination="@id/villagerDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/villagerDetailFragment"
+        android:name="com.example.animalcrossing.ui.villagerDetail.VillagerDetailFragment"
+        android:label="VillagerDetailFragment">
+        <argument
+            android:name="name"
+            app:argType="string"
+            />
+    </fragment>
+</navigation>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fish"
+    app:startDestination="@id/fishListFragment">
+    <fragment
+        android:id="@+id/fishListFragment"
+        android:name="com.example.animalcrossing.ui.fishList.FishListFragment"
+        android:label="FishListFragment" >
+        <action
+            android:id="@+id/action_fishListFragment_to_fishDetailFragment"
+            app:destination="@id/fishDetailFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fishDetailFragment"
+        android:name="com.example.animalcrossing.ui.fishDetail.FishDetailFragment"
+        android:label="FishDetailFragment">
+        <argument
+            android:name="name"
+            app:argType="string"
+            />
+    </fragment>
+</navigation>
