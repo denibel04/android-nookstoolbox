@@ -3,4 +3,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="villager_bottom_nav">Villagers</string>
     <string name="fish_bottom_nav">Fish</string>
+    <string name="island_bottom_nav">Island</string>
 </resources>

@@ -5,4 +5,5 @@
     app:startDestination="@id/villager">
     <include app:graph="@navigation/villager" />
     <include app:graph="@navigation/fish" />
+    <include app:graph="@navigation/island" />
 </navigation>

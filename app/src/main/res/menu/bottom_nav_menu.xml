@@ -2,4 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/villager" android:title="@string/villager_bottom_nav"/>
     <item android:id="@+id/fish" android:title="@string/fish_bottom_nav"/>
+    <item android:id="@+id/island" android:title="@string/island_bottom_nav"/>
 </menu>

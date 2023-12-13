@@ -29,7 +29,8 @@ data class FishDetail (
     val image_url:String,
     val location:String,
     val shadow_size:String,
-    val rarity:String
+    val rarity:String,
+    val isCaught:Boolean?=null
 )
 
 fun List<FishDetail>.fishAsEntityModel():List<FishEntity> {
