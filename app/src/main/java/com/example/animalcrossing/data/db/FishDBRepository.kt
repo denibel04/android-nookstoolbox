@@ -19,4 +19,6 @@ class FishDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
     suspend fun getFish(name: String): Flow<FishEntity> {
         return acnhDao.getFish(name)
     }
+
+
 }

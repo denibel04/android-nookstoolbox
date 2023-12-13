@@ -1,6 +1,7 @@
 package com.example.animalcrossing.data.repository
 
 
+import android.util.Log
 import com.example.animalcrossing.data.db.IslandDBRepository
 import com.example.animalcrossing.data.db.IslandEntity
 import com.example.animalcrossing.data.db.VillagerEntity
@@ -24,6 +25,11 @@ class IslandRepository @Inject constructor(
     }
     suspend fun deleteIsland(id:Long) {
         val id = dbRepository.delete(id)
+    }
+
+    suspend fun renameIsland(id:Long, name: String) {
+        Log.d("RENAME", "Renaming island $id to $name")
+        val id = dbRepository.rename(id, name)
     }
 
 }

@@ -1,8 +1,8 @@
 package com.example.animalcrossing.ui.islandDetail
 
 
-class IslandDetailUiState (
-    val islandId:Long?=0,
+data class IslandDetailUiState (
+    val islandId:Long?=null,
     val name:String="",
     val islandExists:Boolean = false,
     val errorMessage:String?=null,

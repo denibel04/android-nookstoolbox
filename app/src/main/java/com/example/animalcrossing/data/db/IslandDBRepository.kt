@@ -22,4 +22,9 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
         acnhDao.deleteIsland(island)
     }
 
+    @WorkerThread
+    suspend fun rename(islandId: Long, newName:String) {
+        return acnhDao.renameIsland(islandId, newName)
+    }
+
 }

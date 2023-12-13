@@ -69,6 +69,10 @@ class IslandDetailFragment : Fragment() {
             viewModel.deleteIsland()
         }
 
+        binding.renameIsland.setOnClickListener {
+            showRenameIslandDialog()
+        }
+
     }
 
     private fun showCreateIslandDialog() {
@@ -92,6 +96,28 @@ class IslandDetailFragment : Fragment() {
         }.show()
     }
 
+
+    private fun showRenameIslandDialog() {
+        val input = EditText(requireContext()).apply {
+            inputType = InputType.TYPE_CLASS_TEXT
+            hint = "Nuevo nombre de la isla"
+        }
+        input.setText(viewModel.uiState.value.name) // Poner el nombre actual como predeterminado
+
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("Cambiar Nombre de la Isla")
+            setView(input)
+            setPositiveButton("Cambiar") { _, _ ->
+                val newName = input.text.toString()
+                if (newName.isNotBlank()) {
+                    viewModel.renameIsland(newName)
+                } else {
+                    Toast.makeText(requireContext(), "El nombre no puede estar vacío", Toast.LENGTH_SHORT).show()
+                }
+            }
+            setNegativeButton("Cancelar", null)
+        }.show()
+    }
 
 
 

@@ -36,5 +36,6 @@ interface AcnhDao {
     fun getIsland(): Flow<IslandEntity>
     @Delete
     suspend fun deleteIsland(island: IslandEntity)
-
+    @Query("UPDATE island SET name = :name WHERE islandId = :islandId")
+    suspend fun renameIsland(islandId: Long, name: String)
 }

@@ -21,9 +21,7 @@
             android:textSize="24sp"
             android:padding="16dp"
             android:text="Nombre de la Isla"
-            android:layout_gravity="center" />
-
-        <!-- TODO: AÑADIR QUE SE VEAN VILLAGERS -->
+            android:layout_gravity="center_vertical|start" />
 
         <Button
             android:id="@+id/deleteIsland"
@@ -34,6 +32,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/renameIsland"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cambiar Nombre"
+            android:layout_gravity="center_vertical|end" />
+
+        <!-- Other elements (like villagers) can be added here -->
 
     </FrameLayout>
 

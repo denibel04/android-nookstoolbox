@@ -28,14 +28,13 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
             repository.island.collect { island ->
                 _uiState.value = if (island != null) {
                     IslandDetailUiState(
+                        islandId = island.islandId,
                         name = island.name,
                         islandExists = true
                     )
                 } else {
                     IslandDetailUiState(islandExists = false)
                 }
-
-
             }
         }
     }
@@ -49,10 +48,18 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
 
     fun deleteIsland() {
         viewModelScope.launch {
-            // Supongamos que tu repositorio tiene una función para borrar por ID
             uiState.value.islandId?.let { repository.deleteIsland(it) }
-            // Restablece el estado de la UI para reflejar que ya no hay isla
             _uiState.value = IslandDetailUiState(islandExists = false)
+        }
+    }
+
+    fun renameIsland(newName: String) {
+        viewModelScope.launch {
+            val currentIslandId = uiState.value.islandId
+            if (currentIslandId != null) {
+                repository.renameIsland(currentIslandId, newName)
+                fetchIsland()
+            }
         }
     }
 
