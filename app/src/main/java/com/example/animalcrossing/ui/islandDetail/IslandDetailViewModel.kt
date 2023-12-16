@@ -37,6 +37,9 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
 
                 _uiState.value = if (islandWithVillagers != null) {
                     val currentList = _villagers.value.toMutableList()
+                    Log.d("IWVC", currentList.toString())
+
+                    Log.d("IWV", islandWithVillagers.toString())
                     islandWithVillagers!!.villagers.asVillager().forEachIndexed { index, villager ->
                         if (index < 10) {
                             currentList[index] = villager
@@ -44,7 +47,7 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
                     }
                     _villagers.value = currentList
 
-                    Log.d("IWV", islandWithVillagers.toString())
+
                     IslandDetailUiState(
                         islandId = islandWithVillagers.island.islandId,
                         name = islandWithVillagers.island.name,

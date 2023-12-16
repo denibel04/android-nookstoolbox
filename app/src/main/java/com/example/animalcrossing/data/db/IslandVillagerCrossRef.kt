@@ -17,7 +17,6 @@ import androidx.room.ForeignKey
             entity = VillagerEntity::class,
             parentColumns = ["name"],
             childColumns = ["name"],
-            onDelete = ForeignKey.CASCADE
         )
     ]
 )

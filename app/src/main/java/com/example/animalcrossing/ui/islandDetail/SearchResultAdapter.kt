@@ -52,6 +52,5 @@ class SearchResultAdapter(
         holder.itemView.setOnClickListener {
             onResultClicked?.invoke(villager)
         }
-
     }
 }

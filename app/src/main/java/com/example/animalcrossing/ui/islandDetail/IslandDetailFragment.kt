@@ -137,8 +137,7 @@ class IslandDetailFragment : Fragment() {
 
 
     private fun showVillagerSelectionDialog(slotIndex: Int) {
-        val dialogView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.villager_selection, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.villager_selection, null)
         val searchBar = dialogView.findViewById<SearchBar>(R.id.search_bar)
         val searchView = dialogView.findViewById<SearchView>(R.id.search_view)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recycler_view_search_results)
@@ -153,10 +152,7 @@ class IslandDetailFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val adapter = SearchResultAdapter(requireContext()) { villager ->
-
                     viewModel.uiState.value.islandId?.let {
-                        Log.d("AAA", villager.name)
-                        Log.d("AAAA", it.toString())
                         viewModel.addVillagerToIsland(
                             villager.name,
                             it
@@ -165,8 +161,7 @@ class IslandDetailFragment : Fragment() {
                     dialog.dismiss()
                 }
                 recyclerView.adapter = adapter
-
-
+                searchVillagers("a", adapter)
                 searchView.getEditText().setOnEditorActionListener { v, actionId, event ->
                     searchBar.setText(searchView.getText())
                     val searchQuery = searchBar.text.toString()
