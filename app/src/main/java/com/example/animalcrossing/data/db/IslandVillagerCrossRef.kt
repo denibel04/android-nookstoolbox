@@ -5,23 +5,23 @@ import androidx.room.ForeignKey
 
 @Entity(
     tableName = "island_villager_cross_ref",
-    primaryKeys = ["islandId", "villagerId"],
+    primaryKeys = ["islandId", "name"],
     foreignKeys = [
         ForeignKey(
             entity = IslandEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["islandId"],
             childColumns = ["islandId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
             entity = VillagerEntity::class,
             parentColumns = ["name"],
-            childColumns = ["villagerName"],
+            childColumns = ["name"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
 data class IslandVillagerCrossRef(
-    val islandId: Int,
-    val villagerId: Int
+    val islandId: Long,
+    val name: String
 )

@@ -12,16 +12,18 @@ import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class VillagerListViewModel @Inject constructor(private val repository: VillagerRepository):ViewModel(){
+class VillagerListViewModel @Inject constructor(private val repository: VillagerRepository) :
+    ViewModel() {
     private val _uiState = MutableStateFlow(VillagerListUiState(listOf()))
     val uiState: StateFlow<VillagerListUiState>
         get() = _uiState.asStateFlow()
+
     init {
         viewModelScope.launch {
             try {
                 repository.refreshList()
-            } catch (e:IOException) {
-                _uiState.value = _uiState.value.copy(errorMessage=e.message!!)
+            } catch (e: IOException) {
+                _uiState.value = _uiState.value.copy(errorMessage = e.message!!)
             }
         }
 

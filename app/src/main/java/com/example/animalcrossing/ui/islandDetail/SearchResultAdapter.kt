@@ -1,4 +1,4 @@
-package com.example.animalcrossing.ui.list
+package com.example.animalcrossing.ui.islandDetail
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,13 +10,13 @@ import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
 import com.example.animalcrossing.data.repository.Villager
-import com.example.animalcrossing.databinding.VillagerListItemBinding
+import com.example.animalcrossing.databinding.VillagerListItemSmallBinding
 
-class VillagerListAdapter(
+class SearchResultAdapter(
     private val context: Context,
-    private val onVillagerClicked: ((Villager) -> Unit)? = null
-) : ListAdapter<Villager, VillagerListAdapter.VillagerViewHolder>(VillagerDiffCallback) {
-    inner class VillagerViewHolder(private val binding: VillagerListItemBinding) :
+    private val onResultClicked: ((Villager) -> Unit)? = null
+) : ListAdapter<Villager, SearchResultAdapter.VillagerViewHolder>(ResultDiffCallback) {
+    inner class VillagerViewHolder(private val binding: VillagerListItemSmallBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(v: Villager) {
             binding.villagerName.text = v.name
@@ -32,7 +32,7 @@ class VillagerListAdapter(
         }
     }
 
-    private object VillagerDiffCallback : DiffUtil.ItemCallback<Villager>() {
+    private object ResultDiffCallback : DiffUtil.ItemCallback<Villager>() {
         override fun areItemsTheSame(oldItem: Villager, newItem: Villager) =
             oldItem.name == newItem.name
 
@@ -41,7 +41,7 @@ class VillagerListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VillagerViewHolder =
         VillagerViewHolder(
-            VillagerListItemBinding.inflate(
+            VillagerListItemSmallBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
         )
@@ -50,9 +50,8 @@ class VillagerListAdapter(
         val villager = getItem(position)
         holder.bind(villager)
         holder.itemView.setOnClickListener {
-            onVillagerClicked?.invoke(villager)
+            onResultClicked?.invoke(villager)
         }
 
     }
-
 }

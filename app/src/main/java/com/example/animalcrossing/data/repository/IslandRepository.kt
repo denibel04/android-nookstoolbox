@@ -4,6 +4,8 @@ package com.example.animalcrossing.data.repository
 import android.util.Log
 import com.example.animalcrossing.data.db.IslandDBRepository
 import com.example.animalcrossing.data.db.IslandEntity
+import com.example.animalcrossing.data.db.IslandVillagerCrossRef
+import com.example.animalcrossing.data.db.IslandWithVillagers
 import com.example.animalcrossing.data.db.VillagerEntity
 import com.example.animalcrossing.data.db.asFish
 import com.example.animalcrossing.data.db.asIsland
@@ -19,6 +21,9 @@ class IslandRepository @Inject constructor(
     val island: Flow<Island?> = dbRepository.island
         .map { it?.asIsland() }
 
+    val islandWithVillagers:Flow<IslandWithVillagers?> = dbRepository.islandWithVillagers
+
+
     suspend fun addIsland(name: String) {
         val newIsland = IslandEntity(name = name)
         val id = dbRepository.insert(newIsland)
@@ -28,8 +33,16 @@ class IslandRepository @Inject constructor(
     }
 
     suspend fun renameIsland(id:Long, name: String) {
-        Log.d("RENAME", "Renaming island $id to $name")
         val id = dbRepository.rename(id, name)
     }
+
+    suspend fun searchVillagers(query: String): Flow<List<VillagerEntity>> {
+        return dbRepository.searchVillagers(query)
+    }
+
+    suspend fun addVillagerToIsland(name: String, islandId: Long) {
+        return dbRepository.addVillagerToIsland(name, islandId)
+    }
+
 
 }

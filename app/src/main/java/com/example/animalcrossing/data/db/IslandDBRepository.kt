@@ -11,6 +11,14 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
 
     val island: Flow<IslandEntity> = acnhDao.getIsland()
 
+    val islandWithVillagers: Flow<IslandWithVillagers> = acnhDao.getIslandWithVillagers()
+
+    @WorkerThread
+    suspend fun searchVillagers(query: String): Flow<List<VillagerEntity>> {
+        val searchQuery = "${query}%"
+        return acnhDao.searchVillagers(searchQuery)
+    }
+
     @WorkerThread
     suspend fun insert (island: IslandEntity) {
         acnhDao.insertIsland(island)
@@ -26,5 +34,13 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
     suspend fun rename(islandId: Long, newName:String) {
         return acnhDao.renameIsland(islandId, newName)
     }
+
+    @WorkerThread
+    suspend fun addVillagerToIsland(name: String, islandId: Long) {
+        val crossRef = IslandVillagerCrossRef( islandId, name)
+        acnhDao.addVillagerToIsland(crossRef)
+    }
+
+
 
 }

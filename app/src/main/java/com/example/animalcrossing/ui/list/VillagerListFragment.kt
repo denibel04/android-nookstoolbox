@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class VillagerListFragment : Fragment() {
     private lateinit var binding: FragmentVillagerListBinding
-    private val viewModel:VillagerListViewModel by viewModels()
+    private val viewModel: VillagerListViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +31,10 @@ class VillagerListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val adapter = VillagerListAdapter(requireContext()) { villager ->
-            val action = VillagerListFragmentDirections.actionVillagerListFragmentToVillagerDetailFragment(villager.name)
+            val action =
+                VillagerListFragmentDirections.actionVillagerListFragmentToVillagerDetailFragment(
+                    villager.name
+                )
             findNavController().navigate(action)
         }
         val rv = binding.villagerList

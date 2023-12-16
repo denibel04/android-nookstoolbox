@@ -5,21 +5,24 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.example.animalcrossing.data.repository.Fish
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AcnhDao {
-    // FISH
+    // VILLAGER
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertVillagers(listVillagerEntity: List<VillagerEntity>)
     @Query("SELECT * FROM villager")
     fun getAllVillagers(): Flow<List<VillagerEntity>>
     @Query("SELECT * FROM villager WHERE name=:name")
     fun getVillager(name: String): Flow<VillagerEntity>
+    @Query("SELECT * FROM villager WHERE name LIKE :searchQuery")
+    fun searchVillagers(searchQuery: String): Flow<List<VillagerEntity>>
 
 
-    // VILLAGER
+    // FISH
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertFish(listFishEntity: List<FishEntity>)
     @Query("SELECT * FROM fish")
@@ -38,4 +41,11 @@ interface AcnhDao {
     suspend fun deleteIsland(island: IslandEntity)
     @Query("UPDATE island SET name = :name WHERE islandId = :islandId")
     suspend fun renameIsland(islandId: Long, name: String)
+
+    // ISLAND W VILLAGERS
+    @Transaction
+    @Query("SELECT * FROM Island")
+    fun getIslandWithVillagers(): Flow<IslandWithVillagers>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addVillagerToIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
 }

@@ -4,4 +4,5 @@
     <string name="villager_bottom_nav">Villagers</string>
     <string name="fish_bottom_nav">Fish</string>
     <string name="island_bottom_nav">Island</string>
+    <string name="add_villager">Añade un vecino</string>
 </resources>
