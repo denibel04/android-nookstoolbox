@@ -13,6 +13,7 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
 
     val islandWithVillagers: Flow<IslandWithVillagers> = acnhDao.getIslandWithVillagers()
 
+
     @WorkerThread
     suspend fun searchVillagers(query: String): Flow<List<VillagerEntity>> {
         val searchQuery = "${query}%"
@@ -39,6 +40,18 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
     suspend fun addVillagerToIsland(name: String, islandId: Long) {
         val crossRef = IslandVillagerCrossRef( islandId, name)
         acnhDao.addVillagerToIsland(crossRef)
+    }
+
+    @WorkerThread
+    suspend fun deleteVillagerFromIsland(name: String, islandId: Long) {
+        val crossRef = IslandVillagerCrossRef( islandId, name)
+        acnhDao.deleteVillagerFromIsland(crossRef)
+    }
+
+    @WorkerThread
+    suspend fun updateVillagerFromIsland(name: String, islandId: Long) {
+        val crossRef = IslandVillagerCrossRef( islandId, name)
+        acnhDao.updateVillagerFromIsland(crossRef)
     }
 
 

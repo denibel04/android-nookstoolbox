@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,53 +9,43 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/island"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintTop_toBottomOf="@id/addIsland"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/islandName"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:padding="16dp"
-                android:text="Nombre de la Isla"
-                android:layout_gravity="top|start" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/deleteIsland"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete_forever"
-                android:layout_gravity="top|end"
-                app:fabCustomSize="56dp"
-                app:fabSize="normal"
-                android:contentDescription="TODO" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/islandName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:padding="16dp"
+                    android:text="Nombre de la Isla"
+                    android:textSize="24sp" />
+                <Button
+                    android:id="@+id/renameIsland"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:text="Cambiar Nombre" />
+            </LinearLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/slotsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"/>
-
-            <Button
-                android:id="@+id/renameIsland"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:text="Cambiar Nombre" />
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2" />
 
         </LinearLayout>
 
@@ -68,11 +58,18 @@
         android:layout_height="wrap_content"
         android:text="Añadir Isla"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteIsland"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete_forever"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        app:fabCustomSize="56dp"
+        app:fabSize="normal"
+        android:contentDescription="TODO" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

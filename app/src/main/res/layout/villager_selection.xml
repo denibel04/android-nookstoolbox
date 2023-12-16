@@ -14,12 +14,21 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="16dp">
         <com.google.android.material.search.SearchBar
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="buscar..." />
+            android:hint="buscar..."
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_search_results"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/search_bar"
+            tools:listitem="@layout/villager_list_item_small" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.search.SearchView
@@ -31,10 +40,5 @@
 
     </com.google.android.material.search.SearchView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_search_results"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/search_bar"
-        tools:listitem="@layout/villager_list_item_small" />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

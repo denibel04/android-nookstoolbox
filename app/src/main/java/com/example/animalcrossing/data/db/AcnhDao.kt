@@ -6,7 +6,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Update
 import com.example.animalcrossing.data.repository.Fish
+import com.example.animalcrossing.data.repository.Villager
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -48,4 +50,9 @@ interface AcnhDao {
     fun getIslandWithVillagers(): Flow<IslandWithVillagers>
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addVillagerToIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
+    @Delete
+    suspend fun deleteVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
+    @Update
+    suspend fun updateVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
+
 }

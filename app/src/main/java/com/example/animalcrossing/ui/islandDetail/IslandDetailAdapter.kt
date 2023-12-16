@@ -3,6 +3,7 @@ package com.example.animalcrossing.ui.islandDetail
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,10 +19,11 @@ import com.example.animalcrossing.ui.list.VillagerListAdapter
 
 class IslandDetailAdapter(
     private val context: Context,
-    private val onSlotClicked: ((Int) -> Unit)? = null
+    private val onSlotClicked: ((Int) -> Unit)? = null,
+    private val onVillagerDeleteClicked: ((String?) -> Unit)? = null
 ) : ListAdapter<Villager, IslandDetailAdapter.IslandDetailViewHolder>(VillagerDiffCallback) {
 
-    inner class IslandDetailViewHolder(private val binding: VillagerSlotItemBinding) :
+    inner class IslandDetailViewHolder(val binding: VillagerSlotItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(v: Villager?) {
             if (v != null) {
@@ -34,6 +36,7 @@ class IslandDetailAdapter(
                     .build()
 
                 context.imageLoader.enqueue(imageRequest)
+                binding.deleteVillager.visibility = View.VISIBLE
             } else {
                 binding.slotText.text = context.getString(R.string.add_villager)
                 binding.slotIcon.setImageResource(R.drawable.ic_launcher_background)
@@ -62,7 +65,11 @@ class IslandDetailAdapter(
         holder.itemView.setOnClickListener {
             onSlotClicked?.invoke(position)
         }
+        holder.binding.deleteVillager.setOnClickListener {
+            onVillagerDeleteClicked?.invoke(slot.name)
+        }
     }
+
 
 
 }

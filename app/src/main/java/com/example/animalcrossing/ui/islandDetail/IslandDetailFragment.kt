@@ -47,6 +47,12 @@ class IslandDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = IslandDetailAdapter(requireContext(), onSlotClicked = { slotIndex ->
             showVillagerSelectionDialog(slotIndex)
+        }, onVillagerDeleteClicked = { villagerName ->
+            viewModel.uiState.value.islandId?.let {
+                viewModel.deleteVillagerFromIsland(
+                    villagerName!!,
+                    it
+                )}
         })
         val rv = binding.slotsRecyclerView
         rv.adapter = adapter
@@ -80,6 +86,7 @@ class IslandDetailFragment : Fragment() {
         binding.renameIsland.setOnClickListener {
             showRenameIslandDialog()
         }
+
 
     }
 
@@ -155,7 +162,8 @@ class IslandDetailFragment : Fragment() {
                     viewModel.uiState.value.islandId?.let {
                         viewModel.addVillagerToIsland(
                             villager.name,
-                            it
+                            it,
+                            slotIndex
                         )
                     }
                     dialog.dismiss()
