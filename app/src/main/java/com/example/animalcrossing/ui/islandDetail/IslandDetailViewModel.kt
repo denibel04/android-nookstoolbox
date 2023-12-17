@@ -1,13 +1,8 @@
 package com.example.animalcrossing.ui.islandDetail
 
 
-import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
-
 import androidx.lifecycle.viewModelScope
-import com.example.animalcrossing.R
 import com.example.animalcrossing.data.db.asVillager
 import com.example.animalcrossing.data.repository.IslandRepository
 import com.example.animalcrossing.data.repository.Villager
