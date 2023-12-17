@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Animal Crossing!!</string>
+    <string name="hello_blank_fragment">Salut fragment gol</string>
+
+    <!-- GLOBAL -->
+    <string name="search">Caută...</string>
+    <string name="cancel">Anulează</string>
+    <string name="accept">Acceptă</string>
+    <string name="change">Schimbă</string>
+    <string name="create">Creează</string>
+    <string name="empty_name">Numele nu poate fi gol</string>
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">Personaje</string>
+    <string name="add_villager">Adaugă personaj</string>
+    <string name="villagers_title">Personaje</string>
+    <string name="birthday">Zi de naștere: %1$s %2$s</string>
+    <string name="species">Specie: %1$s</string>
+    <string name="personality">Personalitate: %1$s</string>
+    <string name="select_villager">Selectează un personaj</string>
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">Pești</string>
+    <string name="fish_title">Pești</string>
+    <string name="rarity">Raritate: %1$s</string>
+    <string name="location">Habitat: %1$s</string>
+    <string name="shadow">Umbră: %1$s</string>
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">Insulă</string>
+    <string name="share_text">Insula mea se numește %1$s, iar vecinii mei sunt: %2$s</string>
+    <string name="island_title">Insula mea</string>
+    <string name="is_new">Insulă nouă</string>
+    <string name="is_name">Introdu numele insulei</string>
+    <string name="is_rename">Redenumește insula</string>
+    <string name="newname">Nume nou</string>
+    <string name="delete_island_title">Șterge insula</string>
+    <string name="delete_island_confirmation">Ești sigur că vrei să ștergi insula?</string>
+</resources>

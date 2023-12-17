@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">アニマルクロッシング!!</string>
+    <string name="hello_blank_fragment">ハロー ブランク フラグメント</string>
+
+    <!-- GLOBAL -->
+    <string name="search">検索...</string>
+    <string name="cancel">キャンセル</string>
+    <string name="accept">承認</string>
+    <string name="change">変更</string>
+    <string name="create">作成</string>
+    <string name="empty_name">名前を空にすることはできません</string>
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">住人</string>
+    <string name="add_villager">住人を追加</string>
+    <string name="villagers_title">住人</string>
+    <string name="birthday">誕生日: %1$s %2$s</string>
+    <string name="species">種類: %1$s</string>
+    <string name="personality">性格: %1$s</string>
+    <string name="select_villager">住人を選択</string>
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">魚</string>
+    <string name="fish_title">魚</string>
+    <string name="rarity">レア度: %1$s</string>
+    <string name="location">生息地: %1$s</string>
+    <string name="shadow">影: %1$s</string>
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">島</string>
+    <string name="share_text">私の島の名前は %1$s で、隣人は: %2$s</string>
+    <string name="island_title">私の島</string>
+    <string name="is_new">新しい島</string>
+    <string name="is_name">島の名前を入力</string>
+    <string name="is_rename">島の名前を変更</string>
+    <string name="newname">新しい名前</string>
+    <string name="delete_island_title">島を削除</string>
+    <string name="delete_island_confirmation">島を削除してもよろしいですか？</string>
+</resources>

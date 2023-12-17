@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Animal Crossing!!</string>
+    <string name="hello_blank_fragment">你好 空白片段</string>
+
+    <!-- GLOBAL -->
+    <string name="search">搜索...</string>
+    <string name="cancel">取消</string>
+    <string name="accept">接受</string>
+    <string name="change">更改</string>
+    <string name="create">创建</string>
+    <string name="empty_name">名称不能为空</string>
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">村民</string>
+    <string name="add_villager">添加村民</string>
+    <string name="villagers_title">村民</string>
+    <string name="birthday">生日: %1$s %2$s</string>
+    <string name="species">种类: %1$s</string>
+    <string name="personality">性格: %1$s</string>
+    <string name="select_villager">选择村民</string>
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">鱼</string>
+    <string name="fish_title">鱼</string>
+    <string name="rarity">稀有度: %1$s</string>
+    <string name="location">栖息地: %1$s</string>
+    <string name="shadow">影子: %1$s</string>
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">岛屿</string>
+    <string name="share_text">我的岛屿叫做 %1$s, 我的邻居是: %2$s</string>
+    <string name="island_title">我的岛屿</string>
+    <string name="is_new">新岛屿</string>
+    <string name="is_name">输入岛屿名称</string>
+    <string name="is_rename">重命名岛屿</string>
+    <string name="newname">新名称</string>
+    <string name="delete_island_title">删除岛屿</string>
+    <string name="delete_island_confirmation">你确定要删除这个岛屿吗？</string>
+</resources>

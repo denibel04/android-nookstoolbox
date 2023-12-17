@@ -20,7 +20,7 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="buscar..."
+            android:hint="@string/search"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -35,7 +35,7 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="buscar..."
+        android:hint="@string/search"
         app:layout_anchor="@id/search_bar">
 
     </com.google.android.material.search.SearchView>

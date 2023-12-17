@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.animalcrossing.databinding.FragmentVillagerListBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.animalcrossing.R
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -29,6 +31,7 @@ class VillagerListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.villagers_title)
         super.onViewCreated(view, savedInstanceState)
         val adapter = VillagerListAdapter(requireContext()) { villager ->
             val action =

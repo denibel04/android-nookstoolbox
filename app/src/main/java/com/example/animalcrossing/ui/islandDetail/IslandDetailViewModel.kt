@@ -1,9 +1,13 @@
 package com.example.animalcrossing.ui.islandDetail
 
-import android.util.Log
+
+import android.content.Context
+import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
+
 import androidx.lifecycle.viewModelScope
-import com.example.animalcrossing.data.db.IslandVillagerCrossRef
+import com.example.animalcrossing.R
 import com.example.animalcrossing.data.db.asVillager
 import com.example.animalcrossing.data.repository.IslandRepository
 import com.example.animalcrossing.data.repository.Villager
@@ -15,6 +19,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class IslandDetailViewModel @Inject constructor(private val repository: IslandRepository) :
@@ -70,6 +75,7 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
         viewModelScope.launch {
             uiState.value.islandId?.let { repository.deleteIsland(it) }
             _uiState.value = IslandDetailUiState(islandExists = false)
+            _villagers.value = List(10) { null }
         }
     }
 
@@ -108,6 +114,16 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
 
     fun isVillagerAtPosition(index: Int): Boolean {
         return _villagers.value.getOrNull(index) != null
+    }
+
+    fun getIslandName():String {
+        return  _uiState.value.name
+    }
+
+    fun getVillagersString():String {
+        return _uiState.value.villagers.joinToString(separator = ", ") { villager ->
+            villager.name
+        }
     }
 
 }

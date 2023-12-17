@@ -4,20 +4,16 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:title="Fish Details"
-        />
+    android:orientation="vertical"
+    android:padding="12dp">
+
     <com.google.android.material.card.MaterialCardView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_marginBottom="8dp"
-
-
+        android:padding="8dp"
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_height="wrap_content">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,10 +22,12 @@
             <ImageView
                 android:id="@+id/fishImage"
                 android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_height="250dp"
+                android:rotation="90"
                 tools:srcCompat="@tools:sample/avatars"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
             <TextView
                 android:id="@+id/fishName"
@@ -38,11 +36,46 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:layout_marginStart="16dp"
+                android:textStyle="bold"
                 android:gravity="center"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/fishImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5" />
+
+            <TextView
+                android:id="@+id/fishLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/fishName"
+                app:layout_constraintTop_toBottomOf="@+id/fishName"
+                app:layout_constraintEnd_toEndOf="@+id/fishName"
+                app:layout_constraintHorizontal_bias="0.5" />
+
+            <TextView
+                android:id="@+id/fishRarity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/fishLocation"
+                app:layout_constraintTop_toBottomOf="@+id/fishLocation"
+                app:layout_constraintEnd_toEndOf="@+id/fishLocation"
+                app:layout_constraintHorizontal_bias="0.5" />
+
+            <TextView
+                android:id="@+id/fishShadow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/fishRarity"
+                app:layout_constraintTop_toBottomOf="@+id/fishRarity"
+                app:layout_constraintEnd_toEndOf="@+id/fishRarity"
+                app:layout_constraintHorizontal_bias="0.5" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>

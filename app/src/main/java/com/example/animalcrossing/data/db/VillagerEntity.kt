@@ -11,7 +11,10 @@ data class VillagerEntity (
     val species:String,
     val personality:String,
     val image_url:String,
-    val islander:Boolean=false
+    val gender:String,
+    val birthday_month: String,
+    val birthday_day: Int,
+    val islander:Boolean=false,
 )
 
 fun List<VillagerEntity>.asVillager():List<Villager>{
@@ -19,6 +22,9 @@ fun List<VillagerEntity>.asVillager():List<Villager>{
         Villager(it.name.replaceFirstChar { c -> c.uppercase() },
             it.species,
             it.personality,
-            it.image_url)
+            it.image_url,
+            it.gender,
+            it.birthday_month,
+            it.birthday_day)
     }
 }

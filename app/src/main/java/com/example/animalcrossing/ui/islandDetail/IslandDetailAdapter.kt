@@ -12,6 +12,7 @@ import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
 import com.example.animalcrossing.R
+import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.VillagerListItemBinding
 import com.example.animalcrossing.databinding.VillagerSlotItemBinding
@@ -39,7 +40,7 @@ class IslandDetailAdapter(
                 binding.deleteVillager.visibility = View.VISIBLE
             } else {
                 binding.slotText.text = context.getString(R.string.add_villager)
-                binding.slotIcon.setImageResource(R.drawable.ic_launcher_background)
+                binding.slotIcon.setImageResource(R.drawable.ic_cat)
             }
         }
     }

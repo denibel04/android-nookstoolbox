@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:padding="10dp">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -15,29 +15,46 @@
             android:id="@+id/island"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:orientation="horizontal">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
                 <TextView
                     android:id="@+id/islandName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top|start"
+                    android:layout_alignParentStart="true"
                     android:padding="16dp"
                     android:text="Nombre de la Isla"
                     android:textSize="24sp" />
+
                 <Button
-                    android:id="@+id/renameIsland"
+                    android:id="@+id/deleteIsland"
+                    style="?attr/materialIconButtonFilledTonalStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:text="Cambiar Nombre" />
-            </LinearLayout>
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    app:icon="@drawable/ic_delete_forever"
+                    app:iconSize="24dp"
+                    />
+
+                <Button
+                    android:id="@+id/renameIsland"
+                    style="?attr/materialIconButtonFilledTonalStyle"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@id/deleteIsland"
+                    app:icon="@drawable/ic_pen"
+                    app:iconSize="24dp"
+                    />
+
+            </RelativeLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -54,22 +71,24 @@
 
     <Button
         android:id="@+id/addIsland"
+        style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Añadir Isla"
-        android:visibility="visible"
-         />
+        app:icon="@drawable/ic_plus"
+    android:layout_gravity="center"
+    android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/deleteIsland"
+        android:id="@+id/shareIsland"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_delete_forever"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_share"
         app:fabCustomSize="56dp"
-        app:fabSize="normal"
-        android:contentDescription="TODO" />
+        app:fabSize="normal" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

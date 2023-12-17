@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Animal Crossing!!</string>
+    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+
+    <!-- GLOBAL -->
+    <string name="search">Search...</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="change">Change</string>
+    <string name="create">Create</string>
+    <string name="empty_name">Name cannot be empty</string>
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">Villagers</string>
+    <string name="add_villager">Add Villager</string>
+    <string name="villagers_title">Villagers</string>
+    <string name="birthday">Birthday: %1s %2s</string>
+    <string name="species">Species: %1s</string>
+    <string name="personality">Personality: %1s</string>
+    <string name="select_villager">Select a Villager</string>
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">Fish</string>
+    <string name="fish_title">Fish</string>
+    <string name="rarity">Rarity: %1s</string>
+    <string name="location">Habitat: %1s</string>
+    <string name="shadow">Shadow: %1s</string>
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">Island</string>
+    <string name="share_text">My island is called %1$s, and my neighbors are: %2$s</string>
+    <string name="island_title">My Island</string>
+    <string name="is_new">New Island</string>
+    <string name="is_name">Enter the name of the island</string>
+    <string name="is_rename">Rename the island</string>
+    <string name="newname">New Name</string>
+    <string name="delete_island_title">Delete Island</string>
+    <string name="delete_island_confirmation">Are you sure you want to delete the island?</string>
+</resources>

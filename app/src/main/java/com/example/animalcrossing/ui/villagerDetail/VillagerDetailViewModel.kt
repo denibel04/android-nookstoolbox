@@ -25,7 +25,10 @@ class VillagerDetailViewModel @Inject constructor(private val repository: Villag
                     it.name,
                     it.species,
                     it.personality,
-                    it.image_url
+                    it.image_url,
+                    it.gender,
+                    it.birthday_month,
+                    it.birthday_day
                 )
             }
         }

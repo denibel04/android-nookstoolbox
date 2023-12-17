@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Animal Crossing!!</string>
+    <string name="hello_blank_fragment">Bonjour Fragment vide</string>
+
+    <!-- GLOBAL -->
+    <string name="search">Rechercher...</string>
+    <string name="cancel">Annuler</string>
+    <string name="accept">Accepter</string>
+    <string name="change">Modifier</string>
+    <string name="create">Créer</string>
+    <string name="empty_name">Le nom ne peut pas être vide</string>
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">Habitants</string>
+    <string name="add_villager">Ajouter un habitant</string>
+    <string name="villagers_title">Habitants</string>
+    <string name="birthday">Anniversaire: %1$s %2$s</string>
+    <string name="species">Espèce: %1$s</string>
+    <string name="personality">Personnalité: %1$s</string>
+    <string name="select_villager">Sélectionnez un habitant</string>
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">Poissons</string>
+    <string name="fish_title">Poissons</string>
+    <string name="rarity">Rareté: %1$s</string>
+    <string name="location">Habitat: %1$s</string>
+    <string name="shadow">Ombre: %1$s</string>
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">Île</string>
+    <string name="share_text">Mon île s\'appelle %1$s, et mes voisins sont: %2$s</string>
+    <string name="island_title">Mon île</string>
+    <string name="is_new">Nouvelle île</string>
+    <string name="is_name">Entrez le nom de l\'île</string>
+    <string name="is_rename">Renommer l\'île</string>
+    <string name="newname">Nouveau nom</string>
+    <string name="delete_island_title">Supprimer l\'île</string>
+    <string name="delete_island_confirmation">Êtes-vous sûr de vouloir supprimer l\'île?</string>
+</resources>

@@ -1,6 +1,7 @@
 package com.example.animalcrossing.ui.islandDetail
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -9,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.animalcrossing.R
 import com.example.animalcrossing.databinding.FragmentIslandDetailBinding
 import com.example.animalcrossing.ui.list.VillagerListAdapter
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,6 +48,7 @@ class IslandDetailFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.island_title)
         super.onViewCreated(view, savedInstanceState)
         val adapter = IslandDetailAdapter(requireContext(), onSlotClicked = { slotIndex ->
             showVillagerSelectionDialog(slotIndex)
@@ -59,18 +64,18 @@ class IslandDetailFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collectLatest { uiState ->
-                    Log.d("DENI", uiState.islandExists.toString())
                     if (uiState.islandExists) {
                         binding.island.visibility = View.VISIBLE
                         binding.addIsland.visibility = View.GONE
+                        binding.shareIsland.visibility = View.VISIBLE
                         binding.islandName.text = uiState.name
                         viewModel.villagers.collectLatest { nuevosVillagers ->
-                            Log.d("adapter", nuevosVillagers.toString())
                             adapter.submitList(nuevosVillagers)
                         }
                     } else {
                         binding.island.visibility = View.GONE
                         binding.addIsland.visibility = View.VISIBLE
+                        binding.shareIsland.visibility = View.GONE
                     }
                 }
             }
@@ -80,38 +85,64 @@ class IslandDetailFragment : Fragment() {
         }
 
         binding.deleteIsland.setOnClickListener {
-            viewModel.deleteIsland()
+            showDeleteIslandConfirmationDialog()
         }
 
         binding.renameIsland.setOnClickListener {
             showRenameIslandDialog()
         }
 
+        binding.shareIsland.setOnClickListener {
+            val shareText = getString(R.string.share_text, viewModel.getIslandName(), viewModel.getVillagersString())
 
+            val intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, shareText)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(intent, null)
+            startActivity(shareIntent)
+        }
+
+
+    }
+
+    private fun showDeleteIslandConfirmationDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.delete_island_title)
+            .setMessage(R.string.delete_island_confirmation)
+            .setPositiveButton(R.string.accept) { dialog, _ ->
+                viewModel.deleteIsland()
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
     }
 
     private fun showCreateIslandDialog() {
         val input = EditText(requireContext()).apply {
             inputType = InputType.TYPE_CLASS_TEXT
-            hint = "Introduce el nombre de la isla"
+            hint = getString(R.string.is_name)
         }
 
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle("Nueva Isla")
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(getString(R.string.is_new))
             setView(input)
-            setPositiveButton("Crear") { dialog, _ ->
+            setPositiveButton(getString(R.string.create)) { dialog, _ ->
                 val islandName = input.text.toString()
                 if (islandName.isNotBlank()) {
                     viewModel.createIsland(islandName)
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "El nombre no puede estar vacío",
+                        getString(R.string.empty_name),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-            setNegativeButton("Cancelar", null)
+            setNegativeButton(getString(R.string.cancel), null)
         }.show()
     }
 
@@ -119,26 +150,26 @@ class IslandDetailFragment : Fragment() {
     private fun showRenameIslandDialog() {
         val input = EditText(requireContext()).apply {
             inputType = InputType.TYPE_CLASS_TEXT
-            hint = "Nuevo nombre de la isla"
+            hint = getString(R.string.newname)
         }
         input.setText(viewModel.uiState.value.name)
 
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle("Cambiar Nombre de la Isla")
+        MaterialAlertDialogBuilder(requireContext()).apply {
+            setTitle(getString(R.string.is_rename))
             setView(input)
-            setPositiveButton("Cambiar") { _, _ ->
+            setPositiveButton(getString(R.string.change)) { _, _ ->
                 val newName = input.text.toString()
                 if (newName.isNotBlank()) {
                     viewModel.renameIsland(newName)
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "El nombre no puede estar vacío",
+                        getString(R.string.empty_name),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-            setNegativeButton("Cancelar", null)
+            setNegativeButton(getString(R.string.cancel), null)
         }.show()
     }
 
@@ -151,9 +182,9 @@ class IslandDetailFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Selecciona un Aldeano")
+            .setTitle(getString(R.string.select_villager))
             .setView(dialogView)
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.cancel), null)
             .create()
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -173,7 +204,6 @@ class IslandDetailFragment : Fragment() {
                 searchView.getEditText().setOnEditorActionListener { v, actionId, event ->
                     searchBar.setText(searchView.getText())
                     val searchQuery = searchBar.text.toString()
-                    Log.d("query", searchQuery.toString())
                     searchVillagers(searchQuery, adapter)
                     searchView.hide()
                     false

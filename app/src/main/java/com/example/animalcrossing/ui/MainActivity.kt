@@ -31,5 +31,8 @@ class MainActivity : AppCompatActivity() {
             )
         )
         navView.setupWithNavController(navController)
+
+        val toolbar = binding.toolbar
+        setSupportActionBar(toolbar)
     }
 }

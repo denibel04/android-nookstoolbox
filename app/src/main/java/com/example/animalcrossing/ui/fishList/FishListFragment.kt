@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -33,9 +34,11 @@ class FishListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.fish_title)
         super.onViewCreated(view, savedInstanceState)
         val adapter = FishListAdapter(requireContext()) { fish ->
-            val action = FishListFragmentDirections.actionFishListFragmentToFishDetailFragment(fish.name)
+            val action =
+                FishListFragmentDirections.actionFishListFragmentToFishDetailFragment(fish.name)
             findNavController().navigate(action)
         }
         val rv = binding.fishList
@@ -47,5 +50,6 @@ class FishListFragment : Fragment() {
                 }
             }
         }
-    }  }
+    }
+}
 

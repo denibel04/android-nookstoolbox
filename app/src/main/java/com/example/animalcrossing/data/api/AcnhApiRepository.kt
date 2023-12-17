@@ -14,7 +14,10 @@ class AcnhApiRepository @Inject constructor(private val service: ApiService){
                 villagerListItem.name,
                 villagerListItem.species,
                 villagerListItem.personality,
-                villagerListItem.image_url
+                villagerListItem.image_url,
+                villagerListItem.gender,
+                villagerListItem.birthday_month,
+                villagerListItem.birthday_day
             )
 
         }
