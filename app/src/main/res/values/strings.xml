@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">Animal Crossing!!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- GLOBAL -->
+    <string name="search">Buscar…</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Aceptar</string>
+    <string name="change">Cambiar</string>
+    <string name="create">Crear</string>
+    <string name="empty_name">El nombre no puede estar vacío</string>
+
+
+    <!-- VILLAGERS -->
+    <string name="villager_bottom_nav">Vecinos</string>
+    <string name="add_villager">Añadir vecino</string>
+    <string name="villagers_title">Vecinos</string>
+    <string name="birthday">Cumpleaños: %1s %2s</string>
+    <string name="species">Especie: %1s</string>
+    <string name="personality">Personalidad: %1s</string>
+    <string name="select_villager">Selecciona un vecino</string>
+
+
+    <!-- FISH -->
+    <string name="fish_bottom_nav">Peces</string>
+    <string name="fish_title">Peces</string>
+    <string name="rarity">Rareza: %1s</string>
+    <string name="location">Hábitat: %1s</string>
+    <string name="shadow">Sombra: %1s</string>
+
+
+    <!-- ISLAND -->
+    <string name="island_bottom_nav">Isla</string>
+    <string name="share_text">Mi isla se llama %1s, y mis vecinos son: %2s</string>
+    <string name="island_title">Mi isla</string>
+    <string name="is_new">Nueva isla</string>
+    <string name="is_name">Introduce el nombre de la isla</string>
+    <string name="is_rename">Cambia el nombre de la isla</string>
+    <string name="newname">Nuevo nombre</string>
+    <string name="delete_island_title">Eliminar isla</string>
+    <string name="delete_island_confirmation">¿Estás seguro de que quieres eliminar la isla?</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_login">LoginActivity</string>
+</resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "287262785152",
+    "project_id": "prueba-consultas-81849",
+    "storage_bucket": "prueba-consultas-81849.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:287262785152:android:4ad74626b0ccf987b57065",
+        "android_client_info": {
+          "package_name": "com.example.animalcrossing"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHnA8r1hORlD2KiuNDkCvR9w77iroDjLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
