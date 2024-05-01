@@ -1,6 +1,7 @@
 package com.example.animalcrossing.ui.islandDetail
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.animalcrossing.data.db.asVillager
@@ -33,8 +34,9 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
 
     private fun fetchIsland() {
         viewModelScope.launch {
+            Log.d("ISLANDWITHVILLAGERS", repository.islandWithVillagers.toString())
             repository.islandWithVillagers.collect { islandWithVillagers ->
-
+                Log.d("ISLANDWITHVILLAGERS", islandWithVillagers.toString())
                 _uiState.value = if (islandWithVillagers != null) {
                     val currentList = _villagers.value.toMutableList()
                     islandWithVillagers!!.villagers.asVillager().forEachIndexed { index, villager ->

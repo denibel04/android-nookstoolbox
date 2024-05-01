@@ -44,16 +44,15 @@ class IslandRepository @Inject constructor(
     }
 
     suspend fun addVillagerToIsland(name: String, islandId: Long) {
+        apiRepository.addVillagerToIsland(name)
         return dbRepository.addVillagerToIsland(name, islandId)
     }
 
     suspend fun deleteVillagerFromIsland(name: String, islandId: Long) {
+        apiRepository.deleteVillagerFromIsland(name)
         return dbRepository.deleteVillagerFromIsland(name, islandId)
     }
 
-    suspend fun updateVillagerFromIsland(name: String, islandId: Long) {
-        return dbRepository.updateVillagerFromIsland(name, islandId)
-    }
 
 
 

@@ -1,20 +1,13 @@
 package com.example.animalcrossing.data.api
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.animalcrossing.data.repository.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.tasks.await
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,73 +43,161 @@ class ApiService @Inject constructor() {
         return villagers
     }
 
-   fun createIsland(name: String) {
-       val currentUser = auth.currentUser
+    fun createIsland(name: String) {
+        val currentUser = auth.currentUser
 
-       currentUser?.let { user ->
-           val islandData = hashMapOf(
-               "name" to name,
-               "villagers" to emptyList<String>(),
-               "loans" to emptyList<String>()
-           )
+        currentUser?.let { user ->
+            val islandData = hashMapOf(
+                "name" to name,
+                "villagers" to emptyList<String>(),
+                "loans" to emptyList<String>()
+            )
 
-           db.collection("users").document(user.uid).collection("islands")
-               .add(islandData)
-               .addOnSuccessListener { documentReference ->
-                   println("Isla creada exitosamente con ID: ${documentReference.id}")
-               }
-               .addOnFailureListener { e ->
-                   println("Error al crear la isla: $e")
-               }
-       }
-   }
+            db.collection("users").document(user.uid).collection("island")
+                .add(islandData)
+                .addOnSuccessListener { documentReference ->
+                    println("Isla creada exitosamente con ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    println("Error al crear la isla: $e")
+                }
+        }
+    }
 
-   suspend fun getIsland() {
+    suspend fun getIsland() {
 
-   }
+    }
 
-   suspend fun deleteIsland() {
-       val currentUser = auth.currentUser
-       currentUser?.let { user ->
-           try {
-               val querySnapshot: QuerySnapshot = db.collection("users").document(user.uid)
-                   .collection("islands").get().await()
+    suspend fun addVillagerToIsland(name: String) {
+        val currentUser = auth.currentUser
 
-               for (document in querySnapshot.documents) {
-                   db.collection("users").document(user.uid)
-                       .collection("islands").document(document.id).delete().await()
-                   println("Isla eliminada con ID: ${document.id}")
-               }
-               println("Todas las islas han sido eliminadas exitosamente")
-           } catch (e: Exception) {
-               println("Error al eliminar las islas: $e")
-           }
-       }
+        currentUser?.let { user ->
+            try {
+                val island = db.collection("users")
+                    .document(user.uid)
+                    .collection("island")
+                    .get()
+                    .await()
 
-   }
+                if (!island.isEmpty) {
+                    val islandDoc = island.documents[0]
+
+                    val villager = db.collection("villagers")
+                        .whereEqualTo("name", name)
+                        .get()
+                        .await()
+
+                    if (!villager.isEmpty) {
+                        val villagerDoc = villager.documents[0]
+
+                        val villagerUid = villagerDoc.id
+
+                        val islandRef = db.collection("users")
+                            .document(user.uid)
+                            .collection("island")
+                            .document(islandDoc.id)
+
+                        islandRef.update("villagers", FieldValue.arrayUnion(villagerUid))
+
+                    } else {
+                    }
+                } else {
+                    Log.e(TAG, "No se encontró ninguna isla para el usuario")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error al agregar aldeano a la isla", e)
+            }
+        }
+    }
+
+    suspend fun deleteVillagerFromIsland(name: String) {
+        val currentUser = auth.currentUser
+
+        currentUser?.let { user ->
+            try {
+                val island = db.collection("users")
+                    .document(user.uid)
+                    .collection("island")
+                    .get()
+                    .await()
+
+                if (!island.isEmpty) {
+                    val islandDoc = island.documents[0]
+
+                    val villager = db.collection("villagers")
+                        .whereEqualTo("name", name)
+                        .get()
+                        .await()
+
+                    if (!villager.isEmpty) {
+                        val villagerDoc = villager.documents[0]
+
+                        val villagerUid = villagerDoc.id
+
+                        val islandRef = db.collection("users")
+                            .document(user.uid)
+                            .collection("island")
+                            .document(islandDoc.id)
+
+                        islandRef.update("villagers", FieldValue.arrayRemove(villagerUid))
+
+                    } else {
+                    }
+                } else {
+                    Log.e(TAG, "No se encontró ninguna isla para el usuario")
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Error al agregar aldeano a la isla", e)
+            }
+        }
+    }
+
+    suspend fun deleteIsland() {
+        val currentUser = auth.currentUser
+        currentUser?.let { user ->
+            try {
+                val querySnapshot: QuerySnapshot = db.collection("users").document(user.uid)
+                    .collection("island").get().await()
+
+                for (document in querySnapshot.documents) {
+                    db.collection("users").document(user.uid)
+                        .collection("island").document(document.id).delete().await()
+                    println("Isla eliminada con ID: ${document.id}")
+                }
+                println("Todas las islas han sido eliminadas exitosamente")
+            } catch (e: Exception) {
+                println("Error al eliminar las islas: $e")
+            }
+        }
+
+    }
 
     suspend fun getCurrentUser(): User {
         var currentUser = auth.currentUser
+
         if (currentUser != null) {
             try {
-                val querySnapshot = db.collection("users").whereEqualTo("uid", currentUser?.uid).get().await()
-                for (document in querySnapshot) {
-                    val user = document.data
-                    return User(
-                        currentUser.uid,
-                        currentUser.email.toString(),
-                        user["username"] as String
-                    )
-                }
+                val querySnapshot = db.collection("users").document(currentUser.uid).get().await()
+
+                val user = querySnapshot.data
+                return User(
+                    currentUser.uid,
+                    currentUser.email.toString(),
+                    user?.get("username") as String,
+                    user["profile_picture"] as String
+                )
+
             } catch (e: Exception) {
                 Log.e(TAG, "Error getting villagers", e)
             }
+
+
         }
         return User(
-            "Not logged",
-            "User",
-            "User"
+            "",
+            "",
+            "",
+            ""
         )
     }
-
-    }
+}

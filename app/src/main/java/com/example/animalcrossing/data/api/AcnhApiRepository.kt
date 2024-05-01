@@ -33,6 +33,14 @@ class AcnhApiRepository @Inject constructor(private val service: ApiService){
         service.deleteIsland()
     }
 
+    suspend fun addVillagerToIsland(name: String) {
+        service.addVillagerToIsland(name)
+    }
+
+    suspend fun deleteVillagerFromIsland(name: String) {
+        service.deleteVillagerFromIsland(name)
+    }
+
 
     suspend fun getCurrentUser(): User {
         return service.getCurrentUser()
