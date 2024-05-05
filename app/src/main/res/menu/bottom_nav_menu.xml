@@ -8,4 +8,8 @@
         android:id="@+id/island"
         android:title="@string/island_bottom_nav"
         android:icon="@drawable/ic_island"/>
+    <item
+        android:id="@+id/loans"
+        android:title="@string/island_bottom_nav"
+        android:icon="@drawable/ic_island"/>
 </menu>

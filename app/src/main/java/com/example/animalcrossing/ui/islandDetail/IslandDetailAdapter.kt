@@ -27,7 +27,9 @@ class IslandDetailAdapter(
     inner class IslandDetailViewHolder(val binding: VillagerSlotItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(v: Villager?) {
+            Log.d("villagersbind", v.toString() )
             if (v != null) {
+                Log.d("villagersnotnull", v.toString() )
                 binding.slotText.text = v.name
                 binding.slotIcon.load(v.image_url)
                 val imageRequest = ImageRequest.Builder(context)
@@ -39,8 +41,10 @@ class IslandDetailAdapter(
                 context.imageLoader.enqueue(imageRequest)
                 binding.deleteVillager.visibility = View.VISIBLE
             } else {
+                Log.d("villagersnull", v.toString() )
                 binding.slotText.text = context.getString(R.string.add_villager)
-                binding.slotIcon.setImageResource(R.drawable.ic_cat)
+                binding.slotIcon.load(R.drawable.ic_cat)
+                binding.deleteVillager.visibility = View.GONE
             }
         }
     }

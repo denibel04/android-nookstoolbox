@@ -21,6 +21,15 @@ interface AcnhDao {
     @Query("SELECT * FROM villager WHERE name LIKE :searchQuery")
     fun searchVillagers(searchQuery: String): Flow<List<VillagerEntity>>
 
+    // LOAN
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLoan(loansEntity: LoansEntity)
+
+    @Query("SELECT * FROM loans WHERE loanId=:loanId")
+    fun getLoan(loanId: Long): Flow<LoansEntity>
+
+    @Delete
+    suspend fun deleteLoan(loan: LoansEntity)
 
     // ISLAND
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -42,5 +51,18 @@ interface AcnhDao {
     suspend fun deleteVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
     @Update
     suspend fun updateVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
+
+    // ISLAND W LOANS
+    @Transaction
+    @Query("SELECT * FROM Island")
+    fun getIslandWithLoans(): Flow<IslandWithLoans>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addLoanToIsland(islandLoansCrossRef: IslandLoansCrossRef)
+    @Delete
+    suspend fun deleteLoanFromIsland(islandLoansCrossRef: IslandLoansCrossRef)
+    @Update
+    suspend fun updateLoanFromIsland(islandLoansCrossRef: IslandLoansCrossRef)
+
+
 
 }

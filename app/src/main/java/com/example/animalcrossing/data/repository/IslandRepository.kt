@@ -6,6 +6,7 @@ import com.example.animalcrossing.data.api.AcnhApiRepository
 import com.example.animalcrossing.data.db.IslandDBRepository
 import com.example.animalcrossing.data.db.IslandEntity
 import com.example.animalcrossing.data.db.IslandVillagerCrossRef
+import com.example.animalcrossing.data.db.IslandWithLoans
 import com.example.animalcrossing.data.db.IslandWithVillagers
 import com.example.animalcrossing.data.db.VillagerEntity
 import com.example.animalcrossing.data.db.asIsland
@@ -24,15 +25,17 @@ class IslandRepository @Inject constructor(
 
     val islandWithVillagers:Flow<IslandWithVillagers?> = dbRepository.islandWithVillagers
 
+    val islandWithLoans:Flow<IslandWithLoans?> = dbRepository.islandWithLoans
+
 
     suspend fun addIsland(name: String) {
         val newIsland = IslandEntity(name = name)
-        dbRepository.insert(newIsland)
         apiRepository.createIsland(name)
+        dbRepository.insert(newIsland)
     }
     suspend fun deleteIsland(id:Long) {
-        dbRepository.delete(id)
         apiRepository.deleteIsland()
+        dbRepository.delete(id)
     }
 
     suspend fun renameIsland(id:Long, name: String) {

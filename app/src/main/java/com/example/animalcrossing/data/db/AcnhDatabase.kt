@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [VillagerEntity::class, IslandEntity::class, IslandVillagerCrossRef::class], version = 1)
+@Database(entities = [VillagerEntity::class, IslandEntity::class, IslandVillagerCrossRef::class, LoansEntity::class, IslandLoansCrossRef::class], version = 1)
 abstract class AcnhDatabase():RoomDatabase() {
     abstract fun acnhDao():AcnhDao
 
@@ -23,7 +23,7 @@ abstract class AcnhDatabase():RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AcnhDatabase::class.java,
-                "acnh7_db"
+                "acnh8_db"
             ).build()
         }
     }

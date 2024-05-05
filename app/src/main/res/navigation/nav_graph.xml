@@ -6,4 +6,5 @@
     <include app:graph="@navigation/villager" />
     <include app:graph="@navigation/island" />
     <include app:graph="@navigation/profile" />
+    <include app:graph="@navigation/loans" />
 </navigation>
