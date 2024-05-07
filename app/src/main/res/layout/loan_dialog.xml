@@ -21,22 +21,18 @@
         app:layout_constraintStart_toEndOf="@id/titleTextView"
         app:layout_constraintTop_toTopOf="@id/titleTextView" />
 
-    <TextView
-        android:id="@+id/typeTextView"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/typeSpinner"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Type:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
-
-    <EditText
-        android:id="@+id/type"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Enter type"
+        android:hint="Tipo de Deuda"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/typeTextView"
-        app:layout_constraintTop_toTopOf="@id/typeTextView" />
+        app:layout_constraintStart_toEndOf="@id/title"
+        app:layout_constraintTop_toTopOf="@id/title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"/>
+
+
 
     <TextView
         android:id="@+id/amountPaidTextView"
@@ -44,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="Amount Paid:"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeTextView" />
+        app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
 
     <EditText
         android:id="@+id/amountPaid"
@@ -73,5 +69,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/amountTotalTextView"
         app:layout_constraintTop_toTopOf="@id/amountTotalTextView" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/completedStatus"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/amountTotal"
+        app:layout_constraintTop_toTopOf="@id/amountTotal"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

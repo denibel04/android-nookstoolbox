@@ -23,13 +23,19 @@ interface AcnhDao {
 
     // LOAN
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertLoan(loansEntity: LoansEntity)
+    suspend fun insertLoan(loansEntity: LoansEntity): Long
+
+    @Query("SELECT * FROM loans")
+    fun getAllLoans(): Flow<List<LoansEntity>>
 
     @Query("SELECT * FROM loans WHERE loanId=:loanId")
     fun getLoan(loanId: Long): Flow<LoansEntity>
 
     @Delete
     suspend fun deleteLoan(loan: LoansEntity)
+
+    @Update
+    suspend fun updateLoan(loansEntity: LoansEntity)
 
     // ISLAND
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -52,16 +58,6 @@ interface AcnhDao {
     @Update
     suspend fun updateVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
 
-    // ISLAND W LOANS
-    @Transaction
-    @Query("SELECT * FROM Island")
-    fun getIslandWithLoans(): Flow<IslandWithLoans>
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addLoanToIsland(islandLoansCrossRef: IslandLoansCrossRef)
-    @Delete
-    suspend fun deleteLoanFromIsland(islandLoansCrossRef: IslandLoansCrossRef)
-    @Update
-    suspend fun updateLoanFromIsland(islandLoansCrossRef: IslandLoansCrossRef)
 
 
 

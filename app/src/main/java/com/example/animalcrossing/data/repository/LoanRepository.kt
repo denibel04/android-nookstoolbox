@@ -7,6 +7,7 @@ import com.example.animalcrossing.data.db.LoansDBRepository
 import com.example.animalcrossing.data.db.LoansEntity
 import com.example.animalcrossing.data.db.VillagerDBRepository
 import com.example.animalcrossing.data.db.VillagerEntity
+import com.example.animalcrossing.data.db.asLoan
 import com.example.animalcrossing.data.db.asVillager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -21,9 +22,15 @@ class LoanRepository @Inject constructor(
     private val apiRepository: AcnhApiRepository
 ) {
 
-    suspend fun addLoan(title: String, type: String, amountPaid: Int, amountTotal: Int, completed: Boolean) {
+    val loans: Flow<List<Loan>>
+        get() {
+            val list = dbRepository.allLoans.map { it.asLoan() }
+            return list
+        }
+
+    suspend fun addLoan(title: String, type: String, amountPaid: Int, amountTotal: Int, completed: Boolean): Long {
         val newLoan = LoansEntity(title = title, type = type, amountPaid = amountPaid, amountTotal = amountTotal, completed = completed)
-        dbRepository.insert(newLoan)
+        return dbRepository.insert(newLoan)
     }
 
     suspend fun getLoan(loanId: Long): Flow<LoansEntity> {
@@ -31,5 +38,9 @@ class LoanRepository @Inject constructor(
     }
     suspend fun deleteLoan(loanId:Long) {
         dbRepository.deleteLoan(loanId)
+    }
+
+    suspend fun updateLoan(loan: Loan) {
+        dbRepository.updateLoan(loan)
     }
 }
