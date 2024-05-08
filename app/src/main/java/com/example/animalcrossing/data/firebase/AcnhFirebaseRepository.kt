@@ -1,11 +1,12 @@
-package com.example.animalcrossing.data.api
+package com.example.animalcrossing.data.firebase
 
+import com.example.animalcrossing.data.db.LoansEntity
 import com.example.animalcrossing.data.repository.User
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AcnhApiRepository @Inject constructor(private val service: ApiService){
+class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseService){
     suspend fun getAll():List<VillagerDetail> {
 
         val simpleList = service.getAllVillagers()
@@ -29,6 +30,11 @@ class AcnhApiRepository @Inject constructor(private val service: ApiService){
         service.createIsland(name);
     }
 
+    suspend fun renameIsland(name: String) {
+        service.renameIsland(name)
+    }
+
+
     suspend fun deleteIsland() {
         service.deleteIsland()
     }
@@ -39,6 +45,10 @@ class AcnhApiRepository @Inject constructor(private val service: ApiService){
 
     suspend fun deleteVillagerFromIsland(name: String) {
         service.deleteVillagerFromIsland(name)
+    }
+
+    suspend fun createLoan(loan: LoansEntity) {
+        service.createLoan(loan)
     }
 
 

@@ -80,7 +80,7 @@ class LoansDetailFragment : Fragment() {
         val amountTotalEdit = binding.amountTotal
         val completedCheckBox = binding.completedStatus
 
-        val types = arrayOf("Puente", "Escalera", "Casa")
+        val types = arrayOf("bridge", "stairs", "house")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         typeSpinner.adapter = adapter

@@ -5,24 +5,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.animalcrossing.R
-import com.example.animalcrossing.data.api.VillagerDetail
-import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.tasks.await
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

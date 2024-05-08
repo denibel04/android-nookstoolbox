@@ -1,12 +1,9 @@
 package com.example.animalcrossing.data.repository
 
 
-import android.util.Log
-import com.example.animalcrossing.data.api.AcnhApiRepository
+import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.db.IslandDBRepository
 import com.example.animalcrossing.data.db.IslandEntity
-import com.example.animalcrossing.data.db.IslandVillagerCrossRef
-import com.example.animalcrossing.data.db.IslandWithLoans
 import com.example.animalcrossing.data.db.IslandWithVillagers
 import com.example.animalcrossing.data.db.VillagerEntity
 import com.example.animalcrossing.data.db.asIsland
@@ -18,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class IslandRepository @Inject constructor(
     private val dbRepository: IslandDBRepository,
-    private val apiRepository: AcnhApiRepository
+    private val apiRepository: AcnhFirebaseRepository
 ) {
     val island: Flow<Island?> = dbRepository.island
         .map { it.asIsland() }
@@ -37,6 +34,7 @@ class IslandRepository @Inject constructor(
     }
 
     suspend fun renameIsland(id:Long, name: String) {
+        apiRepository.renameIsland(name)
         dbRepository.rename(id, name)
     }
 
@@ -53,6 +51,8 @@ class IslandRepository @Inject constructor(
         apiRepository.deleteVillagerFromIsland(name)
         return dbRepository.deleteVillagerFromIsland(name, islandId)
     }
+
+
 
 
 

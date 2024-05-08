@@ -1,10 +1,6 @@
-package com.example.animalcrossing.data.api
+package com.example.animalcrossing.data.firebase
 
 import com.example.animalcrossing.data.db.VillagerEntity
-import java.time.Month
-
-class AcnhApiModel {}
-
 
 data class VillagerDetail (
     val name:String,

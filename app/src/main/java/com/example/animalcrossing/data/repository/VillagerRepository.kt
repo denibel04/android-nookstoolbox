@@ -1,8 +1,7 @@
 package com.example.animalcrossing.data.repository
 
-import android.util.Log
-import com.example.animalcrossing.data.api.AcnhApiRepository
-import com.example.animalcrossing.data.api.asEntityModel
+import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
+import com.example.animalcrossing.data.firebase.asEntityModel
 import com.example.animalcrossing.data.db.VillagerDBRepository
 import com.example.animalcrossing.data.db.VillagerEntity
 import com.example.animalcrossing.data.db.asVillager
@@ -16,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class VillagerRepository @Inject constructor(
     private val dbRepository: VillagerDBRepository,
-    private val apiRepository: AcnhApiRepository
+    private val apiRepository: AcnhFirebaseRepository
 ) {
     val villager: Flow<List<Villager>>
         get() {
