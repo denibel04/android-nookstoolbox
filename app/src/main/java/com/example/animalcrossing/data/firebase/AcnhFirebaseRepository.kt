@@ -1,6 +1,7 @@
 package com.example.animalcrossing.data.firebase
 
 import com.example.animalcrossing.data.db.LoansEntity
+import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -47,8 +48,16 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         service.deleteVillagerFromIsland(name)
     }
 
-    suspend fun createLoan(loan: LoansEntity) {
-        service.createLoan(loan)
+    suspend fun createLoan(loan: LoansEntity):String {
+        return service.createLoan(loan)
+    }
+
+    suspend fun editLoan(loan: Loan) {
+        service.editLoan(loan)
+    }
+
+    suspend fun deleteLoan(firebaseId: String) {
+        service.deleteLoan(firebaseId)
     }
 
 

@@ -43,8 +43,8 @@ class LoansDetailViewModel @Inject constructor(private val repository: LoanRepos
         repository.updateLoan(loan)
     }
 
-    suspend fun deleteLoan(loanId: Long) {
-        repository.deleteLoan(loanId)
+    suspend fun deleteLoan(firebaseId: String) {
+        repository.deleteLoan(firebaseId)
     }
 
 }

@@ -18,7 +18,7 @@ import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
 class LoansDetailAdapter(
     private val context: Context,
     private val onLoanClicked: ((Loan) -> Unit)? = null,
-    private val onLoanDeleteClicked: ((Long?) -> Unit)? = null
+    private val onLoanDeleteClicked: ((String?) -> Unit)? = null
 ) : ListAdapter<Loan, LoansDetailAdapter.LoansViewHolder>(LoansDetailAdapter.LoansDiffCallback) {
     inner class LoansViewHolder(val binding: LoansListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -48,7 +48,7 @@ class LoansDetailAdapter(
             onLoanClicked?.invoke(loan)
         }
         holder.binding.deleteLoan.setOnClickListener {
-            onLoanDeleteClicked?.invoke(loan.loanId)
+            onLoanDeleteClicked?.invoke(loan.firebaseId)
         }
 
     }

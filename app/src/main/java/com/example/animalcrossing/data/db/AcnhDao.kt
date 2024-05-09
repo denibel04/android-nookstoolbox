@@ -28,8 +28,8 @@ interface AcnhDao {
     @Query("SELECT * FROM loans")
     fun getAllLoans(): Flow<List<LoansEntity>>
 
-    @Query("SELECT * FROM loans WHERE loanId=:loanId")
-    fun getLoan(loanId: Long): Flow<LoansEntity>
+    @Query("SELECT * FROM loans WHERE firebaseId=:firebaseId")
+    fun getLoan(firebaseId: String): Flow<LoansEntity>
 
     @Delete
     suspend fun deleteLoan(loan: LoansEntity)

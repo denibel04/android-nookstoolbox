@@ -3,6 +3,7 @@ package com.example.animalcrossing.data.firebase
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.animalcrossing.data.db.LoansEntity
+import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -164,7 +165,7 @@ class FirebaseService @Inject constructor() {
 
     // LOANS
 
-    suspend fun createLoan(loan: LoansEntity) {
+    suspend fun createLoan(loan: LoansEntity): String {
         val currentUser = auth.currentUser
 
         currentUser?.let { user ->
@@ -185,8 +186,60 @@ class FirebaseService @Inject constructor() {
 
                 val islandDoc = islandCollection.documents[0]
 
-            islandDoc.reference.collection("loans")
-                .add(loanData)
+            val newLoan = islandDoc.reference.collection("loans")
+                .add(loanData).await()
+
+            return newLoan.id
+        }
+        return ""
+    }
+
+    suspend fun editLoan(newLoan: Loan) {
+        val currentUser = auth.currentUser
+
+        currentUser?.let { user ->
+            val islandCollection = db.collection("users")
+                .document(user.uid)
+                .collection("island")
+                .get()
+                .await()
+
+            if (!islandCollection.isEmpty) {
+                val islandDoc = islandCollection.documents[0]
+
+                val updatedLoanData = hashMapOf(
+                    "title" to newLoan.title,
+                    "type" to newLoan.type,
+                    "amountPaid" to newLoan.amountPaid,
+                    "amountTotal" to newLoan.amountTotal,
+                    "completed" to newLoan.completed
+                )
+
+                islandDoc.reference.collection("loans")
+                    .document(newLoan.firebaseId)
+                    .update(updatedLoanData as Map<String, Any>)
+                    .await()
+            }
+        }
+    }
+
+    suspend fun deleteLoan(firebaseId: String) {
+        val currentUser = auth.currentUser
+
+        currentUser?.let { user ->
+            val islandCollection = db.collection("users")
+                .document(user.uid)
+                .collection("island")
+                .get()
+                .await()
+
+                val islandDoc = islandCollection.documents[0]
+                val loanRef = islandDoc.reference
+                    .collection("loans")
+                    .document(firebaseId)
+
+                loanRef.delete().await()
+
         }
     }
 

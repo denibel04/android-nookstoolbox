@@ -47,10 +47,10 @@ class LoansDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = LoansDetailAdapter(requireContext(), onLoanClicked = { loan ->
         onCreateDialog(loan).show()
-        }, onLoanDeleteClicked = { loanId ->
+        }, onLoanDeleteClicked = { firebaseId ->
             viewLifecycleOwner.lifecycleScope.launch {
-                if (loanId != null) {
-                    viewModel.deleteLoan(loanId)
+                if (firebaseId != null) {
+                    viewModel.deleteLoan(firebaseId)
                 }
             }
         })
@@ -111,7 +111,7 @@ class LoansDetailFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launch {
                     if (loanToEdit != null) {
                         // UPDATE LOAN
-                        val loanEdited = Loan(loanToEdit.loanId, loanToEdit.title, loanToEdit.type, amountPaid, loanToEdit.amountTotal, completed)
+                        val loanEdited = Loan(loanToEdit.firebaseId, loanToEdit.title, loanToEdit.type, amountPaid, loanToEdit.amountTotal, completed)
                         viewModel.editLoan(loanEdited)
                     } else {
                         viewModel.addLoan(title, type, amountPaid, amountTotal, completed)

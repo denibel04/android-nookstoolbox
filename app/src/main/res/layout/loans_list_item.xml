@@ -26,6 +26,21 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/editLoan"
+            style="?attr/materialIconButtonFilledTonalStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            app:icon="@drawable/ic_pen"
+            app:iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/deleteLoan"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+
+        <Button
             android:id="@+id/deleteLoan"
             style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_width="wrap_content"

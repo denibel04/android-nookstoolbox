@@ -8,8 +8,8 @@ import com.example.animalcrossing.data.repository.Villager
 
 @Entity(tableName = "loans")
 data class LoansEntity (
-    @PrimaryKey(autoGenerate = true)
-    val loanId:Long = 0L,
+    @PrimaryKey
+    var firebaseId: String,
     val title:String,
     val type: String,
     val amountPaid: Int,
@@ -20,8 +20,8 @@ data class LoansEntity (
 
 fun List<LoansEntity>.asLoan():List<Loan>{
     return this.map {
-        Loan(it.loanId,
-            it.title.replaceFirstChar { c -> c.uppercase() },
+        Loan(it.firebaseId,
+            it.title,
             it.type,
             it.amountPaid,
             it.amountTotal,
