@@ -118,7 +118,6 @@ class PictureOptionsFragment : BottomSheetDialogFragment() {
                 try {
                     val inputStream = requireContext().contentResolver.openInputStream(uri)
                     val selectedImageBitmap = BitmapFactory.decodeStream(inputStream)
-                    Log.d(TAG, "Bitmap seleccionado de la galería: $selectedImageBitmap")
                     uploadAndSetProfilePicture(selectedImageBitmap)
                     this.dismiss()
                 } catch (e: IOException) {
@@ -150,7 +149,6 @@ class PictureOptionsFragment : BottomSheetDialogFragment() {
                 val downloadUri = task.result
                 saveProfilePicture(downloadUri.toString())
             } else {
-                Log.e(TAG, "Error al subir la imagen: ${task.exception}")
                 Toast.makeText(requireContext(), "Error al subir la imagen.", Toast.LENGTH_SHORT).show()
             }
         }
@@ -165,10 +163,8 @@ class PictureOptionsFragment : BottomSheetDialogFragment() {
 
             userRef.update("profile_picture", profilePicture)
                 .addOnSuccessListener {
-                    Log.d(TAG, "URL de la imagen de perfil actualizada en Firestore.")
                 }
                 .addOnFailureListener { e ->
-                    Log.e(TAG, "Error al actualizar la URL de la imagen de perfil en Firestore: $e")
                     Toast.makeText(requireContext(), "Error al actualizar la imagen de perfil.", Toast.LENGTH_SHORT).show()
                 }
         }

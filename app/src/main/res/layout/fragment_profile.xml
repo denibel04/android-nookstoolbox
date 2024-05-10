@@ -33,7 +33,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cerrar Sesión"
-                android:textColor="@android:color/red"
                 android:background="@android:color/transparent"
                 android:layout_marginStart="75dp"
                 app:layout_constraintTop_toTopOf="parent"

@@ -1,5 +1,6 @@
 package com.example.animalcrossing.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.FragmentVillagerListBinding
+import com.example.animalcrossing.ui.LoginActivity
 import com.example.animalcrossing.ui.list.VillagerListAdapter
 import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
 import com.example.animalcrossing.ui.list.VillagerListViewModel
@@ -41,7 +43,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root    }
 
@@ -53,18 +54,30 @@ class ProfileFragment : Fragment() {
                 PictureOptionsFragment.TAG
             )
         }
+        binding.logoutButton.setOnClickListener {
+            auth.signOut()
+        val intent = Intent(this.requireContext(), LoginActivity::class.java)
+        startActivity(intent)
+        }
 
         lifecycleScope.launch {
-            viewModel.currentUser.observe(viewLifecycleOwner) { user ->
-                Log.d("PROFILE PICTURE", user.toString())
-                if (user.profile_picture.isNotEmpty()) {
-                    Glide.with(requireContext())
-                        .load(user.profile_picture)
-                        .into(binding.profilePicture)
+            viewModel.currentUser.collect { user ->
+                user?.let { currentUser ->
+                    Log.d("PROFILE PICTURE", currentUser.toString())
+                    if (currentUser.profile_picture.isNotEmpty()) {
+                        Glide.with(requireContext())
+                            .load(currentUser.profile_picture)
+                            .into(binding.profilePicture)
+                    }
+                    binding.username.text = currentUser.username
+                } ?: run {
+                    Glide.with(requireContext()).clear(binding.profilePicture)
+                    binding.username.text = "No hay usuario actual"
                 }
             }
 
 
         }
     }
+
 }

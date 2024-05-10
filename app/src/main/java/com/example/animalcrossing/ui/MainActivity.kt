@@ -54,9 +54,7 @@ class MainActivity : AppCompatActivity() {
         binding.profile.text
 
         binding.profile.setOnClickListener {
-            /*auth.signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)*/
+
             navController.popBackStack()
             navController.navigate(R.id.profile)
             navView.uncheckAllItems()
@@ -66,7 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null) {
         } else {
@@ -85,12 +82,10 @@ class MainActivity : AppCompatActivity() {
                     val username = userData?.get("username") as String
                     onUserDetails(username)
                 } else {
-                    Log.d(TAG, "Usuario con UID $uid no encontrado")
                     onUserDetails(null)
                 }
             }
             .addOnFailureListener { e ->
-                Log.e(TAG, "Error obteniendo detalles del usuario con UID $uid", e)
                 onUserDetails(null)
             }
     }

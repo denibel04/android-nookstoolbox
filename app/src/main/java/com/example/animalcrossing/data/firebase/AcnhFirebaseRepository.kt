@@ -3,6 +3,7 @@ package com.example.animalcrossing.data.firebase
 import com.example.animalcrossing.data.db.LoansEntity
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -61,7 +62,7 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     }
 
 
-    suspend fun getCurrentUser(): User {
+    suspend fun getCurrentUser(): Flow<User?> {
         return service.getCurrentUser()
     }
 }

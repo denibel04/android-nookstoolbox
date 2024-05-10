@@ -9,6 +9,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -245,26 +248,29 @@ class FirebaseService @Inject constructor() {
 
 
     // AUTH
-    suspend fun getCurrentUser(): User {
-        var currentUser = auth.currentUser
+    suspend fun getCurrentUser(): Flow<User?> = callbackFlow {
+        val currentUser = auth.currentUser
 
         if (currentUser != null) {
-                val userDoc = db.collection("users").document(currentUser.uid).get().await()
+            val userDocRef = db.collection("users").document(currentUser.uid)
 
-                val user = userDoc.data
-                return User(
-                    currentUser.uid,
-                    currentUser.email.toString(),
-                    user?.get("username") as String,
-                    user["profile_picture"] as String
-                )
+            val listener = userDocRef.addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    close(exception)
+                    return@addSnapshotListener
+                }
 
+                if (snapshot != null && snapshot.exists()) {
+                    val user = snapshot.toObject(User::class.java)
+                    trySend(user).isSuccess
+                } else {
+                    trySend(null).isSuccess
+                }
             }
-        return User(
-            "",
-            "",
-            "",
-            ""
-        )
+
+            awaitClose { listener.remove() }
+        } else {
+            close(IllegalStateException("No user is currently signed in."))
+        }
     }
 }
