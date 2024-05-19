@@ -20,6 +20,7 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.FragmentVillagerListBinding
 import com.example.animalcrossing.ui.LoginActivity
+import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
 import com.example.animalcrossing.ui.list.VillagerListAdapter
 import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
 import com.example.animalcrossing.ui.list.VillagerListViewModel
@@ -60,16 +61,21 @@ class ProfileFragment : Fragment() {
         startActivity(intent)
         }
 
+        val adapter = ProfileUsersAdapter(requireContext(), onFollowClicked = { user ->
+        })
+        val rv = binding.randomUsers
+        rv.adapter = adapter
+
         lifecycleScope.launch {
-            viewModel.currentUser.collect { user ->
-                user?.let { currentUser ->
-                    Log.d("PROFILE PICTURE", currentUser.toString())
-                    if (currentUser.profile_picture.isNotEmpty()) {
+            viewModel.uiState.collect { uiState ->
+                uiState.let { uiState ->
+                    Log.d("PROFILE PICTURE", uiState.toString())
+                    if (uiState.currentUser?.profile_picture?.isNotEmpty() == true) {
                         Glide.with(requireContext())
-                            .load(currentUser.profile_picture)
+                            .load(uiState.currentUser.profile_picture)
                             .into(binding.profilePicture)
                     }
-                    binding.username.text = currentUser.username
+                    binding.username.text = uiState.currentUser?.username
                 } ?: run {
                     Glide.with(requireContext()).clear(binding.profilePicture)
                     binding.username.text = "No hay usuario actual"

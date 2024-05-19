@@ -12,6 +12,12 @@ data class VillagerDetail (
     val birthday_day: Int
 )
 
+data class IslandDetail (
+    val islandId:String,
+    val name:String,
+    val villagers: List<String>
+)
+
 fun List<VillagerDetail>.asEntityModel():List<VillagerEntity> {
     return this.map {
         VillagerEntity(

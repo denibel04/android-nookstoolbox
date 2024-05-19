@@ -20,16 +20,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(private val repository: UserRepository) :
     ViewModel() {
-    private val _currentUser = MutableStateFlow<User?>(null)
-    val currentUser: StateFlow<User?> = _currentUser
+    private val _uiState = MutableStateFlow(ProfileUiState())
+    val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
 
     init {
 
         viewModelScope.launch {
             repository.getCurrentUser().collect { user ->
-                _currentUser.value = user
+                _uiState.value = _uiState.value.copy(currentUser = user)
             }
         }
+
     }
 }

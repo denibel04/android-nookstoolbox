@@ -61,9 +61,18 @@ class LoansDetailFragment : Fragment() {
         val rv = binding.loanList
         rv.adapter = adapter
         viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect {
-                    adapter.submitList(it.loans)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {uiState ->
+                    if (uiState.islandExists) {
+                        binding.createLoan.visibility = View.VISIBLE
+                        binding.loanList.visibility = View.VISIBLE
+                        binding.noIslandText.visibility = View.GONE
+                        adapter.submitList(uiState.loans)
+                    } else {
+                        binding.createLoan.visibility = View.GONE
+                        binding.loanList.visibility = View.GONE
+                        binding.noIslandText.visibility = View.VISIBLE
+                    }
                 }
             }
         }

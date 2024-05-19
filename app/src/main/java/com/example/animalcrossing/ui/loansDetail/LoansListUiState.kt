@@ -5,5 +5,6 @@ import com.example.animalcrossing.data.repository.Villager
 
 data class LoansListUiState(
     val loans: List<Loan>,
+    val islandExists: Boolean,
     val errorMessage: String? = null
 )

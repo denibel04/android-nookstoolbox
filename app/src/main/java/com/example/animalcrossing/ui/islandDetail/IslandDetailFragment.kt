@@ -200,7 +200,7 @@ class IslandDetailFragment : Fragment() {
                     dialog.dismiss()
                 }
                 recyclerView.adapter = adapter
-                searchVillagers("a", adapter)
+                searchVillagers("", adapter)
                 searchView.getEditText().setOnEditorActionListener { v, actionId, event ->
                     searchBar.setText(searchView.getText())
                     val searchQuery = searchBar.text.toString()

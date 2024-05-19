@@ -31,4 +31,9 @@
     <style name="Theme.AnimalCrossing" parent="Base.Theme.AnimalCrossing">
         <!-- Puedes añadir más personalizaciones para este tema si lo necesitas -->
     </style>
+
+    <style name="circleImageView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

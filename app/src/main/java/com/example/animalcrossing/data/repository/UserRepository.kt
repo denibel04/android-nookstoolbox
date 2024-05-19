@@ -14,4 +14,16 @@ class UserRepository @Inject constructor(
         return apiRepository.getCurrentUser()
     }
 
+    suspend fun getUsers(): List<User> {
+        return apiRepository.getUsers()
+    }
+
+    suspend fun unfollowUser(uid: String) {
+        apiRepository.unfollowUser(uid)
+    }
+
+    suspend fun followUser(uid: String) {
+        apiRepository.followUser(uid)
+    }
+
 }

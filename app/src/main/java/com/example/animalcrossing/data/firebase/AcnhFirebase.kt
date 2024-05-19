@@ -3,6 +3,7 @@ package com.example.animalcrossing.data.firebase
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.animalcrossing.data.db.LoansEntity
+import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +22,7 @@ import javax.inject.Singleton
 class FirebaseService @Inject constructor() {
     val db = FirebaseFirestore.getInstance()
     var auth = FirebaseAuth.getInstance()
+    val currentUser = auth.currentUser
 
     // VILLAGERS
     suspend fun getAllVillagers(): List<VillagerDetail> {
@@ -45,12 +47,23 @@ class FirebaseService @Inject constructor() {
 
 
     // ISLAND
-    suspend fun getIsland() {
+    suspend fun getIsland(): IslandDetail {
+        currentUser?.let { user ->
+            val islandCollection = db.collection("users").document(user.uid).collection("island").get().await()
+            val island = islandCollection.documents.firstOrNull()
 
+            island?.let { document ->
+                IslandDetail(
+                    islandId = document.id,
+                    name = document.getString("name") ?: "",
+                    villagers = document.get("villagers") as? List<String> ?: emptyList()
+                )
+            }
+        }
+        return IslandDetail("", "", emptyList())
     }
 
     fun createIsland(name: String) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val islandData = hashMapOf(
@@ -64,7 +77,6 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun renameIsland(name: String) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
                 val islandCollection = db.collection("users")
@@ -84,7 +96,6 @@ class FirebaseService @Inject constructor() {
 
 
     suspend fun addVillagerToIsland(name: String) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
                 val island = db.collection("users")
@@ -117,7 +128,6 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun deleteVillagerFromIsland(name: String) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
                 val island = db.collection("users")
@@ -151,7 +161,6 @@ class FirebaseService @Inject constructor() {
         }
 
     suspend fun deleteIsland() {
-        val currentUser = auth.currentUser
         currentUser?.let { user ->
 
                 val islandCollection: QuerySnapshot = db.collection("users").document(user.uid)
@@ -169,7 +178,6 @@ class FirebaseService @Inject constructor() {
     // LOANS
 
     suspend fun createLoan(loan: LoansEntity): String {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val loanData = hashMapOf(
@@ -198,7 +206,6 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun editLoan(newLoan: Loan) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val islandCollection = db.collection("users")
@@ -227,7 +234,6 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun deleteLoan(firebaseId: String) {
-        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val islandCollection = db.collection("users")
@@ -249,7 +255,6 @@ class FirebaseService @Inject constructor() {
 
     // AUTH
     suspend fun getCurrentUser(): Flow<User?> = callbackFlow {
-        val currentUser = auth.currentUser
 
         if (currentUser != null) {
             val userDocRef = db.collection("users").document(currentUser.uid)
@@ -273,4 +278,49 @@ class FirebaseService @Inject constructor() {
             close(IllegalStateException("No user is currently signed in."))
         }
     }
+
+    suspend fun getUsers(): List<User> {
+        val users: MutableList<User> = mutableListOf()
+        val userCollection = db.collection("users").get().await()
+        for (document in userCollection) {
+            val userData = document.data
+            val user = User(
+                document.id,
+                null,
+                userData["username"] as? String ?: "",
+                userData["profile_picture"] as? String ?: "",
+                userData["followers"] as? List<String>,
+                userData["following"] as? List<String>
+            )
+            users.add(user)
+        }
+        return users
+    }
+
+    suspend fun followUser(followedUid: String) {
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val currentUserRef = db.collection("users").document(currentUser.uid)
+            val followedUserRef = db.collection("users").document(followedUid)
+
+            currentUserRef.update("following", FieldValue.arrayUnion(followedUid)).await()
+
+            followedUserRef.update("followers", FieldValue.arrayUnion(currentUser.uid)).await()
+        }
+    }
+
+    suspend fun unfollowUser(followedUid: String) {
+        val currentUser = auth.currentUser
+
+        if (currentUser != null) {
+            val currentUserRef = db.collection("users").document(currentUser.uid)
+            val followedUserRef = db.collection("users").document(followedUid)
+
+            currentUserRef.update("following", FieldValue.arrayRemove(followedUid)).await()
+
+            followedUserRef.update("followers", FieldValue.arrayRemove(currentUser.uid)).await()
+        }
+    }
+
 }

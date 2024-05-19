@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-    <com.google.android.material.card.MaterialCardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,65 +21,78 @@
             android:layout_height="wrap_content">
 
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profilePicture"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                android:src="@drawable/ic_account_circle"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_margin="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_marginBottom="40dp"
+                app:shapeAppearanceOverlay="@style/circleImageView"
                 app:layout_constraintVertical_bias="0.5" />
 
-            <Button
+            <TextView
                 android:id="@+id/logoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cerrar Sesión"
+                android:clickable="true"
+                android:textColor="#FF0000"
                 android:background="@android:color/transparent"
-                android:layout_marginStart="75dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/profilePicture"
-                app:layout_constraintBottom_toTopOf="@id/username" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/username" /> />
 
             <TextView
                 android:id="@+id/username"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="User"
                 android:layout_marginBottom="30dp"
-                app:layout_constraintTop_toBottomOf="@id/logoutButton"
-                app:layout_constraintStart_toStartOf="@id/profilePicture"
-                app:layout_constraintEnd_toEndOf="@id/logoutButton"
-                app:layout_constraintBottom_toTopOf="@id/dreamCode" />
+                android:layout_marginStart="10dp"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toTopOf="@id/dreamCode"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@id/profilePicture"
+                />
 
             <TextView
                 android:id="@+id/dreamCodeLabelTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="Código de Ensueño"
                 app:layout_constraintTop_toBottomOf="@id/username"
-                app:layout_constraintStart_toStartOf="@id/logoutButton"
-                app:layout_constraintEnd_toEndOf="@id/logoutButton"
+                app:layout_constraintStart_toEndOf="@id/profilePicture"
+
                 app:layout_constraintBottom_toTopOf="@id/dreamCode" />
 
             <TextView
                 android:id="@+id/dreamCode"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 app:layout_constraintTop_toBottomOf="@id/dreamCodeLabelTextView"
-                app:layout_constraintStart_toStartOf="@id/logoutButton"
-                app:layout_constraintBottom_toTopOf="@id/followersTextView" />
+                app:layout_constraintStart_toEndOf="@id/profilePicture"
 
+                />
 
             <TextView
                 android:id="@+id/followersTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="Seguidores"
-                app:layout_constraintStart_toStartOf="@id/logoutButton"
-                app:layout_constraintEnd_toStartOf="@id/followedTextView"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/profilePicture"
+                />
 
             <TextView
                 android:id="@+id/followedTextView"
@@ -88,7 +104,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/followersTextView" />
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/randomUsers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/cardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

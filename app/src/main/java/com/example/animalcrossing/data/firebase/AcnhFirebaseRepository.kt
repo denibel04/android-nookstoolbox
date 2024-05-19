@@ -28,6 +28,9 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         return villagerApiModel
     }
 
+    suspend fun getIsland(): IslandDetail {
+        return service.getIsland();
+    }
     fun createIsland(name: String) {
         service.createIsland(name);
     }
@@ -65,5 +68,19 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     suspend fun getCurrentUser(): Flow<User?> {
         return service.getCurrentUser()
     }
+
+    suspend fun getUsers(): List<User> {
+        return service.getUsers()
+    }
+
+    suspend fun unfollowUser(uid: String) {
+        service.unfollowUser(uid)
+    }
+
+    suspend fun followUser(uid: String) {
+        service.followUser(uid)
+    }
+
+
 }
 

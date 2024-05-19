@@ -12,22 +12,24 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
-class LoansDetailViewModel @Inject constructor(private val repository: LoanRepository) :
+class LoansDetailViewModel @Inject constructor(private val repository: LoanRepository, private val islandRepository: IslandRepository) :
     ViewModel() {
-    private val _uiState = MutableStateFlow(LoansListUiState(listOf()))
+    private val _uiState = MutableStateFlow(LoansListUiState(listOf(), false))
     val uiState: StateFlow<LoansListUiState>
         get() = _uiState.asStateFlow()
 
     init {
-
         viewModelScope.launch {
-            repository.loans.collect {
-                _uiState.value = LoansListUiState(it)
+            islandRepository.island.collectLatest {userIsland ->
+                repository.loans.collect {
+                    _uiState.value = LoansListUiState(it, userIsland!=null)
+                }
             }
         }
     }

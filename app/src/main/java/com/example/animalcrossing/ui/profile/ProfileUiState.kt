@@ -1,8 +1,8 @@
 package com.example.animalcrossing.ui.profile
 
+import com.example.animalcrossing.data.repository.User
+
 data class ProfileUiState(
-    val uid:String,
-    val email:String,
-    val username:String,
-    //val image_url:String,
+    val currentUser: User? = null,
+    val friends: List<User> = emptyList()
 )

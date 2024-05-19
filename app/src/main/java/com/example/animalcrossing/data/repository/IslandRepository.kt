@@ -7,6 +7,7 @@ import com.example.animalcrossing.data.db.IslandEntity
 import com.example.animalcrossing.data.db.IslandWithVillagers
 import com.example.animalcrossing.data.db.VillagerEntity
 import com.example.animalcrossing.data.db.asIsland
+import com.example.animalcrossing.data.firebase.IslandDetail
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class IslandRepository @Inject constructor(
     val islandWithVillagers:Flow<IslandWithVillagers?> = dbRepository.islandWithVillagers
 
 
+    suspend fun getIsland(): IslandDetail {
+        return apiRepository.getIsland()
+    }
     suspend fun addIsland(name: String) {
         val newIsland = IslandEntity(name = name)
         apiRepository.createIsland(name)
