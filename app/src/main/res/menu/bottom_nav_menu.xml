@@ -14,6 +14,6 @@
         android:icon="@drawable/ic_island"/>
     <item
         android:id="@+id/userlist"
-        android:title="Userlist"
-        android:icon="@drawable/ic_island"/>
+        android:title="Users"
+        android:icon="@drawable/ic_users"/>
 </menu>

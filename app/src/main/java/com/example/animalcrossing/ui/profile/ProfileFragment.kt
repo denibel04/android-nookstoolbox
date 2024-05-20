@@ -74,11 +74,12 @@ class ProfileFragment : Fragment() {
                         Glide.with(requireContext())
                             .load(uiState.currentUser.profile_picture)
                             .into(binding.profilePicture)
+                    } else {
+                        Glide.with(requireContext()).clear(binding.profilePicture)
                     }
                     binding.username.text = uiState.currentUser?.username
-                } ?: run {
-                    Glide.with(requireContext()).clear(binding.profilePicture)
-                    binding.username.text = "No hay usuario actual"
+                    binding.followedTextView.text = "Siguiendo: "+uiState.currentUser?.following?.size
+                    binding.followersTextView.text = "Seguidores: "+uiState.currentUser?.followers?.size
                 }
             }
 

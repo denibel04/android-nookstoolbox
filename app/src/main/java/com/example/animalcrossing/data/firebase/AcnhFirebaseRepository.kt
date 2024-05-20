@@ -73,6 +73,10 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         return service.getUsers()
     }
 
+    suspend fun getFilteredUsers(search: String): List<User> {
+        return service.getFilteredUsers(search)
+    }
+
     suspend fun unfollowUser(uid: String) {
         service.unfollowUser(uid)
     }

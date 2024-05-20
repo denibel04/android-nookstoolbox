@@ -281,8 +281,36 @@ class FirebaseService @Inject constructor() {
 
     suspend fun getUsers(): List<User> {
         val users: MutableList<User> = mutableListOf()
-        val userCollection = db.collection("users").get().await()
+        val userCollection = db.collection("users").orderBy("username").get().await()
         for (document in userCollection) {
+            if (document.id == currentUser?.uid ) {
+                continue
+            }
+            val userData = document.data
+            val user = User(
+                document.id,
+                null,
+                userData["username"] as? String ?: "",
+                userData["profile_picture"] as? String ?: "",
+                userData["followers"] as? List<String>,
+                userData["following"] as? List<String>
+            )
+            users.add(user)
+        }
+        return users
+    }
+
+    suspend fun getFilteredUsers(search: String): List<User> {
+        val users: MutableList<User> = mutableListOf()
+        val userCollection = db.collection("users")
+
+        val userQuery = userCollection.orderBy("username").startAt(search).endAt(search + "\uf8ff")
+        val usersFiltered = userQuery.get().await()
+
+        for (document in usersFiltered) {
+            if (document.id == currentUser?.uid ) {
+                continue
+            }
             val userData = document.data
             val user = User(
                 document.id,
