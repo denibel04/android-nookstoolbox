@@ -56,11 +56,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
                 android:layout_marginStart="10dp"
+                android:clickable="true"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toTopOf="@id/dreamCode"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@id/profilePicture"
                 />
+
 
             <TextView
                 android:id="@+id/dreamCodeLabelTextView"
@@ -70,7 +72,6 @@
                 android:text="Código de Ensueño"
                 app:layout_constraintTop_toBottomOf="@id/username"
                 app:layout_constraintStart_toEndOf="@id/profilePicture"
-
                 app:layout_constraintBottom_toTopOf="@id/dreamCode" />
 
             <TextView
@@ -78,9 +79,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:text="Haga click para asignar un código"
+                android:textSize="10sp"
                 app:layout_constraintTop_toBottomOf="@id/dreamCodeLabelTextView"
                 app:layout_constraintStart_toEndOf="@id/profilePicture"
-
                 />
 
             <TextView

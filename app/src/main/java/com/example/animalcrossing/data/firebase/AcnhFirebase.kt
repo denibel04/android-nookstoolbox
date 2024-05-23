@@ -279,6 +279,20 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+    suspend fun changeUsername(newUsername: String) {
+        if (currentUser != null) {
+            val currentUserRef = db.collection("users").document(currentUser.uid)
+            currentUserRef.update("username", newUsername)
+        }
+    }
+
+    suspend fun changeDreamCode(newDreamcode: String) {
+        if (currentUser != null) {
+            val currentUserRef = db.collection("users").document(currentUser.uid)
+            currentUserRef.update("dreamCode", newDreamcode)
+        }
+    }
+
     suspend fun getUsers(): List<User> {
         val users: MutableList<User> = mutableListOf()
         val userCollection = db.collection("users").orderBy("username").get().await()
@@ -292,6 +306,7 @@ class FirebaseService @Inject constructor() {
                 null,
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
+                userData["dreamCode"] as? String,
                 userData["followers"] as? List<String>,
                 userData["following"] as? List<String>
             )
@@ -317,6 +332,7 @@ class FirebaseService @Inject constructor() {
                 null,
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
+                userData["dreamCode"] as? String,
                 userData["followers"] as? List<String>,
                 userData["following"] as? List<String>
             )
@@ -333,7 +349,6 @@ class FirebaseService @Inject constructor() {
             val followedUserRef = db.collection("users").document(followedUid)
 
             currentUserRef.update("following", FieldValue.arrayUnion(followedUid)).await()
-
             followedUserRef.update("followers", FieldValue.arrayUnion(currentUser.uid)).await()
         }
     }
@@ -346,7 +361,6 @@ class FirebaseService @Inject constructor() {
             val followedUserRef = db.collection("users").document(followedUid)
 
             currentUserRef.update("following", FieldValue.arrayRemove(followedUid)).await()
-
             followedUserRef.update("followers", FieldValue.arrayRemove(currentUser.uid)).await()
         }
     }

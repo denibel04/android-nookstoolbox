@@ -33,4 +33,12 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         }
 
     }
+
+    suspend fun changeUsername(newUsername: String) {
+        repository.changeUsername(newUsername)
+    }
+
+    suspend fun changeDreamCode(newDreamCode: String) {
+        repository.changeDreamCode(newDreamCode)
+    }
 }

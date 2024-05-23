@@ -18,6 +18,14 @@ class UserRepository @Inject constructor(
         return apiRepository.getUsers()
     }
 
+    suspend fun changeUsername(newUsername: String) {
+        apiRepository.changeUsername(newUsername)
+    }
+
+    suspend fun changeDreamCode(newDreamCode: String) {
+        apiRepository.changeDreamCode(newDreamCode)
+    }
+
     suspend fun getFilteredUsers(search: String): List<User> {
         return apiRepository.getFilteredUsers(search)
     }

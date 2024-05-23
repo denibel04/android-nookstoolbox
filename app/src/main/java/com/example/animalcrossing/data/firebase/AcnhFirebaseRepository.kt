@@ -69,6 +69,14 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         return service.getCurrentUser()
     }
 
+    suspend fun changeUsername(newUsername: String) {
+        service.changeUsername(newUsername)
+    }
+
+    suspend fun changeDreamCode(newDreamCode: String) {
+        service.changeDreamCode(newDreamCode)
+    }
+
     suspend fun getUsers(): List<User> {
         return service.getUsers()
     }

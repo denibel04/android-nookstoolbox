@@ -72,6 +72,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:textSize="15sp"
+            android:text="Sin código de ensueño"
             app:layout_constraintTop_toBottomOf="@id/dreamCodeLabelTextView"
             app:layout_constraintStart_toEndOf="@id/profilePicture"
 

@@ -5,6 +5,7 @@ data class User (
     val email:String?,
     val username:String,
     val profile_picture:String,
+    val dreamCode: String? = null,
     val followers: List<String>? = null,
     val following: List<String>? = null
 ) {
