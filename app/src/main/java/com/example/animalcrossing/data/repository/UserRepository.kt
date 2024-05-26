@@ -18,6 +18,10 @@ class UserRepository @Inject constructor(
         return apiRepository.getUsers()
     }
 
+    suspend fun getFriends(): List<User> {
+        return apiRepository.getFriends()
+    }
+
     suspend fun changeUsername(newUsername: String) {
         apiRepository.changeUsername(newUsername)
     }

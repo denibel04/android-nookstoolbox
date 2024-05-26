@@ -32,6 +32,11 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
             }
         }
 
+        viewModelScope.launch {
+            val friends = repository.getFriends()
+            _uiState.value = _uiState.value.copy(friends = friends)
+        }
+
     }
 
     suspend fun changeUsername(newUsername: String) {
@@ -41,4 +46,5 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
     suspend fun changeDreamCode(newDreamCode: String) {
         repository.changeDreamCode(newDreamCode)
     }
+
 }

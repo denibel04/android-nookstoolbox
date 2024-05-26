@@ -9,28 +9,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import coil.load
 import com.bumptech.glide.Glide
-import com.example.animalcrossing.R
-import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
-import com.example.animalcrossing.databinding.FragmentVillagerListBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
-import com.example.animalcrossing.databinding.LoanDialogBinding
 import com.example.animalcrossing.ui.LoginActivity
-import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
-import com.example.animalcrossing.ui.list.VillagerListAdapter
-import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
-import com.example.animalcrossing.ui.list.VillagerListViewModel
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -62,48 +47,54 @@ class ProfileFragment : Fragment() {
                 PictureOptionsFragment.TAG
             )
         }
+
         binding.logoutButton.setOnClickListener {
             auth.signOut()
-        val intent = Intent(this.requireContext(), LoginActivity::class.java)
-        startActivity(intent)
+            val intent = Intent(this.requireContext(), LoginActivity::class.java)
+            startActivity(intent)
         }
 
         binding.username.setOnClickListener {
             showDialog("username").show()
         }
+
         binding.dreamCode.setOnClickListener{
             showDialog("dreamcode").show()
         }
 
-        val adapter = ProfileUsersAdapter(requireContext(), onFollowClicked = { user ->
-        })
-        val rv = binding.randomUsers
+        val adapter = ProfileUsersAdapter(requireContext())
+        val rv = binding.friendList
         rv.adapter = adapter
 
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                uiState.let { user ->
+                val user = uiState.currentUser
                     Log.d("PROFILE PICTURE", user.toString())
-                    if (user.currentUser?.profile_picture?.isNotEmpty() == true) {
+                    if (user?.profile_picture?.isNotEmpty() == true) {
                         Glide.with(requireContext())
-                            .load(user.currentUser.profile_picture)
+                            .load(user.profile_picture)
                             .into(binding.profilePicture)
                     } else {
                         Glide.with(requireContext()).clear(binding.profilePicture)
                     }
-                    binding.username.text = user.currentUser?.username
-                    binding.followedTextView.text = "Siguiendo: "+user.currentUser?.following?.size
-                    binding.followersTextView.text = "Seguidores: "+user.currentUser?.followers?.size
-                    if (user.currentUser?.dreamCode != null) {
-                        binding.dreamCode.text = user.currentUser.dreamCode
+                    binding.username.text = user?.username
+                binding.followedTextView.text = "Siguiendo: ${user?.following?.size ?: 0}"
+                binding.followersTextView.text = "Seguidores: ${user?.followers?.size ?: 0}"
+                    if (user?.dreamCode != null) {
+                        binding.dreamCode.text = user.dreamCode
                     }
 
                 }
+
             }
 
-
+        lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                Log.d("ENTRA", uiState.friends.toString())
+                adapter.submitList(uiState.friends)
+                }
+            }
         }
-    }
 
     private fun showDialog(type: String): Dialog {
         val builder = AlertDialog.Builder(activity)

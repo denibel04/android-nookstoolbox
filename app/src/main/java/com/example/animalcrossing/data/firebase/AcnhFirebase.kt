@@ -22,7 +22,6 @@ import javax.inject.Singleton
 class FirebaseService @Inject constructor() {
     val db = FirebaseFirestore.getInstance()
     var auth = FirebaseAuth.getInstance()
-    val currentUser = auth.currentUser
 
     // VILLAGERS
     suspend fun getAllVillagers(): List<VillagerDetail> {
@@ -48,6 +47,7 @@ class FirebaseService @Inject constructor() {
 
     // ISLAND
     suspend fun getIsland(): IslandDetail {
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
             val islandCollection = db.collection("users").document(user.uid).collection("island").get().await()
             val island = islandCollection.documents.firstOrNull()
@@ -64,7 +64,7 @@ class FirebaseService @Inject constructor() {
     }
 
     fun createIsland(name: String) {
-
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
             val islandData = hashMapOf(
                 "name" to name,
@@ -77,7 +77,7 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun renameIsland(name: String) {
-
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
                 val islandCollection = db.collection("users")
                     .document(user.uid)
@@ -96,7 +96,7 @@ class FirebaseService @Inject constructor() {
 
 
     suspend fun addVillagerToIsland(name: String) {
-
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
                 val island = db.collection("users")
                     .document(user.uid)
@@ -128,7 +128,7 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun deleteVillagerFromIsland(name: String) {
-
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
                 val island = db.collection("users")
                     .document(user.uid)
@@ -161,6 +161,7 @@ class FirebaseService @Inject constructor() {
         }
 
     suspend fun deleteIsland() {
+        val currentUser = auth.currentUser
         currentUser?.let { user ->
 
                 val islandCollection: QuerySnapshot = db.collection("users").document(user.uid)
@@ -178,6 +179,7 @@ class FirebaseService @Inject constructor() {
     // LOANS
 
     suspend fun createLoan(loan: LoansEntity): String {
+        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val loanData = hashMapOf(
@@ -206,6 +208,7 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun editLoan(newLoan: Loan) {
+        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val islandCollection = db.collection("users")
@@ -234,6 +237,7 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun deleteLoan(firebaseId: String) {
+        val currentUser = auth.currentUser
 
         currentUser?.let { user ->
             val islandCollection = db.collection("users")
@@ -255,6 +259,7 @@ class FirebaseService @Inject constructor() {
 
     // AUTH
     suspend fun getCurrentUser(): Flow<User?> = callbackFlow {
+        val currentUser = auth.currentUser
 
         if (currentUser != null) {
             val userDocRef = db.collection("users").document(currentUser.uid)
@@ -279,7 +284,31 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+    suspend fun getFriends(): List<User> {
+        val currentUser = auth.currentUser
+        val users = mutableListOf<User>()
+
+        if (currentUser != null) {
+            val document = db.collection("users").document(currentUser.uid).get().await()
+            val followers = document.get("followers") as? List<String> ?: emptyList()
+            val following = document.get("following") as? List<String> ?: emptyList()
+
+            val friendsUids = followers.intersect(following).toList()
+
+            for (uid in friendsUids) {
+                val document = db.collection("users").document(uid).get().await()
+                val user = document.toObject(User::class.java)
+                if (user != null) {
+                    users.add(user)
+                }
+            }
+        }
+
+        return users
+    }
+
     suspend fun changeUsername(newUsername: String) {
+        val currentUser = auth.currentUser
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
             currentUserRef.update("username", newUsername)
@@ -287,13 +316,15 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun changeDreamCode(newDreamcode: String) {
+        val currentUser = auth.currentUser
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
-            currentUserRef.update("dreamCode", newDreamcode)
+            currentUserRef.update("dream_code", newDreamcode)
         }
     }
 
     suspend fun getUsers(): List<User> {
+        val currentUser = auth.currentUser
         val users: MutableList<User> = mutableListOf()
         val userCollection = db.collection("users").orderBy("username").get().await()
         for (document in userCollection) {
@@ -306,7 +337,7 @@ class FirebaseService @Inject constructor() {
                 null,
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
-                userData["dreamCode"] as? String,
+                userData["dream_code"] as? String,
                 userData["followers"] as? List<String>,
                 userData["following"] as? List<String>
             )
@@ -316,6 +347,7 @@ class FirebaseService @Inject constructor() {
     }
 
     suspend fun getFilteredUsers(search: String): List<User> {
+        val currentUser = auth.currentUser
         val users: MutableList<User> = mutableListOf()
         val userCollection = db.collection("users")
 
@@ -332,7 +364,7 @@ class FirebaseService @Inject constructor() {
                 null,
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
-                userData["dreamCode"] as? String,
+                userData["dream_code"] as? String,
                 userData["followers"] as? List<String>,
                 userData["following"] as? List<String>
             )
