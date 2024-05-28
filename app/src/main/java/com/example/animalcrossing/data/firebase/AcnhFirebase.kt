@@ -3,6 +3,7 @@ package com.example.animalcrossing.data.firebase
 import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.animalcrossing.data.db.LoansEntity
+import com.example.animalcrossing.data.db.ProfileEntity
 import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
@@ -53,11 +54,12 @@ class FirebaseService @Inject constructor() {
             val island = islandCollection.documents.firstOrNull()
 
             island?.let { document ->
-                IslandDetail(
+                val islandDetail = IslandDetail(
                     islandId = document.id,
                     name = document.getString("name") ?: "",
                     villagers = document.get("villagers") as? List<String> ?: emptyList()
                 )
+                return islandDetail
             }
         }
         return IslandDetail("", "", emptyList())
@@ -106,23 +108,13 @@ class FirebaseService @Inject constructor() {
 
                     val islandDoc = island.documents[0]
 
-                    val villager = db.collection("villagers")
-                        .whereEqualTo("name", name)
-                        .get()
-                        .await()
-
-                    if (!villager.isEmpty) {
-                        val villagerDoc = villager.documents[0]
-
-                        val villagerUid = villagerDoc.id
-
                         val islandUid = db.collection("users")
                             .document(user.uid)
                             .collection("island")
                             .document(islandDoc.id)
 
-                        islandUid.update("villagers", FieldValue.arrayUnion(villagerUid))
-                    }
+                        islandUid.update("villagers", FieldValue.arrayUnion(name))
+
 
             }
     }
@@ -138,24 +130,14 @@ class FirebaseService @Inject constructor() {
 
                     val islandDoc = island.documents[0]
 
-                    val villager = db.collection("villagers")
-                        .whereEqualTo("name", name)
-                        .get()
-                        .await()
-
-                    if (!villager.isEmpty) {
-                        val villagerDoc = villager.documents[0]
-
-                        val villagerUid = villagerDoc.id
-
                         val islandUid = db.collection("users")
                             .document(user.uid)
                             .collection("island")
                             .document(islandDoc.id)
 
-                        islandUid.update("villagers", FieldValue.arrayRemove(villagerUid))
+                        islandUid.update("villagers", FieldValue.arrayRemove(name))
 
-                    }
+
 
             }
         }
@@ -177,6 +159,33 @@ class FirebaseService @Inject constructor() {
 
 
     // LOANS
+
+    suspend fun getLoans(): List<LoansEntity> {
+        val currentUser = auth.currentUser
+
+        val loansList = mutableListOf<LoansEntity>()
+
+        if (currentUser != null) {
+            val document =
+                db.collection("users").document(currentUser.uid).collection("island").get().await()
+            val island = document.documents.firstOrNull()
+
+            val loansDocuments = island?.reference?.collection("loans")?.get()?.await()
+
+            loansDocuments?.forEach { loanDocument ->
+                val loan = LoansEntity(
+                    firebaseId = loanDocument.id,
+                    title = loanDocument.getString("title") ?: "",
+                    type = loanDocument.getString("type") ?: "",
+                    amountPaid = loanDocument.getLong("amountPaid")?.toInt() ?: 0,
+                    amountTotal = loanDocument.getLong("amountTotal")?.toInt() ?: 0,
+                    completed = loanDocument.getBoolean("completed") ?: false
+                )
+                loansList.add(loan)
+            }
+        }
+        return loansList
+    }
 
     suspend fun createLoan(loan: LoansEntity): String {
         val currentUser = auth.currentUser
@@ -258,35 +267,31 @@ class FirebaseService @Inject constructor() {
 
 
     // AUTH
-    suspend fun getCurrentUser(): Flow<User?> = callbackFlow {
+    suspend fun getCurrentUser(): UserDetail {
         val currentUser = auth.currentUser
+        var profile = UserDetail("", "", "", "", "", emptyList(), emptyList())
+         if (currentUser != null) {
+            val userDoc = db.collection("users").document(currentUser.uid).get().await()
+             val followers = userDoc.get("followers") as? List<String> ?: emptyList()
+             val following = userDoc.get("following") as? List<String> ?: emptyList()
+             profile = UserDetail(
+                    userDoc.id,
+                 "",
+                 userDoc.getString("username") ?: "",
+                 userDoc.getString("profile_picture") ?: "",
+                    userDoc.getString("dream_code") ?: "",
+                    followers,
+                    following
+                )
 
-        if (currentUser != null) {
-            val userDocRef = db.collection("users").document(currentUser.uid)
-
-            val listener = userDocRef.addSnapshotListener { snapshot, exception ->
-                if (exception != null) {
-                    close(exception)
-                    return@addSnapshotListener
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    val user = snapshot.toObject(User::class.java)
-                    trySend(user).isSuccess
-                } else {
-                    trySend(null).isSuccess
-                }
             }
-
-            awaitClose { listener.remove() }
-        } else {
-            close(IllegalStateException("No user is currently signed in."))
+        return profile
         }
-    }
 
-    suspend fun getFriends(): List<User> {
+
+    suspend fun getFriends(): List<UserDetail> {
         val currentUser = auth.currentUser
-        val users = mutableListOf<User>()
+        val users = mutableListOf<UserDetail>()
 
         if (currentUser != null) {
             val document = db.collection("users").document(currentUser.uid).get().await()
@@ -297,7 +302,7 @@ class FirebaseService @Inject constructor() {
 
             for (uid in friendsUids) {
                 val document = db.collection("users").document(uid).get().await()
-                val user = document.toObject(User::class.java)
+                val user = document.toObject(UserDetail::class.java)
                 if (user != null) {
                     users.add(user)
                 }
@@ -323,32 +328,32 @@ class FirebaseService @Inject constructor() {
         }
     }
 
-    suspend fun getUsers(): List<User> {
+    suspend fun getUsers(): List<UserDetail> {
         val currentUser = auth.currentUser
-        val users: MutableList<User> = mutableListOf()
+        val users: MutableList<UserDetail> = mutableListOf()
         val userCollection = db.collection("users").orderBy("username").get().await()
         for (document in userCollection) {
             if (document.id == currentUser?.uid ) {
                 continue
             }
             val userData = document.data
-            val user = User(
+            val user = UserDetail(
                 document.id,
-                null,
+                "",
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
                 userData["dream_code"] as? String,
-                userData["followers"] as? List<String>,
-                userData["following"] as? List<String>
+                (userData["followers"] as? List<String>),
+                (userData["following"] as? List<String>)
             )
             users.add(user)
         }
         return users
     }
 
-    suspend fun getFilteredUsers(search: String): List<User> {
+    suspend fun getFilteredUsers(search: String): List<UserDetail> {
         val currentUser = auth.currentUser
-        val users: MutableList<User> = mutableListOf()
+        val users: MutableList<UserDetail> = mutableListOf()
         val userCollection = db.collection("users")
 
         val userQuery = userCollection.orderBy("username").startAt(search).endAt(search + "\uf8ff")
@@ -359,14 +364,14 @@ class FirebaseService @Inject constructor() {
                 continue
             }
             val userData = document.data
-            val user = User(
+            val user = UserDetail(
                 document.id,
-                null,
+                "",
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
                 userData["dream_code"] as? String,
-                userData["followers"] as? List<String>,
-                userData["following"] as? List<String>
+                (userData["followers"] as? List<String>),
+                (userData["following"] as? List<String>)
             )
             users.add(user)
         }

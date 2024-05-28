@@ -5,16 +5,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.example.animalcrossing.R
+import com.example.animalcrossing.data.repository.FetchRepository
 import com.example.animalcrossing.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -22,6 +26,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     var auth = FirebaseAuth.getInstance()
+
+    @Inject
+    lateinit var fetchRepository: FetchRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -64,8 +72,12 @@ class MainActivity : AppCompatActivity() {
 
     public override fun onStart() {
         super.onStart()
+
         val currentUser = auth.currentUser
         if (currentUser != null) {
+            lifecycleScope.launch {
+                fetchRepository.onStartApp()
+            }
         } else {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)

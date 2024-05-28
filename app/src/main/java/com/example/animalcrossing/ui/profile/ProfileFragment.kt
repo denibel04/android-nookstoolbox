@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
@@ -40,6 +42,7 @@ class ProfileFragment : Fragment() {
         return binding.root    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "My Profile"
         binding.profilePicture.setOnClickListener {
             val modalBottomSheet = PictureOptionsFragment()
             modalBottomSheet.show(
@@ -69,7 +72,6 @@ class ProfileFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
                 val user = uiState.currentUser
-                    Log.d("PROFILE PICTURE", user.toString())
                     if (user?.profile_picture?.isNotEmpty() == true) {
                         Glide.with(requireContext())
                             .load(user.profile_picture)
@@ -77,11 +79,20 @@ class ProfileFragment : Fragment() {
                     } else {
                         Glide.with(requireContext()).clear(binding.profilePicture)
                     }
-                    binding.username.text = user?.username
-                binding.followedTextView.text = "Siguiendo: ${user?.following?.size ?: 0}"
-                binding.followersTextView.text = "Seguidores: ${user?.followers?.size ?: 0}"
-                    if (user?.dreamCode != null) {
-                        binding.dreamCode.text = user.dreamCode
+                var username = "@"+user?.username
+                if (username.length > 10) {
+                    binding.username.textSize = 23F
+                }
+                if (username.length > 15) {
+                    binding.username.textSize = 20F
+                }
+                binding.username.text = username
+                binding.followedTextView.text = "Siguiendo: ${user?.following}"
+                binding.followersTextView.text = "Seguidores: ${user?.followers}"
+                    if (user?.dreamCode != "") {
+                        binding.dreamCode.text = user?.dreamCode
+                    } else {
+                        binding.dreamCode.text = "Haga click para asignar un código"
                     }
 
                 }

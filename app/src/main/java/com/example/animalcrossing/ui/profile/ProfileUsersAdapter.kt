@@ -12,6 +12,7 @@ import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
 import com.example.animalcrossing.R
+import com.example.animalcrossing.data.firebase.UserDetail
 import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.Villager
@@ -22,11 +23,11 @@ import com.example.animalcrossing.ui.list.VillagerListAdapter
 
 class ProfileUsersAdapter(
     private val context: Context
-) : ListAdapter<User, ProfileUsersAdapter.ProfileUsersViewHolder>(UserDiffCallback) {
+) : ListAdapter<UserDetail, ProfileUsersAdapter.ProfileUsersViewHolder>(UserDiffCallback) {
 
     inner class ProfileUsersViewHolder(val binding: UserListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(u: User) {
+        fun bind(u: UserDetail) {
             var username = "@"+u.username
             if (username.length > 10) {
                 binding.username.textSize = 23F
@@ -61,14 +62,14 @@ class ProfileUsersAdapter(
 
 
 
-    private object UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    private object UserDiffCallback : DiffUtil.ItemCallback<UserDetail>() {
 
 
-        override fun areItemsTheSame(oldItem: User, newItem: User) =
+        override fun areItemsTheSame(oldItem: UserDetail, newItem: UserDetail) =
             oldItem.uid == newItem.uid
 
 
-        override fun areContentsTheSame(oldItem: User, newItem: User) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: UserDetail, newItem: UserDetail) = oldItem == newItem
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfileUsersViewHolder =

@@ -1,24 +1,30 @@
 package com.example.animalcrossing.data.repository
 
+import com.example.animalcrossing.data.db.ProfileDBRepository
+import com.example.animalcrossing.data.db.asUser
 import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
+import com.example.animalcrossing.data.firebase.UserDetail
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class UserRepository @Inject constructor(
-    private val apiRepository: AcnhFirebaseRepository
+    private val apiRepository: AcnhFirebaseRepository,
+    private val dbRepository: ProfileDBRepository
 ) {
 
-    suspend fun getCurrentUser(): Flow<User?> {
-        return apiRepository.getCurrentUser()
+    suspend fun getCurrentUser(): User {
+        val profile = dbRepository.getProfile().firstOrNull()
+        return profile.asUser() ?: User()
     }
 
-    suspend fun getUsers(): List<User> {
+    suspend fun getUsers(): List<UserDetail> {
         return apiRepository.getUsers()
     }
 
-    suspend fun getFriends(): List<User> {
+    suspend fun getFriends(): List<UserDetail> {
         return apiRepository.getFriends()
     }
 
@@ -30,7 +36,7 @@ class UserRepository @Inject constructor(
         apiRepository.changeDreamCode(newDreamCode)
     }
 
-    suspend fun getFilteredUsers(search: String): List<User> {
+    suspend fun getFilteredUsers(search: String): List<UserDetail> {
         return apiRepository.getFilteredUsers(search)
     }
 

@@ -43,7 +43,7 @@ class LoansDetailFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.island_title)
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "My Loans"
         super.onViewCreated(view, savedInstanceState)
         val adapter = LoansDetailAdapter(requireContext(), onLoanClicked = { loan ->
         onCreateDialog(loan).show()

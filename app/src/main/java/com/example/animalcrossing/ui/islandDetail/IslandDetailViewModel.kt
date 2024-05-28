@@ -44,6 +44,8 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
                     }
                     _villagers.value = currentList
 
+                    Log.d("ISLAA", islandWithVillagers.island.toString())
+                    Log.d("ISLAA", islandWithVillagers.villagers.toString())
 
                     IslandDetailUiState(
                         islandId = islandWithVillagers.island.islandId,

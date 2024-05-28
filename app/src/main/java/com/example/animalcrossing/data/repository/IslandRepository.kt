@@ -24,9 +24,6 @@ class IslandRepository @Inject constructor(
     val islandWithVillagers:Flow<IslandWithVillagers?> = dbRepository.islandWithVillagers
 
 
-    suspend fun getIsland(): IslandDetail {
-        return apiRepository.getIsland()
-    }
     suspend fun addIsland(name: String) {
         val newIsland = IslandEntity(name = name)
         apiRepository.createIsland(name)

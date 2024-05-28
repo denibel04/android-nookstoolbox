@@ -58,7 +58,26 @@ interface AcnhDao {
     @Update
     suspend fun updateVillagerFromIsland(islandVillagerCrossRef: IslandVillagerCrossRef)
 
+    // PROFILE
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProfile(profile: ProfileEntity)
+    @Query("SELECT * FROM profile")
+    fun getProfile(): Flow<ProfileEntity>
+
+    @Update
+    suspend fun updateProfile(profile: ProfileEntity)
 
 
+    // RESET ALL
+    @Query("DELETE FROM island")
+    suspend fun deleteAllIslands()
 
+    @Query("DELETE FROM loans")
+    suspend fun deleteAllLoans()
+
+    @Query("DELETE FROM profile")
+    suspend fun deleteAllProfiles()
+
+    @Query("DELETE FROM island_villager_cross_ref")
+    suspend fun deleteAllIslandVillagerCrossRefs()
 }

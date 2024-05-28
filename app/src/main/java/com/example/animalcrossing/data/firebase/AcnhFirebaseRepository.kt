@@ -52,6 +52,10 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         service.deleteVillagerFromIsland(name)
     }
 
+    suspend fun getLoans(): List<LoansEntity> {
+        return service.getLoans()
+    }
+
     suspend fun createLoan(loan: LoansEntity):String {
         return service.createLoan(loan)
     }
@@ -65,11 +69,11 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     }
 
 
-    suspend fun getCurrentUser(): Flow<User?> {
+    suspend fun getCurrentUser(): UserDetail {
         return service.getCurrentUser()
     }
 
-    suspend fun getFriends(): List<User> {
+    suspend fun getFriends(): List<UserDetail> {
         return service.getFriends()
     }
 
@@ -81,11 +85,11 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         service.changeDreamCode(newDreamCode)
     }
 
-    suspend fun getUsers(): List<User> {
+    suspend fun getUsers(): List<UserDetail> {
         return service.getUsers()
     }
 
-    suspend fun getFilteredUsers(search: String): List<User> {
+    suspend fun getFilteredUsers(search: String): List<UserDetail> {
         return service.getFilteredUsers(search)
     }
 
@@ -96,6 +100,11 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     suspend fun followUser(uid: String) {
         service.followUser(uid)
     }
+
+
+    // FETCH
+
+
 
 
 }

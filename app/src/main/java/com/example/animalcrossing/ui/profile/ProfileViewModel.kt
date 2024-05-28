@@ -27,9 +27,10 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
     init {
 
         viewModelScope.launch {
-            repository.getCurrentUser().collect { user ->
+            val user = repository.getCurrentUser()
+            Log.d("profileRepo", user.toString())
                 _uiState.value = _uiState.value.copy(currentUser = user)
-            }
+
         }
 
         viewModelScope.launch {
