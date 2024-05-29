@@ -42,4 +42,7 @@
 
     <!-- LOANS -->
     <string name="loans_bottom_nav" translatable="false">Deudas</string>
+    <string name="bridge" translatable="false">Puente</string>
+    <string name="stairs" translatable="false">Escaleras</string>
+    <string name="house" translatable="false">Casa</string>
 </resources>

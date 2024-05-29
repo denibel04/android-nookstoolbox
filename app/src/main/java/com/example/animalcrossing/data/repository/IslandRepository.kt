@@ -32,6 +32,7 @@ class IslandRepository @Inject constructor(
     suspend fun deleteIsland(id:Long) {
         apiRepository.deleteIsland()
         dbRepository.delete(id)
+        dbRepository.deleteAllLoans()
     }
 
     suspend fun renameIsland(id:Long, name: String) {

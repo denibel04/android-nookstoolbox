@@ -89,7 +89,11 @@ class LoansDetailFragment : Fragment() {
         val amountTotalEdit = binding.amountTotal
         val completedCheckBox = binding.completedStatus
 
-        val types = arrayOf("bridge", "stairs", "house")
+        val types = arrayOf(
+            getString(R.string.bridge),
+            getString(R.string.stairs),
+            getString(R.string.house)
+        )
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         typeSpinner.adapter = adapter
@@ -108,12 +112,18 @@ class LoansDetailFragment : Fragment() {
         builder.setView(dialogView)
             .setPositiveButton("okay") { dialog, id ->
                 val title = titleEdit.text.toString()
-                val type = types[typeSpinner.selectedItemPosition]
+                val selectedType = types[typeSpinner.selectedItemPosition]
                 val amountPaidText = amountPaidEdit.text.toString()
                 val amountTotalText = amountTotalEdit.text.toString()
                 val completed = completedCheckBox.isChecked
 
+                val typeMap = mapOf(
+                    getString(R.string.bridge) to "bridge",
+                    getString(R.string.stairs) to "stairs",
+                    getString(R.string.house) to "house"
+                )
 
+                val type = typeMap[selectedType] ?: "bridge"
 
                 val amountPaid = amountPaidText.toIntOrNull() ?: 0
                 val amountTotal = amountTotalText.toIntOrNull() ?: 0

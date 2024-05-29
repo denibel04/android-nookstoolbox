@@ -125,11 +125,11 @@ class ProfileFragment : Fragment() {
         when (type) {
             "username" -> {
                 dialogBinding.generalView.text = "Introduzca el nuevo nombre de usuario"
-                dialogBinding.generalEdit.hint = "Nombre de usuario"
+                dialogBinding.generalEdit.setText(user.username)
             }
             "dreamcode" -> {
                 dialogBinding.generalView.text = "Introduzca el nuevo código de ensueño"
-                dialogBinding.generalEdit.hint = "Código de ensueño"
+                dialogBinding.generalEdit.setText(user.dreamCode)
             }
         }
 

@@ -54,6 +54,11 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
         acnhDao.updateVillagerFromIsland(crossRef)
     }
 
+    @WorkerThread
+    suspend fun deleteAllLoans() {
+        acnhDao.deleteAllLoans()
+    }
+
 
 
 
