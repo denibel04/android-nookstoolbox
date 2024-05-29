@@ -2,8 +2,10 @@ package com.example.animalcrossing.ui.profile
 
 import com.example.animalcrossing.data.firebase.UserDetail
 import com.example.animalcrossing.data.repository.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
 data class ProfileUiState(
-    val currentUser: User? = null,
-    val friends: List<UserDetail> = emptyList()
+    val currentUser: Flow<User?> = flowOf(null),
+    var friends: List<UserDetail> = emptyList()
 )

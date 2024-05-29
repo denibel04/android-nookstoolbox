@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.animalcrossing.R
+import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
@@ -43,13 +44,7 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = "My Profile"
-        binding.profilePicture.setOnClickListener {
-            val modalBottomSheet = PictureOptionsFragment()
-            modalBottomSheet.show(
-                requireActivity().supportFragmentManager,
-                PictureOptionsFragment.TAG
-            )
-        }
+
 
         binding.logoutButton.setOnClickListener {
             auth.signOut()
@@ -57,21 +52,34 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.username.setOnClickListener {
-            showDialog("username").show()
-        }
 
-        binding.dreamCode.setOnClickListener{
-            showDialog("dreamcode").show()
-        }
 
         val adapter = ProfileUsersAdapter(requireContext())
         val rv = binding.friendList
         rv.adapter = adapter
 
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                val user = uiState.currentUser
+                uiState.currentUser.collect{user ->
+                    if (user != null) {
+                        binding.username.setOnClickListener {
+                            showDialog("username", user).show()
+                        }
+
+                        binding.dreamCode.setOnClickListener{
+                            showDialog("dreamcode", user).show()
+                        }
+                        binding.profilePicture.setOnClickListener {
+                            val modalBottomSheet = PictureOptionsFragment(user, userRepository)
+                            modalBottomSheet.show(
+                                requireActivity().supportFragmentManager,
+                                PictureOptionsFragment.TAG
+                            )
+                        }
+                    }
+
+
+
                     if (user?.profile_picture?.isNotEmpty() == true) {
                         Glide.with(requireContext())
                             .load(user.profile_picture)
@@ -79,35 +87,36 @@ class ProfileFragment : Fragment() {
                     } else {
                         Glide.with(requireContext()).clear(binding.profilePicture)
                     }
-                var username = "@"+user?.username
-                if (username.length > 10) {
-                    binding.username.textSize = 23F
-                }
-                if (username.length > 15) {
-                    binding.username.textSize = 20F
-                }
-                binding.username.text = username
-                binding.followedTextView.text = "Siguiendo: ${user?.following}"
-                binding.followersTextView.text = "Seguidores: ${user?.followers}"
-                    if (user?.dreamCode != "") {
-                        binding.dreamCode.text = user?.dreamCode
+                    var username = "@"+user?.username
+                    if (username.length > 10) {
+                        binding.username.textSize = 23F
+                    }
+                    if (username.length > 15) {
+                        binding.username.textSize = 20F
+                    }
+                    binding.username.text = username
+                    binding.followedTextView.text = "Siguiendo: ${user?.following ?: 0}"
+                    binding.followersTextView.text = "Seguidores: ${user?.followers ?: 0}"
+                    if (user?.dreamCode != "" && user?.dreamCode != null) {
+                        binding.dreamCode.text = user.dreamCode
                     } else {
                         binding.dreamCode.text = "Haga click para asignar un código"
                     }
 
                 }
+                }
+
 
             }
 
         lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
-                Log.d("ENTRA", uiState.friends.toString())
                 adapter.submitList(uiState.friends)
                 }
             }
         }
 
-    private fun showDialog(type: String): Dialog {
+    private fun showDialog(type: String, user: User): Dialog {
         val builder = AlertDialog.Builder(activity)
         val dialogBinding: GeneralDialogBinding = GeneralDialogBinding.inflate(LayoutInflater.from(requireContext()))
         val dialogView = dialogBinding.root
@@ -131,10 +140,12 @@ class ProfileFragment : Fragment() {
                 viewLifecycleOwner.lifecycleScope.launch {
                     when (type) {
                         "username" -> {
-                            viewModel.changeUsername(editText)
+                            user.username = editText
+                            viewModel.changeUsername(user)
                         }
                         "dreamcode" -> {
-                            viewModel.changeDreamCode(editText)
+                            user.dreamCode = editText
+                            viewModel.changeDreamCode(user)
                         }
                     }
 

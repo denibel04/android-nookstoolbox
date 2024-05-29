@@ -271,7 +271,7 @@ class FirebaseService @Inject constructor() {
         val currentUser = auth.currentUser
         var profile = UserDetail("", "", "", "", "", emptyList(), emptyList())
          if (currentUser != null) {
-            val userDoc = db.collection("users").document(currentUser.uid).get().await()
+             val userDoc = db.collection("users").document(currentUser.uid).get().await()
              val followers = userDoc.get("followers") as? List<String> ?: emptyList()
              val following = userDoc.get("following") as? List<String> ?: emptyList()
              profile = UserDetail(

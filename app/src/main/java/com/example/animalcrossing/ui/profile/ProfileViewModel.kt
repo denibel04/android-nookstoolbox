@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
@@ -27,10 +28,10 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
     init {
 
         viewModelScope.launch {
-            val user = repository.getCurrentUser()
-            Log.d("profileRepo", user.toString())
-                _uiState.value = _uiState.value.copy(currentUser = user)
-
+            repository.profile.collect { user ->
+                Log.d("ENTRA AQUI", user.toString())
+                _uiState.value = _uiState.value.copy(currentUser = flowOf(user))
+            }
         }
 
         viewModelScope.launch {
@@ -40,11 +41,11 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
 
     }
 
-    suspend fun changeUsername(newUsername: String) {
+    suspend fun changeUsername(newUsername: User) {
         repository.changeUsername(newUsername)
     }
 
-    suspend fun changeDreamCode(newDreamCode: String) {
+    suspend fun changeDreamCode(newDreamCode: User) {
         repository.changeDreamCode(newDreamCode)
     }
 

@@ -16,6 +16,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.animalcrossing.data.repository.User
+import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentPictureOptionsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -25,8 +29,10 @@ import java.util.UUID
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PictureOptionsFragment : BottomSheetDialogFragment() {
+class PictureOptionsFragment(private val profile: User, private val userRepository: UserRepository) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentPictureOptionsBinding
 
@@ -163,6 +169,10 @@ class PictureOptionsFragment : BottomSheetDialogFragment() {
 
             userRef.update("profile_picture", profilePicture)
                 .addOnSuccessListener {
+                    profile.profile_picture = profilePicture
+                    lifecycleScope.launch {
+                        userRepository.changeProfilePicture(profile)
+                    }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(requireContext(), "Error al actualizar la imagen de perfil.", Toast.LENGTH_SHORT).show()

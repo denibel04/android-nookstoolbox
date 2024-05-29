@@ -43,20 +43,21 @@ class FetchRepository @Inject constructor(
             loans.forEach {loans ->
                 dbRepository.insertLoan(loans)
             }
-            var profile = apiRepository.getCurrentUser()
-            Log.d("profile", profile.toString())
 
-            val profileEntity = ProfileEntity(
-                profile.uid,
-                profile.email,
-                profile.username,
-                profile.profile_picture,
-                profile.dreamCode ?: "",
-                profile.followers?.size ?: 0,
-                profile.following?.size ?: 0
-            )
-            dbRepository.insertProfile(profileEntity)
         }
+
+        var profile = apiRepository.getCurrentUser()
+
+        val profileEntity = ProfileEntity(
+            profile.uid,
+            profile.email,
+            profile.username,
+            profile.profile_picture,
+            profile.dreamCode ?: "",
+            profile.followers?.size ?: 0,
+            profile.following?.size ?: 0
+        )
+        dbRepository.insertProfile(profileEntity)
 
     }
 
