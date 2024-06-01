@@ -4,6 +4,8 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -99,6 +101,7 @@ class ProfileFragment : Fragment() {
                     binding.followersTextView.text = "Seguidores: ${user?.followers ?: 0}"
                     if (user?.dreamCode != "" && user?.dreamCode != null) {
                         binding.dreamCode.text = user.dreamCode
+                        binding.dreamCode.textSize = 15F
                     } else {
                         binding.dreamCode.text = "Haga click para asignar un código"
                     }
@@ -126,16 +129,67 @@ class ProfileFragment : Fragment() {
             "username" -> {
                 dialogBinding.generalView.text = "Introduzca el nuevo nombre de usuario"
                 dialogBinding.generalEdit.setText(user.username)
+                dialogBinding.generalEdit.visibility = View.VISIBLE
+                dialogBinding.maskedEdit.visibility = View.GONE
             }
             "dreamcode" -> {
                 dialogBinding.generalView.text = "Introduzca el nuevo código de ensueño"
-                dialogBinding.generalEdit.setText(user.dreamCode)
+                dialogBinding.generalEdit.visibility = View.GONE
+                dialogBinding.maskedEdit.visibility = View.VISIBLE
+
+                dialogBinding.maskedEdit.addTextChangedListener(object : TextWatcher {
+                    var isUpdating: Boolean = false
+                    val mask = "DA-####-####-####"
+
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                    override fun afterTextChanged(s: Editable?) {
+                        if (isUpdating) {
+                            return
+                        }
+
+                        isUpdating = true
+
+                        val digitsOnly = s.toString().filter { it.isDigit() }
+                        val maskedText = StringBuilder()
+
+                        var digitIndex = 0
+                        var maskIndex = 0
+
+                        while (maskIndex < mask.length && digitIndex < digitsOnly.length) {
+                            val maskChar = mask[maskIndex]
+                            if (maskChar == '#') {
+                                maskedText.append(digitsOnly[digitIndex])
+                                digitIndex++
+                            } else {
+                                maskedText.append(maskChar)
+                                if (s != null && s.length > maskedText.length && s[maskedText.length] == maskChar) {
+                                    maskedText.append(maskChar)
+                                    maskIndex++
+                                }
+                            }
+                            maskIndex++
+                        }
+
+                        dialogBinding.maskedEdit.setText(maskedText)
+                        dialogBinding.maskedEdit.setSelection(maskedText.length)
+
+                        isUpdating = false
+                    }
+                })
+
             }
         }
 
         builder.setView(dialogView)
             .setPositiveButton("okay") { dialog, id ->
-                val editText = dialogBinding.generalEdit.text.toString()
+                val editText = if (type == "dreamcode") {
+                    dialogBinding.maskedEdit.text.toString()
+                } else {
+                    dialogBinding.generalEdit.text.toString()
+                }
 
                 viewLifecycleOwner.lifecycleScope.launch {
                     when (type) {
@@ -145,6 +199,7 @@ class ProfileFragment : Fragment() {
                         }
                         "dreamcode" -> {
                             user.dreamCode = editText
+                            Log.d("dreamcode", editText)
                             viewModel.changeDreamCode(user)
                         }
                     }
