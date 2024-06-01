@@ -1,5 +1,6 @@
 package com.example.animalcrossing.di
 
+import android.app.Application
 import android.content.Context
 import com.example.animalcrossing.data.db.AcnhDao
 import com.example.animalcrossing.data.db.AcnhDatabase
@@ -24,5 +25,11 @@ object DatabaseModule {
     @Provides
     fun provideAcnhDao(database: AcnhDatabase): AcnhDao {
         return database.acnhDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideContext(application: Application): Context {
+        return application.applicationContext
     }
 }

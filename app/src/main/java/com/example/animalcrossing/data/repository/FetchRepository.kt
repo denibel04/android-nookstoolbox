@@ -1,5 +1,8 @@
 package com.example.animalcrossing.data.repository
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.room.Transaction
 import com.example.animalcrossing.data.db.AcnhDao
@@ -14,20 +17,23 @@ import javax.inject.Singleton
 @Singleton
 class FetchRepository @Inject constructor(
     private val dbRepository: AcnhDao,
-    private val apiRepository: AcnhFirebaseRepository
+    private val apiRepository: AcnhFirebaseRepository,
+    private val context: Context
 ) {
 
     suspend fun onStartApp() {
-        deleteAll()
-        fetchAll()
+        if (isOnline()) {
+            deleteAll()
+            fetchAll()
+        }
     }
 
     @Transaction
     suspend fun deleteAll() {
-    dbRepository.deleteAllIslands()
-    dbRepository.deleteAllProfiles()
-    dbRepository.deleteAllLoans()
-    dbRepository.deleteAllIslandVillagerCrossRefs()
+        dbRepository.deleteAllIslands()
+        dbRepository.deleteAllProfiles()
+        dbRepository.deleteAllLoans()
+        dbRepository.deleteAllIslandVillagerCrossRefs()
     }
 
     suspend fun fetchAll() {
@@ -61,4 +67,12 @@ class FetchRepository @Inject constructor(
 
     }
 
+    private fun isOnline(): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
 }
