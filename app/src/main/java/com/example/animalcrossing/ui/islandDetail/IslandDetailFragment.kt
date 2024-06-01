@@ -1,7 +1,11 @@
 package com.example.animalcrossing.ui.islandDetail
 
+import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -12,6 +16,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -33,6 +38,9 @@ import kotlinx.coroutines.launch
 class IslandDetailFragment : Fragment() {
     private lateinit var binding: FragmentIslandDetailBinding
     private val viewModel: IslandDetailViewModel by viewModels()
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -81,7 +89,7 @@ class IslandDetailFragment : Fragment() {
             }
         }
         binding.addIsland.setOnClickListener {
-            showCreateIslandDialog()
+            checkLocationPermission()
         }
 
         binding.deleteIsland.setOnClickListener {
@@ -122,28 +130,42 @@ class IslandDetailFragment : Fragment() {
     }
 
     private fun showCreateIslandDialog() {
-        val input = EditText(requireContext()).apply {
-            inputType = InputType.TYPE_CLASS_TEXT
-            hint = getString(R.string.is_name)
-        }
 
-        MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle(getString(R.string.is_new))
-            setView(input)
-            setPositiveButton(getString(R.string.create)) { dialog, _ ->
-                val islandName = input.text.toString()
-                if (islandName.isNotBlank()) {
-                    viewModel.createIsland(islandName)
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        getString(R.string.empty_name),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+            val locationManager =
+                requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+            val input = EditText(requireContext()).apply {
+                inputType = InputType.TYPE_CLASS_TEXT
+                hint = getString(R.string.is_name)
             }
-            setNegativeButton(getString(R.string.cancel), null)
-        }.show()
+
+            MaterialAlertDialogBuilder(requireContext()).apply {
+                setTitle(getString(R.string.is_new))
+                setView(input)
+                setPositiveButton(getString(R.string.create)) { dialog, _ ->
+                    val islandName = input.text.toString()
+                    if (islandName.isNotBlank()) {
+                        var hemisphere = "none"
+                        if (location != null) {
+                            val latitude = location.latitude
+                            hemisphere = determineHemisphere(latitude)
+                        }
+
+                        viewModel.createIsland(islandName, hemisphere)
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.empty_name),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                setNegativeButton(getString(R.string.cancel), null)
+            }.show()
+        }
     }
 
 
@@ -218,6 +240,49 @@ class IslandDetailFragment : Fragment() {
             viewModel.searchVillagers(query).collectLatest { villagers ->
                 adapter.submitList(villagers)
             }
+        }
+    }
+
+
+
+    private fun checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                LOCATION_PERMISSION_REQUEST_CODE
+            )
+        } else {
+            showCreateIslandDialog()
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showCreateIslandDialog()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Los permisos de ubicación son necesarios para crear la isla.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+    private fun determineHemisphere(latitude: Double): String {
+        return if (latitude >= 0) {
+            "north"
+        } else {
+            "south"
         }
     }
 

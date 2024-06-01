@@ -33,7 +33,7 @@ class FetchRepository @Inject constructor(
     suspend fun fetchAll() {
         val islandData = apiRepository.getIsland()
         if (islandData.name != "") {
-            val islandEntity = IslandEntity(name = islandData.name)
+            val islandEntity = IslandEntity(name = islandData.name, hemisphere = islandData.hemisphere)
             val islandId = dbRepository.insertIsland(islandEntity)
             islandData.villagers.forEach {villager ->
                 val newVillager = IslandVillagerCrossRef(islandId, villager)
@@ -61,7 +61,4 @@ class FetchRepository @Inject constructor(
 
     }
 
-    suspend fun fetchOnLogin() {
-
-    }
 }

@@ -24,9 +24,9 @@ class IslandRepository @Inject constructor(
     val islandWithVillagers:Flow<IslandWithVillagers?> = dbRepository.islandWithVillagers
 
 
-    suspend fun addIsland(name: String) {
-        val newIsland = IslandEntity(name = name)
-        apiRepository.createIsland(name)
+    suspend fun addIsland(name: String, hemisphere: String) {
+        val newIsland = IslandEntity(name = name, hemisphere = hemisphere)
+        apiRepository.createIsland(name, hemisphere)
         dbRepository.insert(newIsland)
     }
     suspend fun deleteIsland(id:Long) {
@@ -53,12 +53,5 @@ class IslandRepository @Inject constructor(
         apiRepository.deleteVillagerFromIsland(name)
         return dbRepository.deleteVillagerFromIsland(name, islandId)
     }
-
-
-
-
-
-
-
 
 }

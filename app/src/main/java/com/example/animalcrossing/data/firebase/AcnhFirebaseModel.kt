@@ -15,6 +15,7 @@ data class VillagerDetail (
 data class IslandDetail (
     val islandId:String,
     val name:String,
+    val hemisphere: String,
     val villagers: List<String>
 )
 

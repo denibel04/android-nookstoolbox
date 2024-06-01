@@ -23,7 +23,7 @@ abstract class AcnhDatabase():RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 AcnhDatabase::class.java,
-                "acnh12_db"
+                "acnh13_db"
             ).build()
         }
     }

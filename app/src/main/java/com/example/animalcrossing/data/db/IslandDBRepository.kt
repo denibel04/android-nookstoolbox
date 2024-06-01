@@ -27,7 +27,7 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
 
     @WorkerThread
     suspend fun delete (islandId: Long) {
-        val island = IslandEntity(islandId = islandId, name = "")
+        val island = IslandEntity(islandId = islandId, name = "", hemisphere = "")
         acnhDao.deleteIsland(island)
     }
 

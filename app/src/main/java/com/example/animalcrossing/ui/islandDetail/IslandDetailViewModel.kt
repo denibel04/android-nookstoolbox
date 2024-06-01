@@ -61,9 +61,9 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
         }
     }
 
-    fun createIsland(islandName: String) {
+    fun createIsland(islandName: String, hemisphere: String) {
         viewModelScope.launch {
-            repository.addIsland(islandName)
+            repository.addIsland(islandName, hemisphere)
             fetchIsland()
         }
     }

@@ -8,14 +8,16 @@ import com.example.animalcrossing.data.repository.Island
 data class IslandEntity (
     @PrimaryKey(autoGenerate = true)
     val islandId:Long = 0L,
-    val name:String
+    val name:String,
+    val hemisphere: String
 )
 
 fun IslandEntity?.asIsland(): Island? {
     return this?.let {
         Island(
             it.islandId,
-            it.name.replaceFirstChar { char -> char.uppercase() }
+            it.name.replaceFirstChar { char -> char.uppercase() },
+            it.hemisphere
         )
     }
 }

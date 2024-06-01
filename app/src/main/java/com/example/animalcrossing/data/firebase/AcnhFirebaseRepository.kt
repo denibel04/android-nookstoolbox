@@ -31,8 +31,8 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     suspend fun getIsland(): IslandDetail {
         return service.getIsland();
     }
-    fun createIsland(name: String) {
-        service.createIsland(name);
+    fun createIsland(name: String, hemisphere: String) {
+        service.createIsland(name, hemisphere);
     }
 
     suspend fun renameIsland(name: String) {

@@ -57,19 +57,21 @@ class FirebaseService @Inject constructor() {
                 val islandDetail = IslandDetail(
                     islandId = document.id,
                     name = document.getString("name") ?: "",
+                    hemisphere = document.getString("hemisphere") ?: "",
                     villagers = document.get("villagers") as? List<String> ?: emptyList()
                 )
                 return islandDetail
             }
         }
-        return IslandDetail("", "", emptyList())
+        return IslandDetail("", "", "", emptyList())
     }
 
-    fun createIsland(name: String) {
+    fun createIsland(name: String, hemisphere: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
             val islandData = hashMapOf(
                 "name" to name,
+                "hemisphere" to hemisphere,
                 "villagers" to emptyList<String>(),
             )
 
