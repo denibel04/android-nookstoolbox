@@ -20,15 +20,17 @@ import javax.inject.Inject
 @HiltViewModel
 class LoansDetailViewModel @Inject constructor(private val repository: LoanRepository, private val islandRepository: IslandRepository) :
     ViewModel() {
-    private val _uiState = MutableStateFlow(LoansListUiState(listOf(), false))
+    private val _uiState = MutableStateFlow(LoansListUiState(listOf(), listOf(), false))
     val uiState: StateFlow<LoansListUiState>
         get() = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            islandRepository.island.collectLatest {userIsland ->
-                repository.loans.collect {
-                    _uiState.value = LoansListUiState(it, userIsland!=null)
+            islandRepository.island.collectLatest { userIsland ->
+                repository.loans.collect { loans ->
+                    val incompleteLoans = loans.filter { !it.completed }
+                    val completedLoans = loans.filter { it.completed }
+                    _uiState.value = LoansListUiState(incompleteLoans, completedLoans, userIsland != null)
                 }
             }
         }

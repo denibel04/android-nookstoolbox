@@ -3,13 +3,11 @@ package com.example.animalcrossing.ui.loansDetail
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -20,6 +18,7 @@ import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.databinding.FragmentLoansDetailBinding
 import com.example.animalcrossing.databinding.LoanDialogBinding
 import com.google.android.material.checkbox.MaterialCheckBox
+import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -38,6 +37,7 @@ class LoansDetailFragment : Fragment() {
             container,
             false
         )
+        setupTabs()
         return binding.root
     }
 
@@ -47,19 +47,32 @@ class LoansDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val adapter = LoansDetailAdapter(requireContext(), onLoanClicked = { loan ->
         onCreateDialog(loan).show()
-        }, onLoanDeleteClicked = { firebaseId ->
+        }) { firebaseId ->
             viewLifecycleOwner.lifecycleScope.launch {
                 if (firebaseId != null) {
                     viewModel.deleteLoan(firebaseId)
                 }
             }
-        })
+        }
+
+        val completedAdapter = LoansCompletedAdapter(requireContext()) { firebaseId ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                if (firebaseId != null) {
+                    viewModel.deleteLoan(firebaseId)
+                }
+            }
+        }
+
         binding.createLoan.setOnClickListener {
             onCreateDialog(null).show()
         }
 
         val rv = binding.loanList
         rv.adapter = adapter
+
+        val rvCompleted = binding.completedLoanList
+        rvCompleted.adapter = completedAdapter
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect {uiState ->
@@ -68,6 +81,7 @@ class LoansDetailFragment : Fragment() {
                         binding.loanList.visibility = View.VISIBLE
                         binding.noIslandText.visibility = View.GONE
                         adapter.submitList(uiState.loans)
+                        completedAdapter.submitList(uiState.completedLoans)
                     } else {
                         binding.createLoan.visibility = View.GONE
                         binding.loanList.visibility = View.GONE
@@ -141,6 +155,30 @@ class LoansDetailFragment : Fragment() {
                 dialog.cancel()
             }
         return builder.create()
+    }
+
+    private fun setupTabs() {
+        val tabLayout = binding.tabLayout
+        tabLayout.addTab(tabLayout.newTab().setText("Sin Completar"))
+        tabLayout.addTab(tabLayout.newTab().setText("Completadas"))
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                when (tab.position) {
+                    0 -> {
+                        binding.loanList.visibility = View.VISIBLE
+                        binding.completedLoanList.visibility = View.GONE
+                    }
+                    1 -> {
+                        binding.loanList.visibility = View.GONE
+                        binding.completedLoanList.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
 }
