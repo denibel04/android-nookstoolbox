@@ -2,6 +2,7 @@ package com.example.animalcrossing.ui.loansDetail
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -23,6 +24,15 @@ class LoansCompletedAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(l: Loan) {
             binding.titleLoan.text = l.title
+
+            binding.loanSlider.valueFrom = 0.0f
+            binding.loanSlider.valueTo = l.amountTotal.toFloat()
+            binding.loanSlider.value = l.amountTotal.toFloat()
+            binding.loanSlider.isEnabled = false
+
+            binding.editLoan.visibility = View.GONE
+            binding.debtProgress.text = l.amountPaid.toString()+" bayas / "+l.amountTotal.toString()+" bayas"
+
         }
     }
 

@@ -45,15 +45,22 @@ class LoansDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = "My Loans"
         super.onViewCreated(view, savedInstanceState)
-        val adapter = LoansDetailAdapter(requireContext(), onLoanClicked = { loan ->
+        val adapter = LoansDetailAdapter(requireContext(),
+        onLoanSlider = {
+                       loan ->
+                       viewLifecycleOwner.lifecycleScope.launch {
+                           viewModel.editLoan(loan)
+                       }
+        },
+            onLoanEditClicked = { loan ->
         onCreateDialog(loan).show()
-        }) { firebaseId ->
+        }, onLoanDeleteClicked = { firebaseId ->
             viewLifecycleOwner.lifecycleScope.launch {
                 if (firebaseId != null) {
                     viewModel.deleteLoan(firebaseId)
                 }
-            }
-        }
+            }})
+
 
         val completedAdapter = LoansCompletedAdapter(requireContext()) { firebaseId ->
             viewLifecycleOwner.lifecycleScope.launch {
@@ -129,7 +136,7 @@ class LoansDetailFragment : Fragment() {
                 val selectedType = types[typeSpinner.selectedItemPosition]
                 val amountPaidText = amountPaidEdit.text.toString()
                 val amountTotalText = amountTotalEdit.text.toString()
-                val completed = completedCheckBox.isChecked
+                var completed = completedCheckBox.isChecked
 
                 val typeMap = mapOf(
                     getString(R.string.bridge) to "bridge",
@@ -139,22 +146,49 @@ class LoansDetailFragment : Fragment() {
 
                 val type = typeMap[selectedType] ?: "bridge"
 
-                val amountPaid = amountPaidText.toIntOrNull() ?: 0
+                var amountPaid = amountPaidText.toIntOrNull() ?: 0
                 val amountTotal = amountTotalText.toIntOrNull() ?: 0
                 viewLifecycleOwner.lifecycleScope.launch {
-                    if (loanToEdit != null) {
-                        // UPDATE LOAN
-                        val loanEdited = Loan(loanToEdit.firebaseId, loanToEdit.title, loanToEdit.type, amountPaid, loanToEdit.amountTotal, completed)
-                        viewModel.editLoan(loanEdited)
+                    if (amountPaid >= amountTotal || completed) {
+                        AlertDialog.Builder(requireContext())
+                            .setTitle("Complete Debt")
+                            .setMessage("Do you want to mark the debt as completed?")
+                            .setPositiveButton("Yes") { _, _ ->
+                                completed = true
+                                amountPaid = amountTotal
+                                processLoanAction(loanToEdit, title, type, amountPaid, amountTotal, completed)
+                            }
+                            .setNegativeButton("No") { _, _ ->
+                            }
+                            .show()
                     } else {
-                        viewModel.addLoan(title, type, amountPaid, amountTotal, completed)
+                        processLoanAction(loanToEdit, title, type, amountPaid, amountTotal, completed)
                     }
+
                 }
             }
             .setNegativeButton("no") { dialog, id ->
                 dialog.cancel()
             }
         return builder.create()
+    }
+
+    private fun processLoanAction(loanToEdit: Loan?, title: String, type: String, amountPaid: Int, amountTotal: Int, completed: Boolean) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (loanToEdit != null) {
+                val loanEdited = Loan(
+                    loanToEdit.firebaseId,
+                    loanToEdit.title,
+                    loanToEdit.type,
+                    amountPaid,
+                    loanToEdit.amountTotal,
+                    completed
+                )
+                viewModel.editLoan(loanEdited)
+            } else {
+                viewModel.addLoan(title, type, amountPaid, amountTotal, completed)
+            }
+        }
     }
 
     private fun setupTabs() {

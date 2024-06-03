@@ -4,8 +4,8 @@ class Loan(
     val firebaseId: String,
     val title:String,
     val type: String,
-    val amountPaid: Int,
+    var amountPaid: Int,
     val amountTotal: Int,
-    val completed: Boolean
+    var completed: Boolean
 
 )
