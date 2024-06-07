@@ -77,6 +77,14 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         return service.getFriends()
     }
 
+    suspend fun getFollowers(): List<UserDetail> {
+        return service.getFollowers()
+    }
+
+    suspend fun getFollowing(): List<UserDetail> {
+        return service.getFollowing()
+    }
+
     suspend fun changeUsername(newUsername: String) {
         service.changeUsername(newUsername)
     }

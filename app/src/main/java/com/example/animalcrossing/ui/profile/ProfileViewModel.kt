@@ -29,13 +29,18 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
 
         viewModelScope.launch {
             repository.profile.collect { user ->
-                Log.d("ENTRA AQUI", user.toString())
                 _uiState.value = _uiState.value.copy(currentUser = flowOf(user))
             }
         }
 
         viewModelScope.launch {
-            val friends = repository.getFriends()
+            val following = repository.getFollowing()
+            _uiState.value = _uiState.value.copy(following = following)
+
+            val followers = repository.getFollowers()
+            _uiState.value = _uiState.value.copy(followers = followers)
+
+            val friends = followers.intersect(following).toList()
             _uiState.value = _uiState.value.copy(friends = friends)
         }
 

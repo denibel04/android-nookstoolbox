@@ -31,10 +31,6 @@ class UserRepository @Inject constructor(
             return profile
         }
 
-    suspend fun getCurrentUser(): User {
-        val profile = dbRepository.getProfile().firstOrNull()
-        return profile.asUser() ?: User()
-    }
 
     suspend fun getUsers(): List<UserDetail> {
         if (isOnline()) {
@@ -48,6 +44,24 @@ class UserRepository @Inject constructor(
     suspend fun getFriends(): List<UserDetail> {
         if (isOnline()) {
             return apiRepository.getFriends()
+        } else {
+            showNoInternetToast()
+            return emptyList()
+        }
+    }
+
+    suspend fun getFollowers(): List<UserDetail> {
+        if (isOnline()) {
+            return apiRepository.getFollowers()
+        } else {
+            showNoInternetToast()
+            return emptyList()
+        }
+    }
+
+    suspend fun getFollowing(): List<UserDetail> {
+        if (isOnline()) {
+            return apiRepository.getFollowing()
         } else {
             showNoInternetToast()
             return emptyList()

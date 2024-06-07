@@ -314,6 +314,46 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
+    suspend fun getFollowers(): List<UserDetail> {
+        val currentUser = auth.currentUser
+        val users = mutableListOf<UserDetail>()
+
+        if (currentUser != null) {
+            val document = db.collection("users").document(currentUser.uid).get().await()
+            val followers = document.get("followers") as? List<String> ?: emptyList()
+
+            for (uid in followers) {
+                val document = db.collection("users").document(uid).get().await()
+                val user = document.toObject(UserDetail::class.java)
+                if (user != null) {
+                    users.add(user)
+                }
+            }
+        }
+
+        return users
+    }
+
+    suspend fun getFollowing(): List<UserDetail> {
+        val currentUser = auth.currentUser
+        val users = mutableListOf<UserDetail>()
+
+        if (currentUser != null) {
+            val document = db.collection("users").document(currentUser.uid).get().await()
+            val following = document.get("following") as? List<String> ?: emptyList()
+
+            for (uid in following) {
+                val document = db.collection("users").document(uid).get().await()
+                val user = document.toObject(UserDetail::class.java)
+                if (user != null) {
+                    users.add(user)
+                }
+            }
+        }
+
+        return users
+    }
+
     suspend fun changeUsername(newUsername: String) {
         val currentUser = auth.currentUser
         if (currentUser != null) {

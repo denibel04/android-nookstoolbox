@@ -21,6 +21,7 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
 import com.example.animalcrossing.ui.LoginActivity
+import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -55,10 +56,19 @@ class ProfileFragment : Fragment() {
         }
 
 
-
         val adapter = ProfileUsersAdapter(requireContext())
         val rv = binding.friendList
         rv.adapter = adapter
+
+        setupTabs(adapter)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.uiState.collect { uiState ->
+                adapter.submitList(uiState.friends)
+            }
+        }
+
+
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
@@ -112,11 +122,6 @@ class ProfileFragment : Fragment() {
 
             }
 
-        lifecycleScope.launch {
-            viewModel.uiState.collect { uiState ->
-                adapter.submitList(uiState.friends)
-                }
-            }
         }
 
     private fun showDialog(type: String, user: User): Dialog {
@@ -210,6 +215,43 @@ class ProfileFragment : Fragment() {
                 dialog.cancel()
             }
         return builder.create()
+    }
+
+    private fun setupTabs(adapter: ProfileUsersAdapter) {
+        val tabLayout = binding.tabLayout
+        tabLayout.addTab(tabLayout.newTab().setText("Amigos"))
+        tabLayout.addTab(tabLayout.newTab().setText("Seguidores"))
+        tabLayout.addTab(tabLayout.newTab().setText("Siguiendo"))
+
+
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    when (tab.position) {
+                        0 -> {
+                            viewModel.uiState.collect { uiState ->
+                                adapter.submitList(uiState.friends)
+                            }
+                        }
+
+                        1 -> {
+                            viewModel.uiState.collect { uiState ->
+                                adapter.submitList(uiState.followers)
+                            }
+                        }
+
+                        2 -> {
+                            viewModel.uiState.collect { uiState ->
+                                adapter.submitList(uiState.following)
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
+        })
     }
 
 }
