@@ -17,6 +17,7 @@ import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.databinding.FragmentLoansDetailBinding
 import com.example.animalcrossing.databinding.LoanDialogBinding
+import com.example.animalcrossing.databinding.LoanEditDialogBinding
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,75 +102,107 @@ class LoansDetailFragment : Fragment() {
 
     fun onCreateDialog(loanToEdit: Loan?): Dialog {
         val builder = AlertDialog.Builder(activity)
-        val binding: LoanDialogBinding = LoanDialogBinding.inflate(LayoutInflater.from(requireContext()))
-        val dialogView = binding.root
-
-        val titleEdit = binding.title
-        val typeSpinner = binding.typeSpinner
-        val amountPaidEdit = binding.amountPaid
-        val amountTotalEdit = binding.amountTotal
-        val completedCheckBox = binding.completedStatus
-
-        val types = arrayOf(
-            getString(R.string.bridge),
-            getString(R.string.stairs),
-            getString(R.string.house)
-        )
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        typeSpinner.adapter = adapter
+        val dialogView: View
 
         if (loanToEdit != null) {
-            binding.titleTextView.visibility = View.GONE
-            titleEdit.visibility = View.GONE
-            typeSpinner.visibility = View.GONE
-            binding.amountTotalTextView.visibility = View.GONE
-            amountTotalEdit.visibility = View.GONE
+            val editBinding: LoanEditDialogBinding = LoanEditDialogBinding.inflate(LayoutInflater.from(requireContext()))
+            dialogView = editBinding.root
+
+            val amountPaidEdit = editBinding.amountPaid
+            val completedCheckBox = editBinding.completedStatus
 
             amountPaidEdit.setText(loanToEdit.amountPaid.toString())
             completedCheckBox.isChecked = loanToEdit.completed
+
+            builder.setView(dialogView)
+                .setPositiveButton("okay") { dialog, id ->
+                    val amountPaidText = amountPaidEdit.text.toString()
+                    var completed = completedCheckBox.isChecked
+
+                    var amountPaid = amountPaidText.toIntOrNull() ?: 0
+                    val amountTotal = loanToEdit.amountTotal
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        if (amountPaid >= amountTotal || completed) {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Complete Debt")
+                                .setMessage("Do you want to mark the debt as completed?")
+                                .setPositiveButton("Yes") { _, _ ->
+                                    completed = true
+                                    amountPaid = amountTotal
+                                    processLoanAction(loanToEdit, loanToEdit.title, loanToEdit.type, amountPaid, amountTotal, completed)
+                                }
+                                .setNegativeButton("No") { _, _ ->
+                                }
+                                .show()
+                        } else {
+                            processLoanAction(loanToEdit, loanToEdit.title, loanToEdit.type, amountPaid, amountTotal, completed)
+                        }
+                    }
+                }
+                .setNegativeButton("no") { dialog, id ->
+                    dialog.cancel()
+                }
+
+        } else {
+            val addBinding: LoanDialogBinding = LoanDialogBinding.inflate(LayoutInflater.from(requireContext()))
+            dialogView = addBinding.root
+
+            val titleEdit = addBinding.title
+            val typeSpinner = addBinding.typeSpinner
+            val amountPaidEdit = addBinding.amountPaid
+            val amountTotalEdit = addBinding.amountTotal
+            val completedCheckBox = addBinding.completedStatus
+
+            val types = arrayOf(
+                getString(R.string.bridge),
+                getString(R.string.stairs),
+                getString(R.string.house)
+            )
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, types)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            typeSpinner.adapter = adapter
+
+            builder.setView(dialogView)
+                .setPositiveButton("okay") { dialog, id ->
+                    val title = titleEdit.text.toString()
+                    val selectedType = types[typeSpinner.selectedItemPosition]
+                    val amountPaidText = amountPaidEdit.text.toString()
+                    val amountTotalText = amountTotalEdit.text.toString()
+                    var completed = completedCheckBox.isChecked
+
+                    val typeMap = mapOf(
+                        getString(R.string.bridge) to "bridge",
+                        getString(R.string.stairs) to "stairs",
+                        getString(R.string.house) to "house"
+                    )
+
+                    val type = typeMap[selectedType] ?: "bridge"
+
+                    var amountPaid = amountPaidText.toIntOrNull() ?: 0
+                    val amountTotal = amountTotalText.toIntOrNull() ?: 0
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        if (amountPaid >= amountTotal || completed) {
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Complete Debt")
+                                .setMessage("Do you want to mark the debt as completed?")
+                                .setPositiveButton("Yes") { _, _ ->
+                                    completed = true
+                                    amountPaid = amountTotal
+                                    processLoanAction(null, title, type, amountPaid, amountTotal, completed)
+                                }
+                                .setNegativeButton("No") { _, _ ->
+                                }
+                                .show()
+                        } else {
+                            processLoanAction(null, title, type, amountPaid, amountTotal, completed)
+                        }
+                    }
+                }
+                .setNegativeButton("no") { dialog, id ->
+                    dialog.cancel()
+                }
         }
 
-        builder.setView(dialogView)
-            .setPositiveButton("okay") { dialog, id ->
-                val title = titleEdit.text.toString()
-                val selectedType = types[typeSpinner.selectedItemPosition]
-                val amountPaidText = amountPaidEdit.text.toString()
-                val amountTotalText = amountTotalEdit.text.toString()
-                var completed = completedCheckBox.isChecked
-
-                val typeMap = mapOf(
-                    getString(R.string.bridge) to "bridge",
-                    getString(R.string.stairs) to "stairs",
-                    getString(R.string.house) to "house"
-                )
-
-                val type = typeMap[selectedType] ?: "bridge"
-
-                var amountPaid = amountPaidText.toIntOrNull() ?: 0
-                val amountTotal = amountTotalText.toIntOrNull() ?: 0
-                viewLifecycleOwner.lifecycleScope.launch {
-                    if (amountPaid >= amountTotal || completed) {
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Complete Debt")
-                            .setMessage("Do you want to mark the debt as completed?")
-                            .setPositiveButton("Yes") { _, _ ->
-                                completed = true
-                                amountPaid = amountTotal
-                                processLoanAction(loanToEdit, title, type, amountPaid, amountTotal, completed)
-                            }
-                            .setNegativeButton("No") { _, _ ->
-                            }
-                            .show()
-                    } else {
-                        processLoanAction(loanToEdit, title, type, amountPaid, amountTotal, completed)
-                    }
-
-                }
-            }
-            .setNegativeButton("no") { dialog, id ->
-                dialog.cancel()
-            }
         return builder.create()
     }
 

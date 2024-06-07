@@ -29,6 +29,7 @@ class LoansDetailAdapter(
 
         fun bind(l: Loan) {
             binding.titleLoan.text = l.title
+            binding.typeLoan.text = l.type
             binding.loanSlider.valueFrom = 0.0f
             binding.loanSlider.valueTo = l.amountTotal.toFloat()
             binding.loanSlider.value = l.amountPaid.toFloat()
@@ -38,7 +39,7 @@ class LoansDetailAdapter(
 
             binding.loanSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
-                    originalValue = slider.value
+                    originalValue = l.amountPaid.toFloat()
                 }
 
                 override fun onStopTrackingTouch(slider: Slider) {

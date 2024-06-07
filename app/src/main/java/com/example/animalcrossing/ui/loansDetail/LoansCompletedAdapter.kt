@@ -24,6 +24,7 @@ class LoansCompletedAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(l: Loan) {
             binding.titleLoan.text = l.title
+            binding.typeLoan.text = l.type
 
             binding.loanSlider.valueFrom = 0.0f
             binding.loanSlider.valueTo = l.amountTotal.toFloat()

@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/title"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/titleLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter title"
+        android:hint="Title"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/titleTextView"
-        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/typeSpinner"
@@ -27,53 +32,56 @@
         android:layout_height="wrap_content"
         android:hint="Tipo de Deuda"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        app:layout_constraintEnd_toEndOf="@id/titleLayout"
+        app:layout_constraintStart_toStartOf="@id/titleLayout"
+        app:layout_constraintTop_toBottomOf="@id/titleLayout" />
 
 
-    <TextView
-        android:id="@+id/amountPaidTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount Paid:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
-
-    <EditText
-        android:id="@+id/amountPaid"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountPaidLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter amount paid"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/amountPaidTextView"
-        app:layout_constraintTop_toTopOf="@id/amountPaidTextView" />
+        android:hint="Amount Paid"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="@id/typeSpinner"
+        app:layout_constraintStart_toStartOf="@id/typeSpinner"
+        app:layout_constraintTop_toBottomOf="@id/typeSpinner"
+        android:layout_marginTop="16dp">
 
-    <TextView
-        android:id="@+id/amountTotalTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Amount Total:"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountPaidTextView" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amountPaid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <EditText
-        android:id="@+id/amountTotal"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountTotalLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter total amount"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/amountTotalTextView"
-        app:layout_constraintTop_toTopOf="@id/amountTotalTextView" />
+        android:hint="Amount Total"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="@id/amountPaidLayout"
+        app:layout_constraintStart_toStartOf="@id/amountPaidLayout"
+        app:layout_constraintTop_toBottomOf="@id/amountPaidLayout"
+        android:layout_marginTop="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/amountTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/completedStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Completed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountTotalTextView" />
+        app:layout_constraintStart_toStartOf="@id/amountTotalLayout"
+        app:layout_constraintTop_toBottomOf="@id/amountTotalLayout"
+        android:layout_marginTop="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

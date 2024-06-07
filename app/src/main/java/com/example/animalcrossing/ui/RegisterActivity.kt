@@ -57,20 +57,20 @@ class RegisterActivity : AppCompatActivity() {
                 val confirmPassword = binding.confirmPassword.text.toString()
 
                 if (username.isEmpty() || email.isEmpty()) {
-                    buttonRegister.isEnabled = false;
+                    buttonRegister.isEnabled = false
                 } else if (!validateEmail(email)) {
                     buttonRegister.isEnabled = false
                 }
-                else if (password != confirmPassword) {
-
-                    errorText.error = "Las contraseñas no coinciden"
-                    buttonRegister.isEnabled = false;
-                } else if (!validatePassword(password)) {
+                if (!validatePassword(password)) {
                     errorText.error = "La contraseña debe tener 1 mayúscula, 1 número y 8 caracteres."
-                    buttonRegister.isEnabled = false;
-                } else {
+                    buttonRegister.isEnabled = false
+                }  else if (password != confirmPassword) {
+                    errorText.error = "Las contraseñas no coinciden"
+                    buttonRegister.isEnabled = false
+                }
+                else {
                     errorText.error = null
-                    buttonRegister.isEnabled = true;
+                    buttonRegister.isEnabled = true
                 }
             }
 
