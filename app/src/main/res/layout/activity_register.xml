@@ -6,16 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".ui.RegisterActivity">
 
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/ic_app"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Username"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logoImage"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp">
@@ -29,7 +41,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Email"
@@ -50,7 +63,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -71,7 +85,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/confirmPasswordLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxBackgroundColor="@color/white"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Confirm password"

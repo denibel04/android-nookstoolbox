@@ -34,6 +34,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment to display island details like villager slots.
+ */
 @AndroidEntryPoint
 class IslandDetailFragment : Fragment() {
     private lateinit var binding: FragmentIslandDetailBinding
@@ -41,6 +44,9 @@ class IslandDetailFragment : Fragment() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
 
+    /**
+     * @suppress("RedundantOverride")
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,6 +61,9 @@ class IslandDetailFragment : Fragment() {
     }
 
 
+    /**
+     * @suppress("RedundantOverride")
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.island_title)
         super.onViewCreated(view, savedInstanceState)
@@ -115,6 +124,9 @@ class IslandDetailFragment : Fragment() {
 
     }
 
+    /**
+     * Shows a confirmation dialog to delete the island.
+     */
     private fun showDeleteIslandConfirmationDialog() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.delete_island_title)
@@ -129,6 +141,9 @@ class IslandDetailFragment : Fragment() {
             .show()
     }
 
+    /**
+     * Shows a dialog to create a new island.
+     */
     private fun showCreateIslandDialog() {
 
         if (checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -168,7 +183,9 @@ class IslandDetailFragment : Fragment() {
         }
     }
 
-
+    /**
+     * Shows a dialog to rename the island.
+     */
     private fun showRenameIslandDialog() {
         val input = EditText(requireContext()).apply {
             inputType = InputType.TYPE_CLASS_TEXT
@@ -195,7 +212,9 @@ class IslandDetailFragment : Fragment() {
         }.show()
     }
 
-
+    /**
+     * Shows a dialog to select a villager.
+     */
     private fun showVillagerSelectionDialog(slotIndex: Int) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.villager_selection, null)
         val searchBar = dialogView.findViewById<SearchBar>(R.id.search_bar)
@@ -235,6 +254,9 @@ class IslandDetailFragment : Fragment() {
         dialog.show()
     }
 
+    /**
+     * Searches for villagers based on a search query.
+     */
     private fun searchVillagers(query: String, adapter: SearchResultAdapter) {
         lifecycleScope.launch {
             viewModel.searchVillagers(query).collectLatest { villagers ->
@@ -244,7 +266,9 @@ class IslandDetailFragment : Fragment() {
     }
 
 
-
+    /**
+     * Checks location permission before creating an island.
+     */
     private fun checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -260,6 +284,9 @@ class IslandDetailFragment : Fragment() {
         }
     }
 
+    /**
+     * Handles the result of permission requests.
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -278,6 +305,9 @@ class IslandDetailFragment : Fragment() {
         }
     }
 
+    /**
+     * Determines the hemisphere based on latitude.
+     */
     private fun determineHemisphere(latitude: Double): String {
         return if (latitude >= 0) {
             "north"

@@ -1,3 +1,7 @@
+import org.jetbrains.dokka.DokkaConfiguration
+import org.jetbrains.dokka.DokkaDefaults.includeNonPublic
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,7 +9,21 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("androidx.navigation.safeargs.kotlin")
     id("com.google.gms.google-services")
+    id("org.jetbrains.dokka") version "1.9.20"
 }
+
+
+tasks.dokkaHtml {
+    suppressInheritedMembers.set(true)
+    dokkaSourceSets {
+        configureEach {
+            documentedVisibilities.set(listOf(DokkaConfiguration.Visibility.PRIVATE)
+                    + documentedVisibilities.get())
+        }
+    }
+}
+
+
 android {
     namespace = "com.example.animalcrossing"
     compileSdk = 34
@@ -84,6 +102,7 @@ dependencies {
 
     // Location
     implementation("com.google.android.gms:play-services-location:21.3.0")
+
 
 
 }
