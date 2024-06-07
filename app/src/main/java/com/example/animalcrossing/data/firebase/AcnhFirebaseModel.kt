@@ -28,7 +28,7 @@ data class UserDetail (
     val followers: List<String>? = null,
     val following: List<String>? = null
 ) {
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "", "", emptyList(), emptyList())
 }
 
 
