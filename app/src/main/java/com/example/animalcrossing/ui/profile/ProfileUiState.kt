@@ -9,5 +9,6 @@ data class ProfileUiState(
     val currentUser: Flow<User?> = flowOf(null),
     var friends: List<UserDetail> = emptyList(),
     var followers: List<UserDetail> = emptyList(),
-    var following: List<UserDetail> = emptyList()
+    var following: List<UserDetail> = emptyList(),
+    val position: Int = 0
 )

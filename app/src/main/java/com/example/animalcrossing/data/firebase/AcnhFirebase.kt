@@ -303,11 +303,17 @@ class FirebaseService @Inject constructor() {
             val friendsUids = followers.intersect(following).toList()
 
             for (uid in friendsUids) {
-                val document = db.collection("users").document(uid).get().await()
-                val user = document.toObject(UserDetail::class.java)
-                if (user != null) {
-                    users.add(user)
-                }
+                val doc = db.collection("users").document(uid).get().await()
+                val user = UserDetail(
+                    doc.id,
+                    "",
+                    doc["username"] as? String ?: "",
+                    doc["profile_picture"] as? String ?: "",
+                    doc["dream_code"] as? String,
+                    (doc["followers"] as? List<String>),
+                    (doc["following"] as? List<String>)
+                )
+                users.add(user)
             }
         }
 
@@ -323,11 +329,17 @@ class FirebaseService @Inject constructor() {
             val followers = document.get("followers") as? List<String> ?: emptyList()
 
             for (uid in followers) {
-                val document = db.collection("users").document(uid).get().await()
-                val user = document.toObject(UserDetail::class.java)
-                if (user != null) {
-                    users.add(user)
-                }
+                val doc = db.collection("users").document(uid).get().await()
+                val user = UserDetail(
+                    doc.id,
+                    "",
+                    doc["username"] as? String ?: "",
+                    doc["profile_picture"] as? String ?: "",
+                    doc["dream_code"] as? String,
+                    (doc["followers"] as? List<String>),
+                    (doc["following"] as? List<String>)
+                )
+                users.add(user)
             }
         }
 
@@ -343,11 +355,17 @@ class FirebaseService @Inject constructor() {
             val following = document.get("following") as? List<String> ?: emptyList()
 
             for (uid in following) {
-                val document = db.collection("users").document(uid).get().await()
-                val user = document.toObject(UserDetail::class.java)
-                if (user != null) {
-                    users.add(user)
-                }
+                val doc = db.collection("users").document(uid).get().await()
+                val user = UserDetail(
+                    doc.id,
+                    "",
+                    doc["username"] as? String ?: "",
+                    doc["profile_picture"] as? String ?: "",
+                    doc["dream_code"] as? String,
+                    (doc["followers"] as? List<String>),
+                    (doc["following"] as? List<String>)
+                )
+                users.add(user)
             }
         }
 
@@ -422,7 +440,7 @@ class FirebaseService @Inject constructor() {
 
     suspend fun followUser(followedUid: String) {
         val currentUser = auth.currentUser
-
+    Log.d("userfollow", followedUid)
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
             val followedUserRef = db.collection("users").document(followedUid)
@@ -434,6 +452,7 @@ class FirebaseService @Inject constructor() {
 
     suspend fun unfollowUser(followedUid: String) {
         val currentUser = auth.currentUser
+        Log.d("userunfollow", followedUid)
 
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)

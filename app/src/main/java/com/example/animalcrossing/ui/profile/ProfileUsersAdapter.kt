@@ -21,13 +21,18 @@ import com.example.animalcrossing.databinding.UserListItemBinding
 import com.example.animalcrossing.databinding.VillagerListItemBinding
 import com.example.animalcrossing.databinding.VillagerSlotItemBinding
 import com.example.animalcrossing.ui.list.VillagerListAdapter
+import com.google.firebase.auth.FirebaseAuth
 
 class ProfileUsersAdapter(
-    private val context: Context
+    private val context: Context,
+    private val onFollowClicked: ((UserDetail) -> Unit)? = null
 ) : ListAdapter<UserDetail, ProfileUsersAdapter.ProfileUsersViewHolder>(UserDiffCallback) {
 
     inner class ProfileUsersViewHolder(val binding: UserListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
         fun bind(u: UserDetail) {
             var username = "@"+u.username
             if (username.length > 10) {
@@ -39,6 +44,8 @@ class ProfileUsersAdapter(
             binding.username.text = username
             if (u.dreamCode != null) {
                 binding.dreamCode.text = u.dreamCode
+            } else {
+                binding.dreamCode.text = "Sin código de ensueño"
             }
             if (u.profile_picture != "") {
                 binding.profilePicture.load(u.profile_picture)
@@ -52,10 +59,14 @@ class ProfileUsersAdapter(
                 binding.profilePicture.load(R.drawable.ic_account_circle)
             }
 
+            if (u.followers?.contains(currentUser?.uid) == true) {
+                binding.followButton.text = "Dejar de seguir"
+            } else {
+                binding.followButton.text = "Seguir"
+            }
+
             binding.followedTextView.text = "Siguiendo: ${u.following?.size ?: 0}"
             binding.followersTextView.text = "Seguidores: ${u.followers?.size ?: 0}"
-
-            binding.followButton.visibility = View.GONE
 
             }
 
@@ -83,6 +94,10 @@ class ProfileUsersAdapter(
     override fun onBindViewHolder(holder: ProfileUsersViewHolder, position: Int) {
         val slot = getItem(position)
         holder.bind(slot)
+
+        holder.binding.followButton.setOnClickListener {
+            onFollowClicked?.invoke(slot)
+        }
     }
 
 

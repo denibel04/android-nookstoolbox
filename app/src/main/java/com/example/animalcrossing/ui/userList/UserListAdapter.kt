@@ -57,18 +57,12 @@ class UserListAdapter(
 
             if (u.followers?.contains(currentUser?.uid) == true) {
                 binding.followButton.text = "Dejar de seguir"
-                Log.d("userfollow", u.followers.toString())
             } else {
                 binding.followButton.text = "Seguir"
-                Log.d("userunfollow", u.followers.toString())
             }
 
             binding.followedTextView.text = "Siguiendo: ${u.following?.size ?: 0}"
             binding.followersTextView.text = "Seguidores: ${u.followers?.size ?: 0}"
-
-            binding.followButton.setOnClickListener {
-                onFollowClicked?.invoke(u)
-            }
 
             }
         }
@@ -92,6 +86,10 @@ class UserListAdapter(
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
         val slot = getItem(position)
         holder.bind(slot)
+
+        holder.binding.followButton.setOnClickListener {
+            onFollowClicked?.invoke(slot)
+        }
 
     }
 
