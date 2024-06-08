@@ -32,6 +32,7 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
     init {
 
         viewModelScope.launch {
+            repository.updateUser()
             repository.profile.collect { user ->
                 _uiState.value = _uiState.value.copy(currentUser = flowOf(user))
             }
@@ -83,6 +84,7 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         viewModelScope.launch {
             updateUserState(uid, follow = true)
             repository.followUser(uid)
+            repository.updateUser()
         }
     }
 
@@ -90,10 +92,11 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         viewModelScope.launch {
             updateUserState(uid, follow = false)
             repository.unfollowUser(uid)
+            repository.updateUser()
         }
     }
 
-    private fun updateUserState(uid: String, follow: Boolean) {
+    private suspend fun updateUserState(uid: String, follow: Boolean) {
         val currentState = _uiState.value
         val currentUserUid = currentUser?.uid
 

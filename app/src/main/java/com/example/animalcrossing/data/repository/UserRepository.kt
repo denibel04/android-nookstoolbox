@@ -145,6 +145,20 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun updateUser() {
+        val profile = apiRepository.getCurrentUser()
+        val profileEntity = ProfileEntity(
+            profile.uid,
+            profile.email,
+            profile.username,
+            profile.profile_picture,
+            profile.dreamCode.orEmpty(),
+            profile.followers?.size ?: 0,
+            profile.following?.size ?: 0
+        )
+        dbRepository.insert(profileEntity)
+    }
+
     private fun isOnline(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
