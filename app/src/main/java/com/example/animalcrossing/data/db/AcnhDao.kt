@@ -21,6 +21,10 @@ interface AcnhDao {
     @Query("SELECT * FROM villager WHERE name LIKE :searchQuery")
     fun searchVillagers(searchQuery: String): Flow<List<VillagerEntity>>
 
+    @Query("SELECT COUNT(*) FROM villager")
+    fun count(): Int
+
+
     // LOAN
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLoan(loansEntity: LoansEntity): Long

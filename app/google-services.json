@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "287262785152",
-    "project_id": "prueba-consultas-81849",
-    "storage_bucket": "prueba-consultas-81849.appspot.com"
+    "project_number": "1052521570202",
+    "project_id": "nooks-toolbox",
+    "storage_bucket": "nooks-toolbox.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:287262785152:android:4ad74626b0ccf987b57065",
+        "mobilesdk_app_id": "1:1052521570202:android:ff36a2577f1b828bcda423",
         "android_client_info": {
           "package_name": "com.example.animalcrossing"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBHnA8r1hORlD2KiuNDkCvR9w77iroDjLs"
+          "current_key": "AIzaSyDowILzxXs_lZCu9siMihsnYuTeqskVcME"
         }
       ],
       "services": {

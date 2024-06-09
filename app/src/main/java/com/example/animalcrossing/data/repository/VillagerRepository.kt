@@ -1,5 +1,6 @@
 package com.example.animalcrossing.data.repository
 
+import android.util.Log
 import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.firebase.asEntityModel
 import com.example.animalcrossing.data.db.VillagerDBRepository
@@ -25,8 +26,10 @@ class VillagerRepository @Inject constructor(
 
     suspend fun refreshList() {
         withContext(Dispatchers.IO) {
-            val apiAcnh = apiRepository.getAll()
-            dbRepository.insert(apiAcnh.asEntityModel())
+            if (dbRepository.isVillagersTableEmpty()) {
+                val apiAcnh = apiRepository.getAll()
+                dbRepository.insert(apiAcnh.asEntityModel())
+            }
         }
     }
 

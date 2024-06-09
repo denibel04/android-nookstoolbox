@@ -37,8 +37,9 @@ class FirebaseService @Inject constructor() {
                     villagerListItemMap["image_url"] as String,
                     villagerListItemMap["gender"] as String,
                     villagerListItemMap["birthday_month"] as String,
-                    (villagerListItemMap["birthday_day"] as Long).toInt()
+                    (villagerListItemMap["birthday_day"] as String).toInt()
                 )
+                Log.d("VILLAGER", villagerDetail.toString())
                 villagers.add(villagerDetail)
             }
         return villagers

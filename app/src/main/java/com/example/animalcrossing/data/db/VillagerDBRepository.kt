@@ -19,4 +19,8 @@ class VillagerDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
     suspend fun getVillager(name: String): Flow<VillagerEntity> {
         return acnhDao.getVillager(name)
     }
+
+    suspend fun isVillagersTableEmpty(): Boolean {
+        return acnhDao.count() == 0
+    }
 }

@@ -30,8 +30,9 @@ class VillagerListViewModel @Inject constructor(private val repository: Villager
 
 
         viewModelScope.launch {
-            repository.villager.collect {
-                _uiState.value = VillagerListUiState(it)
+            repository.villager.collect { villagerList ->
+                val sortedList = villagerList.sortedBy { it.name }
+                _uiState.value = VillagerListUiState(sortedList)
             }
         }
     }

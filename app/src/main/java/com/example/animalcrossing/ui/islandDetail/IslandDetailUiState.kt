@@ -6,6 +6,7 @@ import com.example.animalcrossing.data.repository.Villager
 data class IslandDetailUiState(
     val islandId: Long? = null,
     val name: String = "",
+    val hemisphere: String = "",
     val islandExists: Boolean = false,
     val villagers: List<Villager> = emptyList(),
     val errorMessage: String? = null,

@@ -86,6 +86,7 @@ class IslandDetailFragment : Fragment() {
                         binding.addIsland.visibility = View.GONE
                         binding.shareIsland.visibility = View.VISIBLE
                         binding.islandName.text = uiState.name
+                        binding.islandDescription.text = "Hemisferio: "+uiState.hemisphere
                         viewModel.villagers.collectLatest { nuevosVillagers ->
                             adapter.submitList(nuevosVillagers)
                         }
