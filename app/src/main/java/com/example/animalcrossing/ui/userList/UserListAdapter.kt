@@ -13,12 +13,14 @@ import coil.request.ImageRequest
 import com.example.animalcrossing.R
 import com.example.animalcrossing.data.firebase.UserDetail
 import com.example.animalcrossing.data.repository.User
+import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.UserListItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class UserListAdapter(
     private val context: Context,
-    private val onFollowClicked: ((UserDetail) -> Unit)? = null
+    private val onFollowClicked: ((UserDetail) -> Unit)? = null,
+    private val onUserClicked: ((String) -> Unit)? = null
 ) : ListAdapter<UserDetail, UserListAdapter.UserListViewHolder>(UserDiffCallback) {
 
     inner class UserListViewHolder(val binding: UserListItemBinding) :
@@ -89,6 +91,10 @@ class UserListAdapter(
 
         holder.binding.followButton.setOnClickListener {
             onFollowClicked?.invoke(slot)
+        }
+
+        holder.itemView.setOnClickListener {
+            onUserClicked?.invoke(slot.uid)
         }
 
     }

@@ -10,12 +10,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.FragmentUsersListBinding
 import com.example.animalcrossing.ui.LoginActivity
+import com.example.animalcrossing.ui.list.VillagerListAdapter
+import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
+import com.example.animalcrossing.ui.profile.ProfileFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -41,13 +45,20 @@ class UserListFragment : Fragment() {
         (activity as? AppCompatActivity)?.supportActionBar?.title = "User List"
 
         val adapter = UserListAdapter(requireContext(), onFollowClicked = { user ->
-
             if (user.followers?.contains(currentUser?.uid) == true) {
                 viewModel.unfollowUser(user.uid)
             } else {
                 viewModel.followUser(user.uid)
             }
+        }, onUserClicked = { uid ->
+            val action =
+                ProfileFragmentDirections.actionProfileFragmentToUserDetailFragment(
+                    uid
+                )
+            findNavController().navigate(action)
         })
+
+
         val rv = binding.users
         rv.adapter = adapter
 

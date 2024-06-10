@@ -25,7 +25,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ProfileUsersAdapter(
     private val context: Context,
-    private val onFollowClicked: ((UserDetail) -> Unit)? = null
+    private val onFollowClicked: ((UserDetail) -> Unit)? = null,
+    private val onUserClicked: ((String) -> Unit)? = null
 ) : ListAdapter<UserDetail, ProfileUsersAdapter.ProfileUsersViewHolder>(UserDiffCallback) {
 
     inner class ProfileUsersViewHolder(val binding: UserListItemBinding) :
@@ -97,6 +98,10 @@ class ProfileUsersAdapter(
 
         holder.binding.followButton.setOnClickListener {
             onFollowClicked?.invoke(slot)
+        }
+
+        holder.itemView.setOnClickListener {
+            onUserClicked?.invoke(slot.uid)
         }
     }
 

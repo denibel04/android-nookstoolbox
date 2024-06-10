@@ -41,6 +41,10 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun getUserDetail(uid: String): UserProfileDetail {
+        return apiRepository.getUserDetail(uid)
+    }
+
     suspend fun getFriends(): List<UserDetail> {
         if (isOnline()) {
             return apiRepository.getFriends()

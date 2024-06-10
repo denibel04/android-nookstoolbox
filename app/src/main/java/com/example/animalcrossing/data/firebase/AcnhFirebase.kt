@@ -7,6 +7,7 @@ import com.example.animalcrossing.data.db.ProfileEntity
 import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.User
+import com.example.animalcrossing.data.repository.UserProfileDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -410,6 +411,39 @@ class FirebaseService @Inject constructor() {
             users.add(user)
         }
         return users
+    }
+
+    suspend fun getUserDetail(uid: String): UserProfileDetail {
+        val userRef = db.collection("users").document(uid)
+
+        val userSnapshot = userRef.get().await()
+
+        val userData = userSnapshot.data
+        var user = UserProfileDetail(
+            userSnapshot.id,
+            userData?.get("email") as? String ?: "",
+            userData?.get("username") as? String ?: "",
+            userData?.get("profile_picture") as? String ?: "",
+            userData?.get("dream_code") as? String,
+            userData?.get("followers") as? List<String> ?: emptyList(),
+            userData?.get("following") as? List<String> ?: emptyList()
+        )
+        val islandCollection = db.collection("users").document(user.uid).collection("island").get().await()
+        val islandSnapshot = islandCollection.documents.firstOrNull()
+
+        if (islandSnapshot != null) {
+                val islandData = islandSnapshot.data
+                user = user.copy(
+                    islandName = islandData?.get("name") as? String ?: "",
+                    hemisphere = islandData?.get("hemisphere") as? String ?: "",
+                    islandExists = true,
+                    villagers = islandData?.get("villagers") as? List<String> ?: emptyList()
+                )
+            } else {
+                user = user.copy(islandExists = false)
+            }
+
+        return user
     }
 
     suspend fun getFilteredUsers(search: String): List<UserDetail> {

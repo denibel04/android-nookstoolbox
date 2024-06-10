@@ -9,5 +9,22 @@
         android:id="@+id/userlistFragment"
         android:name="com.example.animalcrossing.ui.userList.UserListFragment"
         android:label="fragment_userlist"
-        tools:layout="@layout/fragment_users_list" />
+        tools:layout="@layout/fragment_users_list"
+        >
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.example.animalcrossing.ui.userDetail.UserDetailFragment"
+        android:label="UserDetailFragment">
+        <argument
+            android:name="uid"
+            app:argType="string"
+            />
+    </fragment>
+
 </navigation>

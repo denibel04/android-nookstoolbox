@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.User
@@ -22,6 +23,7 @@ import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
 import com.example.animalcrossing.ui.LoginActivity
 import com.example.animalcrossing.ui.userList.UserListAdapter
+import com.example.animalcrossing.ui.userList.UserListFragmentDirections
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -63,8 +65,14 @@ class ProfileFragment : Fragment() {
                 viewModel.unfollowUser(user.uid)
             } else {
                 viewModel.followUser(user.uid)
-            }
+            }}, onUserClicked = { uid ->
+            val action =
+                ProfileFragmentDirections.actionProfileFragmentToUserDetailFragment(
+                    uid
+                )
+            findNavController().navigate(action)
         })
+
         val rv = binding.friendList
         rv.adapter = adapter
 
