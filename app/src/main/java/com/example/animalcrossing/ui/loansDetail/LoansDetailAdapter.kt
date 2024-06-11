@@ -26,6 +26,8 @@ class LoansDetailAdapter(
     inner class LoansViewHolder(val binding: LoansListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         private var originalValue: Float = 0.0f
+        private var isTrackingTouch: Boolean = false
+
 
         fun bind(l: Loan) {
             binding.titleLoan.text = l.title
@@ -39,14 +41,18 @@ class LoansDetailAdapter(
 
             binding.loanSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
+                    isTrackingTouch = true
                     originalValue = l.amountPaid.toFloat()
                 }
 
                 override fun onStopTrackingTouch(slider: Slider) {
-                    if(slider.value.toInt() == l.amountTotal) {
-                        showUpdateAlert(l, slider, true)
-                    } else {
-                        showUpdateAlert(l, slider, false)
+                    if (isTrackingTouch) {
+                        if (slider.value.toInt() == l.amountTotal) {
+                            showUpdateAlert(l, slider, true)
+                        } else {
+                            showUpdateAlert(l, slider, false)
+                        }
+                        isTrackingTouch = false
                     }
                 }
             })

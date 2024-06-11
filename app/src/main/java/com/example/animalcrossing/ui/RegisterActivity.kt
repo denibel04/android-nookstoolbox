@@ -94,31 +94,29 @@ class RegisterActivity : AppCompatActivity() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
                     val firebaseUser = auth.currentUser
 
                     val user = hashMapOf(
-                        "username" to username
+                        "username" to username,
+                        "followers" to emptyList<String>(),
+                        "following" to emptyList<String>(),
+                        "role" to "normal"
                     )
                     if (firebaseUser != null) {
                         db.collection("users")
-                            .document(firebaseUser.uid) // Usamos la UID como ID del documento
+                            .document(firebaseUser.uid)
                             .set(user)
-                            .addOnSuccessListener { documentReference ->
-                                Log.d(TAG, "DocumentSnapshot added with ID: ${firebaseUser.uid}")
-                            }
-                            .addOnFailureListener { e ->
-                                Log.w(TAG, "Error adding document", e)
+                            .addOnSuccessListener {
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
                             }
                     }
 
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
                     Toast.makeText(
                         baseContext,
-                        "Authentication failed.",
+                        "No se ha podido crear la cuenta.",
                         Toast.LENGTH_SHORT,
                     ).show()
                 }

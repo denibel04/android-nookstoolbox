@@ -56,7 +56,9 @@ class ProfileFragment : Fragment() {
         binding.logoutButton.setOnClickListener {
             auth.signOut()
             val intent = Intent(this.requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            activity?.finish()
         }
 
 

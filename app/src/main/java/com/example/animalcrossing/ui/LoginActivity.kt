@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.animalcrossing.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -56,20 +57,45 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    Log.w(TAG, "signInWithEmail:failure", task.exception)
-                    Toast.makeText(
-                        baseContext,
-                        "Authentication failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                    val db = FirebaseFirestore.getInstance()
+
+                    user?.let {
+                        db.collection("users").document(user.uid).get()
+                            .addOnSuccessListener { document ->
+                                if (document != null && document.exists()) {
+                                    val role = document.getString("role")
+                                    if (role == "banned") {
+                                        Toast.makeText(
+                                            baseContext,
+                                            "Esta cuenta está baneada.",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                        auth.signOut()
+                                    } else {
+                                        Toast.makeText(
+                                            baseContext,
+                                            "Se ha iniciado sesión.",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
+                                        val intent = Intent(this, MainActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+
+                                } else {
+                                    Toast.makeText(
+                                        baseContext,
+                                        "No se ha podido iniciar sesión.",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                            }
+                    }
                 }
             }
     }
+
 
     private fun newAccount() {
         val intent = Intent(this, RegisterActivity::class.java)

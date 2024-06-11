@@ -19,7 +19,6 @@ import com.example.animalcrossing.databinding.FragmentUsersListBinding
 import com.example.animalcrossing.ui.LoginActivity
 import com.example.animalcrossing.ui.list.VillagerListAdapter
 import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
-import com.example.animalcrossing.ui.profile.ProfileFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -52,7 +51,7 @@ class UserListFragment : Fragment() {
             }
         }, onUserClicked = { uid ->
             val action =
-                ProfileFragmentDirections.actionProfileFragmentToUserDetailFragment(
+                UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(
                     uid
                 )
             findNavController().navigate(action)

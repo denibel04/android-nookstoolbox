@@ -261,8 +261,8 @@ class IslandDetailFragment : Fragment() {
     private fun searchVillagers(query: String, adapter: SearchResultAdapter) {
         lifecycleScope.launch {
             viewModel.searchVillagers(query).collectLatest { villagers ->
-                adapter.submitList(villagers)
-            }
+                val villagersOrdenados = villagers.sortedBy { it.name }
+                adapter.submitList(villagersOrdenados)            }
         }
     }
 
