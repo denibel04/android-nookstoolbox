@@ -1,5 +1,6 @@
 package com.example.animalcrossing.ui.loansDetail
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,14 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.imageLoader
-import coil.load
-import coil.request.ImageRequest
+import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.Loan
-import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.LoansListItemBinding
-import com.example.animalcrossing.databinding.VillagerListItemBinding
-import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
 import com.google.android.material.slider.Slider
 
 class LoansDetailAdapter(
@@ -37,7 +33,9 @@ class LoansDetailAdapter(
             binding.loanSlider.value = l.amountPaid.toFloat()
             originalValue = l.amountPaid.toFloat()
 
-            binding.debtProgress.text = l.amountPaid.toString()+" bayas / "+l.amountTotal.toString()+" bayas"
+            binding.debtProgress.text = context.getString(
+                R.string.debt_progress, l.amountPaid, context.getString(
+                    R.string.bayas), l.amountTotal, context.getString(R.string.bayas))
 
             binding.loanSlider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) {
@@ -60,20 +58,20 @@ class LoansDetailAdapter(
         }
 
         private fun showUpdateAlert(loan: Loan, slider: Slider, complete: Boolean) {
-            val title = if (complete) "Complete Debt" else "Update Debt"
-            val message = if (complete) "Do you want to complete your debt?" else "Do you want to update your debt to ${slider.value.toInt()}?"
+            val title = if (complete) context.getString(R.string.title_complete_debt) else context.getString(R.string.title_update_debt)
+            val message = if (complete) context.getString(R.string.message_complete_debt) else context.getString(R.string.message_update_debt, slider.value.toInt())
 
             AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton("Yes") { _, _ ->
+                .setPositiveButton(context.getString(R.string.accept)) { _, _ ->
                     loan.amountPaid = slider.value.toInt()
                     if (complete) {
                         loan.completed = true
                     }
                     onLoanSlider?.invoke(loan)
                 }
-                .setNegativeButton("No") { _, _ ->
+                .setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
                     slider.value = originalValue
                 }
                 .show()
@@ -87,6 +85,7 @@ class LoansDetailAdapter(
         override fun areItemsTheSame(oldItem: Loan, newItem: Loan) =
             oldItem.title == newItem.title
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Loan, newItem: Loan) = oldItem == newItem
     }
 

@@ -1,20 +1,13 @@
 package com.example.animalcrossing.data.firebase
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import com.example.animalcrossing.data.db.LoansEntity
-import com.example.animalcrossing.data.db.ProfileEntity
-import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Loan
-import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.UserProfileDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -56,13 +49,12 @@ class FirebaseService @Inject constructor() {
             val island = islandCollection.documents.firstOrNull()
 
             island?.let { document ->
-                val islandDetail = IslandDetail(
+                return IslandDetail(
                     islandId = document.id,
                     name = document.getString("name") ?: "",
                     hemisphere = document.getString("hemisphere") ?: "",
                     villagers = document.get("villagers") as? List<String> ?: emptyList()
                 )
-                return islandDetail
             }
         }
         return IslandDetail("", "", "", emptyList())

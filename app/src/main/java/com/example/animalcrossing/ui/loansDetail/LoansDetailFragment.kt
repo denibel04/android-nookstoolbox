@@ -18,7 +18,6 @@ import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.databinding.FragmentLoansDetailBinding
 import com.example.animalcrossing.databinding.LoanDialogBinding
 import com.example.animalcrossing.databinding.LoanEditDialogBinding
-import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class LoansDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLoansDetailBinding.inflate(
             inflater,
             container,
@@ -44,7 +43,7 @@ class LoansDetailFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "My Loans"
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.my_loans)
         super.onViewCreated(view, savedInstanceState)
         val adapter = LoansDetailAdapter(requireContext(),
         onLoanSlider = {
@@ -100,7 +99,7 @@ class LoansDetailFragment : Fragment() {
         }
     }
 
-    fun onCreateDialog(loanToEdit: Loan?): Dialog {
+    private fun onCreateDialog(loanToEdit: Loan?): Dialog {
         val builder = AlertDialog.Builder(activity)
         val dialogView: View
 
@@ -115,7 +114,7 @@ class LoansDetailFragment : Fragment() {
             completedCheckBox.isChecked = loanToEdit.completed
 
             builder.setView(dialogView)
-                .setPositiveButton("okay") { dialog, id ->
+                .setPositiveButton(getString(R.string.accept)) { _, _ ->
                     val amountPaidText = amountPaidEdit.text.toString()
                     var completed = completedCheckBox.isChecked
 
@@ -124,14 +123,14 @@ class LoansDetailFragment : Fragment() {
                     viewLifecycleOwner.lifecycleScope.launch {
                         if (amountPaid >= amountTotal || completed) {
                             AlertDialog.Builder(requireContext())
-                                .setTitle("Complete Debt")
-                                .setMessage("Do you want to mark the debt as completed?")
-                                .setPositiveButton("Yes") { _, _ ->
-                                    completed = true
+                                .setTitle(getString(R.string.title_complete_debt))
+                                .setMessage(getString(R.string.message_complete_debt))
+                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
                                     amountPaid = amountTotal
+                                    completed = true
                                     processLoanAction(loanToEdit, loanToEdit.title, loanToEdit.type, amountPaid, amountTotal, completed)
                                 }
-                                .setNegativeButton("No") { _, _ ->
+                                .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                                 }
                                 .show()
                         } else {
@@ -139,7 +138,7 @@ class LoansDetailFragment : Fragment() {
                         }
                     }
                 }
-                .setNegativeButton("no") { dialog, id ->
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                     dialog.cancel()
                 }
 
@@ -163,7 +162,7 @@ class LoansDetailFragment : Fragment() {
             typeSpinner.adapter = adapter
 
             builder.setView(dialogView)
-                .setPositiveButton("okay") { dialog, id ->
+                .setPositiveButton(getString(R.string.accept)) { _, _ ->
                     val title = titleEdit.text.toString()
                     val selectedType = types[typeSpinner.selectedItemPosition]
                     val amountPaidText = amountPaidEdit.text.toString()
@@ -183,14 +182,14 @@ class LoansDetailFragment : Fragment() {
                     viewLifecycleOwner.lifecycleScope.launch {
                         if (amountPaid >= amountTotal || completed) {
                             AlertDialog.Builder(requireContext())
-                                .setTitle("Complete Debt")
-                                .setMessage("Do you want to mark the debt as completed?")
-                                .setPositiveButton("Yes") { _, _ ->
+                                .setTitle(getString(R.string.title_complete_debt))
+                                .setMessage(getString(R.string.message_complete_debt))
+                                .setPositiveButton(getString(R.string.accept)) { _, _ ->
                                     completed = true
                                     amountPaid = amountTotal
                                     processLoanAction(null, title, type, amountPaid, amountTotal, completed)
                                 }
-                                .setNegativeButton("No") { _, _ ->
+                                .setNegativeButton(getString(R.string.cancel)) { _, _ ->
                                 }
                                 .show()
                         } else {
@@ -198,7 +197,7 @@ class LoansDetailFragment : Fragment() {
                         }
                     }
                 }
-                .setNegativeButton("no") { dialog, id ->
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                     dialog.cancel()
                 }
         }
@@ -226,8 +225,8 @@ class LoansDetailFragment : Fragment() {
 
     private fun setupTabs() {
         val tabLayout = binding.tabLayout
-        tabLayout.addTab(tabLayout.newTab().setText("Sin Completar"))
-        tabLayout.addTab(tabLayout.newTab().setText("Completadas"))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.uncompleted_loans)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.completed_loans)))
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {

@@ -25,7 +25,7 @@ class VillagerListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentVillagerListBinding.inflate(inflater, container, false)
         return binding.root
     }

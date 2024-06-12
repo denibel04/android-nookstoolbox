@@ -3,7 +3,6 @@ package com.example.animalcrossing.ui
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,7 +14,6 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -85,7 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun setUsername() {
+    private fun setUsername() {
         lifecycleScope.launch {
             userRepository.profile.collect {
                 binding.profile.text = it.username
@@ -93,25 +91,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getUserDetails(uid: String, onUserDetails: (String?) -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("users").document(uid)
-            .get()
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    val userData = documentSnapshot.data
-                    val username = userData?.get("username") as String
-                    onUserDetails(username)
-                } else {
-                    onUserDetails(null)
-                }
-            }
-            .addOnFailureListener { e ->
-                onUserDetails(null)
-            }
-    }
-
-    fun BottomNavigationView.uncheckAllItems() {
+    private fun BottomNavigationView.uncheckAllItems() {
         menu.setGroupCheckable(0, true, false)
         for (i in 0 until menu.size()) {
             menu.getItem(i).isChecked = false

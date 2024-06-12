@@ -1,5 +1,6 @@
 package com.example.animalcrossing.ui.list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class VillagerListAdapter(
         override fun areItemsTheSame(oldItem: Villager, newItem: Villager) =
             oldItem.name == newItem.name
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Villager, newItem: Villager) = oldItem == newItem
     }
 

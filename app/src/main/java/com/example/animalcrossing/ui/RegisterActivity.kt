@@ -1,16 +1,12 @@
 package com.example.animalcrossing.ui
 
-import android.content.ContentValues
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
 import com.example.animalcrossing.R
-import com.example.animalcrossing.databinding.ActivityLoginBinding
 import com.example.animalcrossing.databinding.ActivityRegisterBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -35,7 +31,7 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.password.text.toString()
             register(username, email, password)
         }
-        buttonRegister.isEnabled = false;
+        buttonRegister.isEnabled = false
 
         val buttonAlreadyAccount = binding.alreadyAccount
         buttonAlreadyAccount.setOnClickListener {
@@ -62,10 +58,10 @@ class RegisterActivity : AppCompatActivity() {
                     buttonRegister.isEnabled = false
                 }
                 if (!validatePassword(password)) {
-                    errorText.error = "La contraseña debe tener 1 mayúscula, 1 número y 8 caracteres."
+                    errorText.error = getString(R.string.validate_password)
                     buttonRegister.isEnabled = false
                 }  else if (password != confirmPassword) {
-                    errorText.error = "Las contraseñas no coinciden"
+                    errorText.error = getString(R.string.confirm_password_error)
                     buttonRegister.isEnabled = false
                 }
                 else {
@@ -85,12 +81,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
 
-    fun alreadyRegistered() {
+    private fun alreadyRegistered() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 
-    fun register(username: String, email: String, password: String) {
+    private fun register(username: String, email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
@@ -116,7 +112,7 @@ class RegisterActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         baseContext,
-                        "No se ha podido crear la cuenta.",
+                        getString(R.string.error_register),
                         Toast.LENGTH_SHORT,
                     ).show()
                 }

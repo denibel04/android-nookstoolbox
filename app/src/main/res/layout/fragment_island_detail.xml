@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:padding="16dp"
-                    android:text="Nombre de la Isla"
+                    android:text="@string/island_name_label"
                     android:textSize="24sp" />
 
                 <TextView
@@ -83,7 +83,7 @@
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Añadir Isla"
+        android:text="@string/create_island"
         app:icon="@drawable/ic_plus"
     android:layout_gravity="center"
     android:visibility="visible" />
@@ -94,10 +94,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="TODO"
         android:src="@drawable/ic_share"
         app:fabCustomSize="56dp"
-        app:fabSize="normal" />
+        app:fabSize="normal"
+        android:contentDescription="@string/island_title" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

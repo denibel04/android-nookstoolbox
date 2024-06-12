@@ -1,8 +1,6 @@
 package com.example.animalcrossing.ui.userList
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,18 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.animalcrossing.data.repository.UserRepository
-import com.example.animalcrossing.databinding.FragmentProfileBinding
+import com.example.animalcrossing.R
 import com.example.animalcrossing.databinding.FragmentUsersListBinding
-import com.example.animalcrossing.ui.LoginActivity
-import com.example.animalcrossing.ui.list.VillagerListAdapter
-import com.example.animalcrossing.ui.list.VillagerListFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
@@ -35,13 +26,13 @@ class UserListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentUsersListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "User List"
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.user_list)
 
         val adapter = UserListAdapter(requireContext(), onFollowClicked = { user ->
             if (user.followers?.contains(currentUser?.uid) == true) {
@@ -61,7 +52,7 @@ class UserListFragment : Fragment() {
         val rv = binding.users
         rv.adapter = adapter
 
-        binding.searchView.getEditText().setOnEditorActionListener { v, actionId, event ->
+        binding.searchView.getEditText().setOnEditorActionListener { _, _, _ ->
             binding.searchBar.setText(binding.searchView.getText())
             val searchQuery = binding.searchBar.text.toString()
             viewModel.getFilteredUsers(searchQuery)

@@ -1,7 +1,6 @@
 package com.example.animalcrossing.data.db
 
 import androidx.annotation.WorkerThread
-import com.example.animalcrossing.data.repository.Villager
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -48,11 +47,6 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
         acnhDao.deleteVillagerFromIsland(crossRef)
     }
 
-    @WorkerThread
-    suspend fun updateVillagerFromIsland(name: String, islandId: Long) {
-        val crossRef = IslandVillagerCrossRef( islandId, name)
-        acnhDao.updateVillagerFromIsland(crossRef)
-    }
 
     @WorkerThread
     suspend fun deleteAllLoans() {

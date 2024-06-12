@@ -1,13 +1,12 @@
 package com.example.animalcrossing.ui
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Toast
+import com.example.animalcrossing.R
 import com.example.animalcrossing.databinding.ActivityLoginBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -68,14 +67,14 @@ class LoginActivity : AppCompatActivity() {
                                     if (role == "banned") {
                                         Toast.makeText(
                                             baseContext,
-                                            "Esta cuenta está baneada.",
+                                            getString(R.string.banned_toast),
                                             Toast.LENGTH_SHORT,
                                         ).show()
                                         auth.signOut()
                                     } else {
                                         Toast.makeText(
                                             baseContext,
-                                            "Se ha iniciado sesión.",
+                                            getString(R.string.login_success),
                                             Toast.LENGTH_SHORT,
                                         ).show()
                                         val intent = Intent(this, MainActivity::class.java)
@@ -86,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                                 } else {
                                     Toast.makeText(
                                         baseContext,
-                                        "No se ha podido iniciar sesión.",
+                                        getString(R.string.login_fail),
                                         Toast.LENGTH_SHORT,
                                     ).show()
                                 }

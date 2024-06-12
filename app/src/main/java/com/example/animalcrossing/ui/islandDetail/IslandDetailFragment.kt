@@ -8,14 +8,12 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -26,7 +24,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.animalcrossing.R
 import com.example.animalcrossing.databinding.FragmentIslandDetailBinding
-import com.example.animalcrossing.ui.list.VillagerListAdapter
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.search.SearchBar
 import com.google.android.material.search.SearchView
@@ -44,9 +41,6 @@ class IslandDetailFragment : Fragment() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
 
 
-    /**
-     * @suppress("RedundantOverride")
-     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,9 +55,6 @@ class IslandDetailFragment : Fragment() {
     }
 
 
-    /**
-     * @suppress("RedundantOverride")
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.island_title)
         super.onViewCreated(view, savedInstanceState)
@@ -86,7 +77,7 @@ class IslandDetailFragment : Fragment() {
                         binding.addIsland.visibility = View.GONE
                         binding.shareIsland.visibility = View.VISIBLE
                         binding.islandName.text = uiState.name
-                        binding.islandDescription.text = "Hemisferio: "+uiState.hemisphere
+                        binding.islandDescription.text = getString(R.string.hemisphere_label, uiState.hemisphere)
                         viewModel.villagers.collectLatest { nuevosVillagers ->
                             adapter.submitList(nuevosVillagers)
                         }
@@ -161,7 +152,7 @@ class IslandDetailFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext()).apply {
                 setTitle(getString(R.string.is_new))
                 setView(input)
-                setPositiveButton(getString(R.string.create)) { dialog, _ ->
+                setPositiveButton(getString(R.string.create)) { _, _ ->
                     val islandName = input.text.toString()
                     if (islandName.isNotBlank()) {
                         var hemisphere = "none"
@@ -271,7 +262,7 @@ class IslandDetailFragment : Fragment() {
      * Checks location permission before creating an island.
      */
     private fun checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(
+        if (checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
@@ -299,7 +290,7 @@ class IslandDetailFragment : Fragment() {
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Los permisos de ubicación son necesarios para crear la isla.",
+                    context?.getString(R.string.hemisphere_permission),
                     Toast.LENGTH_SHORT
                 ).show()
             }

@@ -51,7 +51,7 @@ class FetchRepository @Inject constructor(
     /**
      * Fetches all necessary data from Firebase and inserts it into the local database.
      */
-    suspend fun fetchAll() {
+    private suspend fun fetchAll() {
         val islandData = apiRepository.getIsland()
         if (islandData.name.isNotEmpty()) {
             val islandEntity = IslandEntity(name = islandData.name, hemisphere = islandData.hemisphere)

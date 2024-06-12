@@ -6,12 +6,10 @@ import android.net.NetworkCapabilities
 import android.widget.Toast
 import com.example.animalcrossing.data.db.ProfileDBRepository
 import com.example.animalcrossing.data.db.ProfileEntity
-import com.example.animalcrossing.data.db.asLoan
 import com.example.animalcrossing.data.db.asUser
 import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.firebase.UserDetail
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,11 +31,11 @@ class UserRepository @Inject constructor(
 
 
     suspend fun getUsers(): List<UserDetail> {
-        if (isOnline()) {
-            return apiRepository.getUsers()
+        return if (isOnline()) {
+            apiRepository.getUsers()
         } else {
             showNoInternetToast()
-            return emptyList()
+            emptyList()
         }
     }
 
@@ -46,29 +44,29 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getFriends(): List<UserDetail> {
-        if (isOnline()) {
-            return apiRepository.getFriends()
+        return if (isOnline()) {
+            apiRepository.getFriends()
         } else {
             showNoInternetToast()
-            return emptyList()
+            emptyList()
         }
     }
 
     suspend fun getFollowers(): List<UserDetail> {
-        if (isOnline()) {
-            return apiRepository.getFollowers()
+        return if (isOnline()) {
+            apiRepository.getFollowers()
         } else {
             showNoInternetToast()
-            return emptyList()
+            emptyList()
         }
     }
 
     suspend fun getFollowing(): List<UserDetail> {
-        if (isOnline()) {
-            return apiRepository.getFollowing()
+        return if (isOnline()) {
+            apiRepository.getFollowing()
         } else {
             showNoInternetToast()
-            return emptyList()
+            emptyList()
         }
     }
 
@@ -125,11 +123,11 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun getFilteredUsers(search: String): List<UserDetail> {
-        if (isOnline()) {
-            return apiRepository.getFilteredUsers(search)
+        return if (isOnline()) {
+            apiRepository.getFilteredUsers(search)
         } else {
             showNoInternetToast()
-            return emptyList()
+            emptyList()
         }
     }
 

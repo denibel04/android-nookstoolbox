@@ -25,8 +25,7 @@
                 android:id="@+id/profile"
                 android:padding="16dp"
                 android:layout_gravity="end"
-                android:text="User"
-                android:drawableRight="@drawable/ic_account_circle"
+                android:drawableEnd="@drawable/ic_account_circle"
                 android:paddingHorizontal="12dp"
                 android:paddingVertical="8dp"
                 android:textSize="18sp"/>

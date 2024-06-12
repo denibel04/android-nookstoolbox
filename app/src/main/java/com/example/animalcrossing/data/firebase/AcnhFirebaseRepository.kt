@@ -2,9 +2,7 @@ package com.example.animalcrossing.data.firebase
 
 import com.example.animalcrossing.data.db.LoansEntity
 import com.example.animalcrossing.data.repository.Loan
-import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.UserProfileDetail
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,10 +28,10 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     }
 
     suspend fun getIsland(): IslandDetail {
-        return service.getIsland();
+        return service.getIsland()
     }
     fun createIsland(name: String, hemisphere: String) {
-        service.createIsland(name, hemisphere);
+        service.createIsland(name, hemisphere)
     }
 
     suspend fun renameIsland(name: String) {

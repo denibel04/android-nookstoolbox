@@ -11,14 +11,14 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="search" />
+            android:hint="@string/search" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.search.SearchView
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:id="@+id/search_view"
-        android:hint="search"
+        android:hint="@string/search"
         app:layout_anchor="@id/search_bar">
     </com.google.android.material.search.SearchView>
 

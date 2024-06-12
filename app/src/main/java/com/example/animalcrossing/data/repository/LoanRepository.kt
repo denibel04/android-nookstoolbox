@@ -3,7 +3,6 @@ package com.example.animalcrossing.data.repository
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import android.widget.Toast
 import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.db.LoansDBRepository
@@ -23,25 +22,21 @@ class LoanRepository @Inject constructor(
 
     val loans: Flow<List<Loan>>
         get() {
-            val list = dbRepository.allLoans.map { it.asLoan() }
-            return list
+            return dbRepository.allLoans.map { it.asLoan() }
         }
 
     suspend fun addLoan(title: String, type: String, amountPaid: Int, amountTotal: Int, completed: Boolean): Long {
-        if (isOnline()) {
+        return if (isOnline()) {
             val newLoan = LoansEntity(firebaseId = "", title = title, type = type, amountPaid = amountPaid, amountTotal = amountTotal, completed = completed)
             val firebaseId = apiRepository.createLoan(newLoan)
             newLoan.firebaseId = firebaseId
-            return dbRepository.insert(newLoan)
+            dbRepository.insert(newLoan)
         } else {
             showNoInternetToast()
-            return -1
+            -1
         }
     }
 
-    suspend fun getLoan(firebaseId: String): Flow<LoansEntity> {
-        return dbRepository.getLoan(firebaseId)
-    }
 
     suspend fun deleteLoan(firebaseId: String) {
         if (isOnline()) {

@@ -1,39 +1,116 @@
 <resources>
-    <string name="app_name">Animal Crossing!!</string>
-    <string name="hello_blank_fragment">Salut fragment gol</string>
+    <string name="app_name">Nook\'s Toolbox</string>
 
     <!-- GLOBAL -->
-    <string name="search">Caută...</string>
-    <string name="cancel">Anulează</string>
-    <string name="accept">Acceptă</string>
-    <string name="change">Schimbă</string>
-    <string name="create">Creează</string>
+    <string name="search">Căutați…</string>
+    <string name="cancel">Anulați</string>
+    <string name="accept">Acceptați</string>
+    <string name="change">Schimbați</string>
+    <string name="create">Creați</string>
     <string name="empty_name">Numele nu poate fi gol</string>
 
     <!-- VILLAGERS -->
-    <string name="villager_bottom_nav">Personaje</string>
-    <string name="add_villager">Adaugă personaj</string>
-    <string name="villagers_title">Personaje</string>
-    <string name="birthday">Zi de naștere: %1$s %2$s</string>
-    <string name="species">Specie: %1$s</string>
-    <string name="personality">Personalitate: %1$s</string>
-    <string name="select_villager">Selectează un personaj</string>
+    <string name="villager_bottom_nav">Săteni</string>
+    <string name="add_villager">Adăugați sătean</string>
+    <string name="villagers_title">Săteni</string>
+    <string name="birthday">Zi de naștere: %1s %2s</string>
+    <string name="species">Specie: %1s</string>
+    <string name="personality">Personalitate: %1s</string>
+    <string name="select_villager">Selectați un sătean</string>
 
     <!-- FISH -->
     <string name="fish_bottom_nav">Pești</string>
     <string name="fish_title">Pești</string>
-    <string name="rarity">Raritate: %1$s</string>
-    <string name="location">Habitat: %1$s</string>
-    <string name="shadow">Umbră: %1$s</string>
+    <string name="rarity">Raritate: %1s</string>
+    <string name="location">Locație: %1s</string>
+    <string name="shadow">Umbra: %1s</string>
 
     <!-- ISLAND -->
     <string name="island_bottom_nav">Insulă</string>
-    <string name="share_text">Insula mea se numește %1$s, iar vecinii mei sunt: %2$s</string>
+    <string name="share_text">Insula mea se numește %1s, și sătenii mei sunt: %2s</string>
     <string name="island_title">Insula mea</string>
     <string name="is_new">Insulă nouă</string>
-    <string name="is_name">Introdu numele insulei</string>
-    <string name="is_rename">Redenumește insula</string>
+    <string name="is_name">Introduceți numele insulei</string>
+    <string name="is_rename">Schimbați numele insulei</string>
+    <string name="island_name_label">Numele insulei</string>
+    <string name="create_island">Adăugați insulă</string>
     <string name="newname">Nume nou</string>
-    <string name="delete_island_title">Șterge insula</string>
-    <string name="delete_island_confirmation">Ești sigur că vrei să ștergi insula?</string>
+    <string name="delete_island_title">Ștergeți insula</string>
+    <string name="delete_island_confirmation">Sunteți sigur că doriți să ștergeți insula?</string>
+    <string name="north">Hemisfera nordică</string>
+    <string name="south">Hemisfera sudică</string>
+    <string name="no_hemisphere">Fără hemisferă</string>
+    <string name="hemisphere_permission">Permisiunile de locație sunt necesare pentru a crea insula.</string>
+
+    <!-- LOANS -->
+    <string name="my_loans">Datoriile mele</string>
+    <string name="loans_bottom_nav">Datorii</string>
+    <string name="bridge">Pod</string>
+    <string name="stairs">Scări</string>
+    <string name="house">Casă</string>
+    <string name="hemisphere_label">Hemisferă: %s</string>
+    <string name="debt_progress"> %d %s / %d %s</string>
+    <string name="bayas">baya</string>
+    <string name="title_complete_debt">Finalizați datoria</string>
+    <string name="title_update_debt">Actualizați datoria</string>
+    <string name="message_complete_debt">Doriți să finalizați datoria?</string>
+    <string name="message_update_debt">Doriți să actualizați datoria la %1$d?</string>
+    <string name="completed_loans">Finalizate</string>
+    <string name="uncompleted_loans">Necompletate</string>
+    <string name="no_island_error">Pentru a adăuga datorii trebuie să aveți o insulă creată</string>
+    <string name="loan_title">Titlul datoriei</string>
+    <string name="loan_type">Tipul datoriei</string>
+    <string name="loan_amount_paid">Suma plătită</string>
+    <string name="loan_amount_total">Suma totală</string>
+    <string name="loan_completed_status">Finalizată</string>
+
+    <!-- PROFILE -->
+    <string name="following_count">Urmăriri: %d</string>
+    <string name="followers_count">Urmăritori: %d</string>
+    <string name="assign_dream_code">"Faceți clic pentru a atribui un cod"</string>
+    <string name="set_username">"Introduceți noul nume de utilizator"</string>
+    <string name="set_dream_code">"Introduceți noul cod de vis"</string>
+    <string name="tab_friends">Prieteni</string>
+    <string name="tab_followers">Urmăritori</string>
+    <string name="tab_following">Urmăriri</string>
+    <string name="my_profile">Profilul meu</string>
+    <string name="open_camera_error">Nu s-a putut deschide camera</string>
+    <string name="permission_camera_error">Permisiunile nu au fost acordate</string>
+    <string name="load_image_error">Eroare la încărcarea imaginii</string>
+    <string name="upload_image_error">Eroare la încărcarea imaginii</string>
+    <string name="update_image_error">Eroare la actualizarea imaginii</string>
+    <string name="unfollow">Dezabonați-vă</string>
+    <string name="follow">Abonați-vă</string>
+    <string name="button_gallery">Galerie</string>
+    <string name="button_camera">Faceți o fotografie</string>
+    <string name="logout">Deconectați-vă</string>
+    <string name="dream_code">Cod de vis</string>
+    <string name="edit_username_hint">Nume de utilizator…</string>
+    <string name="edit_title">Editați</string>
+
+    <!-- USER DETAIL -->
+    <string name="userIsland">Insula lui %s</string>
+    <string name="user_no_island">Acest utilizator nu are insulă.</string>
+
+    <!-- USER LIST -->
+    <string name="users_bottom_nav">Utilizatori</string>
+    <string name="user_list">Lista utilizatorilor</string>
+    <string name="no_dream_code">"Fără cod de vis"</string>
+
+    <!-- LOGIN AND REGISTER -->
+    <string name="email">Adresă de e-mail</string>
+    <string name="username">Nume de utilizator</string>
+    <string name="password">Parolă</string>
+    <string name="confirm_password">Confirmați parola</string>
+    <string name="login">Conectați-vă</string>
+    <string name="register">Înregistrați-vă</string>
+    <string name="no_account">Nu aveți un cont?</string>
+
+    <string name="banned_toast">Acest cont este interzis.</string>
+    <string name="login_success">Conectare reușită.</string>
+    <string name="login_fail">Conectarea a eșuat.</string>
+    <string name="validate_password">Parola trebuie să conțină 1 majusculă, 1 număr și 8 caractere.</string>
+    <string name="confirm_password_error">Parolele nu se potrivesc</string>
+    <string name="error_register">Nu s-a putut crea contul.</string>
+
 </resources>

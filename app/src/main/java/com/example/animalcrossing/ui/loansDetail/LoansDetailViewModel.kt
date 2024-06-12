@@ -1,12 +1,10 @@
 package com.example.animalcrossing.ui.loansDetail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.animalcrossing.data.repository.IslandRepository
 import com.example.animalcrossing.data.repository.Loan
 import com.example.animalcrossing.data.repository.LoanRepository
-import com.example.animalcrossing.ui.list.VillagerListUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +12,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel

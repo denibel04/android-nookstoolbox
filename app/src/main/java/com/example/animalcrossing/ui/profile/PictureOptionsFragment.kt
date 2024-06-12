@@ -16,8 +16,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentPictureOptionsBinding
@@ -30,7 +30,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class PictureOptionsFragment(private val profile: User, private val userRepository: UserRepository) : BottomSheetDialogFragment() {
 
@@ -40,7 +39,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPictureOptionsBinding.inflate(inflater, container, false)
 
         binding.buttonGallery.setOnClickListener {
@@ -85,7 +84,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         } else {
             Toast.makeText(
                 requireContext(),
-                "No se pudo abrir la cámara.",
+                getString(R.string.open_camera_error),
                 Toast.LENGTH_SHORT
             ).show()
         }
@@ -104,7 +103,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Permiso de cámara denegado.",
+                        getString(R.string.permission_camera_error),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -117,7 +116,6 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             uploadAndSetProfilePicture(imageBitmap)
-            Log.d(TAG, "Bitmap capturado: $imageBitmap")
         } else if (requestCode == REQUEST_GALLERY_IMAGE && resultCode == Activity.RESULT_OK) {
             val selectedImageUri: Uri? = data?.data
             selectedImageUri?.let { uri ->
@@ -128,7 +126,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
                     this.dismiss()
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    Toast.makeText(requireContext(), "Error al cargar la imagen.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.load_image_error), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -155,7 +153,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
                 val downloadUri = task.result
                 saveProfilePicture(downloadUri.toString())
             } else {
-                Toast.makeText(requireContext(), "Error al subir la imagen.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.upload_image_error), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -175,7 +173,7 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Error al actualizar la imagen de perfil.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.update_image_error), Toast.LENGTH_SHORT).show()
                 }
         }
     }

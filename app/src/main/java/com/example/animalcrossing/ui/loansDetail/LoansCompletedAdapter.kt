@@ -1,5 +1,6 @@
 package com.example.animalcrossing.ui.loansDetail
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,19 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.imageLoader
-import coil.load
-import coil.request.ImageRequest
+import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.Loan
-import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.LoansListItemBinding
-import com.example.animalcrossing.databinding.VillagerListItemBinding
-import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
 
 class LoansCompletedAdapter(
     private val context: Context,
     private val onLoanDeleteClicked: ((String?) -> Unit)? = null
-) : ListAdapter<Loan, LoansCompletedAdapter.LoansViewHolder>(LoansCompletedAdapter.LoansDiffCallback) {
+) : ListAdapter<Loan, LoansCompletedAdapter.LoansViewHolder>(LoansDiffCallback) {
     inner class LoansViewHolder(val binding: LoansListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(l: Loan) {
@@ -32,7 +28,7 @@ class LoansCompletedAdapter(
             binding.loanSlider.isEnabled = false
 
             binding.editLoan.visibility = View.GONE
-            binding.debtProgress.text = l.amountPaid.toString()+" bayas / "+l.amountTotal.toString()+" bayas"
+            binding.debtProgress.text = context.getString(R.string.debt_progress, l.amountPaid, context.getString(R.string.bayas), l.amountTotal, context.getString(R.string.bayas))
 
         }
     }
@@ -41,6 +37,7 @@ class LoansCompletedAdapter(
         override fun areItemsTheSame(oldItem: Loan, newItem: Loan) =
             oldItem.title == newItem.title
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Loan, newItem: Loan) = oldItem == newItem
     }
 

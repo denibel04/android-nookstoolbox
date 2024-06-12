@@ -44,8 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus"
-        app:layout_anchor="@id/loanList"
-        app:layout_anchorGravity="bottom|end" />
+        android:layout_gravity="bottom|end" />
 
     <TextView
         android:id="@+id/noIslandText"
@@ -54,6 +53,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_gravity="center"
-        android:text="Para añadir deudas necesitas tener una isla creada" />
+        android:text="@string/no_island_error" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

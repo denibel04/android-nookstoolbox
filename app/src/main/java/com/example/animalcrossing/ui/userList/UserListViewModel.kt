@@ -1,6 +1,5 @@
 package com.example.animalcrossing.ui.userList
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.animalcrossing.data.repository.UserRepository

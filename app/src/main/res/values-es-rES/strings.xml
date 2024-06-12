@@ -1,14 +1,15 @@
 <resources>
-    <string name="app_name">Animal Crossing!!</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">Nook\'s Toolbox</string>
 
     <!-- GLOBAL -->
     <string name="search">Buscar…</string>
-    <string name="cancel">Cancel</string>
+    <string name="cancel">Cancelar</string>
     <string name="accept">Aceptar</string>
     <string name="change">Cambiar</string>
     <string name="create">Crear</string>
     <string name="empty_name">El nombre no puede estar vacío</string>
+
+
 
 
     <!-- VILLAGERS -->
@@ -36,7 +37,89 @@
     <string name="is_new">Nueva isla</string>
     <string name="is_name">Introduce el nombre de la isla</string>
     <string name="is_rename">Cambia el nombre de la isla</string>
+    <string name="island_name_label">Nombre de la isla</string>
+    <string name="create_island">Añadir isla</string>
     <string name="newname">Nuevo nombre</string>
     <string name="delete_island_title">Eliminar isla</string>
     <string name="delete_island_confirmation">¿Estás seguro de que quieres eliminar la isla?</string>
+    <string name="north">Hemisferio Norte</string>
+    <string name="south">Hemisferio Sur</string>
+    <string name="no_hemisphere">Sin hemispherio</string>
+    <string name="hemisphere_permission">Los permisos de ubicación son necesarios para crear la isla.</string>
+
+
+    <!-- LOANS -->
+    <string name="my_loans">Mis deudas</string>
+    <string name="loans_bottom_nav">Deudas</string>
+    <string name="bridge">Puente</string>
+    <string name="stairs">Escaleras</string>
+    <string name="house">Casa</string>
+    <string name="hemisphere_label">Hemisferio: %s</string>
+    <string name="debt_progress"> %d %s / %d %s</string>
+    <string name="bayas">bayas</string>
+    <string name="title_complete_debt">Completar deuda</string>
+    <string name="title_update_debt">Actualizar deuda</string>
+    <string name="message_complete_debt">¿Quieres completar tu deuda?</string>
+    <string name="message_update_debt">¿Quieres actualizar tu deuda a %1$d?</string>
+    <string name="completed_loans">Completadas</string>
+    <string name="uncompleted_loans">Sin completar</string>
+    <string name="no_island_error">Para añadir deudas necesitas tener una isla creada</string>
+    <string name="loan_title">Título de deuda</string>
+    <string name="loan_type">Tipo de deuda</string>
+    <string name="loan_amount_paid">Cantidad pagada</string>
+    <string name="loan_amount_total">Cantidad total</string>
+    <string name="loan_completed_status">Completada</string>
+
+    <!-- PROFILE -->
+    <string name="following_count">Siguiendo: %d</string>
+    <string name="followers_count">Seguidores: %d</string>
+    <string name="assign_dream_code">"Haga click para asignar un código"</string>
+    <string name="set_username">"Introduzca el nuevo nombre de usuario"</string>
+    <string name="set_dream_code">"Introduzca el nuevo código de ensueño"</string>
+    <string name="tab_friends">Amigos</string>
+    <string name="tab_followers">Seguidores</string>
+    <string name="tab_following">Siguiendo</string>
+    <string name="my_profile">Mi perfil</string>
+    <string name="open_camera_error">No se pudo abrir la cámara</string>
+    <string name="permission_camera_error">No se aceptaron los permisos</string>
+    <string name="load_image_error">Error al cargar la imagen</string>
+    <string name="upload_image_error">Error al subir la imagen</string>
+    <string name="update_image_error">Error al actualizar la imagen</string>
+    <string name="unfollow">Dejar de seguir</string>
+    <string name="follow">Seguir</string>
+    <string name="button_gallery">Galería</string>
+    <string name="button_camera">Tomar Foto</string>
+    <string name="logout">Cerrar sesión</string>
+    <string name="dream_code">Código de ensueño</string>
+    <string name="edit_username_hint">Nombre de usuario…</string>
+    <string name="edit_title">Editar</string>
+
+    <!-- USER DETAIL -->
+    <string name="userIsland">Isla de %s</string>
+    <string name="user_no_island">Este usuario no tiene isla.</string>
+
+    <!-- USER LIST -->
+    <string name="users_bottom_nav">Usuarios</string>
+    <string name="user_list">Lista de usuarios</string>
+    <string name="no_dream_code">Sin código de ensueño</string>
+
+
+    <!-- LOGIN AND REGISTER -->
+    <string name="email">Correo electrónico</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="register">Registrarse</string>
+    <string name="no_account">¿No tienes cuenta?</string>
+
+
+    <string name="banned_toast">Esta cuenta está baneada.</string>
+    <string name="login_success">Se ha iniciado sesión.</string>
+    <string name="login_fail">No se ha podido iniciar sesión.</string>
+    <string name="validate_password">La contraseña debe tener 1 mayúscula, 1 número y 8 caracteres.</string>
+    <string name="confirm_password_error">Las contraseñas no coinciden</string>
+    <string name="error_register">No se ha podido crear la cuenta.</string>
+
+
 </resources>

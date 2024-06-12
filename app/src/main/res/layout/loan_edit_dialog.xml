@@ -10,7 +10,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Amount Paid"
+        android:hint="@string/loan_amount_paid"
         app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +29,7 @@
         android:id="@+id/completedStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Completed"
+        android:text="@string/loan_completed_status"
         app:layout_constraintStart_toStartOf="@id/amountPaidLayout"
         app:layout_constraintTop_toBottomOf="@id/amountPaidLayout"
         android:layout_marginTop="16dp" />

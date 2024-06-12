@@ -60,7 +60,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Código de Ensueño"
+            android:text="@string/dream_code"
             app:layout_constraintTop_toBottomOf="@id/username"
             app:layout_constraintStart_toEndOf="@id/profilePicture"
 
@@ -83,7 +83,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:text="Seguidores"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/profilePicture"
              />
@@ -92,7 +91,6 @@
             android:id="@+id/followedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seguidos"
             app:layout_constraintTop_toTopOf="@id/followersTextView"
             app:layout_constraintStart_toEndOf="@id/followersTextView"
             app:layout_constraintEnd_toEndOf="parent"

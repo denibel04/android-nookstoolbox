@@ -29,7 +29,7 @@ class LoansDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
 
     @WorkerThread
     suspend fun updateLoan (loan: Loan) {
-        val loan = LoansEntity(firebaseId = loan.firebaseId, title = loan.title, type = loan.type, amountPaid = loan.amountPaid, amountTotal = loan.amountTotal, completed = loan.completed)
-        acnhDao.updateLoan(loan)
+        val newLoan = LoansEntity(firebaseId = loan.firebaseId, title = loan.title, type = loan.type, amountPaid = loan.amountPaid, amountTotal = loan.amountTotal, completed = loan.completed)
+        acnhDao.updateLoan(newLoan)
     }
 }

@@ -10,13 +10,13 @@
         android:id="@+id/buttonGallery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Galería" />
+        android:text="@string/button_gallery" />
 
     <Button
         android:id="@+id/buttonTakePhoto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tomar Foto" />
+        android:text="@string/button_camera" />
 
 
 </LinearLayout>

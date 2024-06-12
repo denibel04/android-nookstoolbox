@@ -2,9 +2,7 @@ package com.example.animalcrossing.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.User
-import kotlin.math.sign
 
 @Entity(tableName = "profile")
 data class ProfileEntity (

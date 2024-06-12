@@ -27,9 +27,7 @@ data class UserDetail (
     val dreamCode: String? = null,
     val followers: List<String>? = null,
     val following: List<String>? = null
-) {
-    constructor() : this("", "", "", "", "", emptyList(), emptyList())
-}
+)
 
 
 fun List<VillagerDetail>.asEntityModel():List<VillagerEntity> {

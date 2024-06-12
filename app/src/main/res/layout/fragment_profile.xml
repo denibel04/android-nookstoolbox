@@ -43,7 +43,7 @@
                     android:id="@+id/logoutButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cerrar Sesión"
+                    android:text="@string/logout"
                     android:clickable="true"
                     android:textColor="#FF0000"
                     android:background="@android:color/transparent"
@@ -51,7 +51,8 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/username" />
+                    app:layout_constraintBottom_toTopOf="@id/username"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/username"
@@ -63,14 +64,15 @@
                     android:textSize="20sp"
                     app:layout_constraintBottom_toTopOf="@id/dreamCode"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@id/profilePicture" />
+                    app:layout_constraintStart_toEndOf="@id/profilePicture"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/dreamCodeLabelTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Código de Ensueño"
+                    android:text="@string/dream_code"
                     app:layout_constraintTop_toBottomOf="@id/username"
                     app:layout_constraintStart_toEndOf="@id/profilePicture"
                     app:layout_constraintBottom_toTopOf="@id/dreamCode" />
@@ -81,10 +83,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:clickable="true"
-                    android:text="Haga click para asignar un código"
-                    android:textSize="10sp"
+                    android:text="@string/no_dream_code"
+                    android:textSize="11sp"
                     app:layout_constraintTop_toBottomOf="@id/dreamCodeLabelTextView"
-                    app:layout_constraintStart_toEndOf="@id/profilePicture" />
+                    app:layout_constraintStart_toEndOf="@id/profilePicture"
+                    android:focusable="true" />
 
                 <TextView
                     android:id="@+id/followersTextView"
@@ -92,7 +95,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="10dp"
-                    android:text="Seguidores"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="@id/profilePicture" />
 
@@ -100,7 +102,6 @@
                     android:id="@+id/followedTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Seguidos"
                     app:layout_constraintTop_toTopOf="@id/followersTextView"
                     app:layout_constraintStart_toEndOf="@id/followersTextView"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -37,7 +37,7 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
             repository.islandWithVillagers.collect { islandWithVillagers ->
                 _uiState.value = if (islandWithVillagers != null) {
                     val currentList = _villagers.value.toMutableList()
-                    islandWithVillagers!!.villagers.asVillager().forEachIndexed { index, villager ->
+                    islandWithVillagers.villagers.asVillager().forEachIndexed { index, villager ->
                         if (index < 10) {
                             currentList[index] = villager
                         }
@@ -103,15 +103,13 @@ class IslandDetailViewModel @Inject constructor(private val repository: IslandRe
         viewModelScope.launch {
             repository.deleteVillagerFromIsland(name, islandId)
             val updatedList = _villagers.value.toMutableList()
-            Log.d("villagers1", updatedList.toString())
             updatedList.removeAll { it?.name == name }
             updatedList.add(9, null)
-            Log.d("villagers2", updatedList.toString())
             _villagers.value = updatedList
         }
     }
 
-    fun isVillagerAtPosition(index: Int): Boolean {
+    private fun isVillagerAtPosition(index: Int): Boolean {
         return _villagers.value.getOrNull(index) != null
     }
 

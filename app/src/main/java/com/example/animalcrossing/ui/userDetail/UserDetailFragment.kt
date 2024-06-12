@@ -1,26 +1,20 @@
 package com.example.animalcrossing.ui.userDetail
 
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import coil.load
 import com.example.animalcrossing.R
 import com.example.animalcrossing.databinding.FragmentUserDetailBinding
-import com.example.animalcrossing.ui.islandDetail.IslandDetailAdapter
-import com.example.animalcrossing.ui.userDetail.UserDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -35,7 +29,7 @@ class UserDetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentUserDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -51,13 +45,17 @@ class UserDetailFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getUser(args.uid)
                 viewModel.uiState.collect { uiState ->
-                    Log.d("uiState", uiState.islandExists.toString())
-                    (activity as? AppCompatActivity)?.supportActionBar?.title = "Isla de "+uiState.username
+                    (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.userIsland, uiState.username)
                     if (uiState.islandExists) {
                         binding.island.visibility = View.VISIBLE
                         binding.noIslandText.visibility = View.GONE
                         binding.islandName.text = uiState.islandName
-                        binding.islandDescription.text = "Hemisferio: "+uiState.hemisphere
+                        val hemisphereText = when (uiState.hemisphere) {
+                            "north" -> getString(R.string.north)
+                            "south" -> getString(R.string.south)
+                            else -> getString(R.string.no_hemisphere)
+                        }
+                        binding.islandDescription.text = hemisphereText
                         viewModel.uiState.collectLatest { user ->
                             adapter.submitList(user.villagers)
                         }

@@ -1,39 +1,116 @@
 <resources>
-    <string name="app_name">Animal Crossing!!</string>
-    <string name="hello_blank_fragment">Hello Blank Fragment</string>
+    <string name="app_name">Nook\'s Toolbox</string>
 
     <!-- GLOBAL -->
-    <string name="search">Search...</string>
+    <string name="search">Search…</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
     <string name="change">Change</string>
     <string name="create">Create</string>
-    <string name="empty_name">Name cannot be empty</string>
+    <string name="empty_name">The name cannot be empty</string>
 
     <!-- VILLAGERS -->
     <string name="villager_bottom_nav">Villagers</string>
-    <string name="add_villager">Add Villager</string>
+    <string name="add_villager">Add villager</string>
     <string name="villagers_title">Villagers</string>
     <string name="birthday">Birthday: %1s %2s</string>
     <string name="species">Species: %1s</string>
     <string name="personality">Personality: %1s</string>
-    <string name="select_villager">Select a Villager</string>
+    <string name="select_villager">Select a villager</string>
 
     <!-- FISH -->
     <string name="fish_bottom_nav">Fish</string>
     <string name="fish_title">Fish</string>
     <string name="rarity">Rarity: %1s</string>
-    <string name="location">Habitat: %1s</string>
+    <string name="location">Location: %1s</string>
     <string name="shadow">Shadow: %1s</string>
 
     <!-- ISLAND -->
     <string name="island_bottom_nav">Island</string>
-    <string name="share_text">My island is called %1$s, and my neighbors are: %2$s</string>
-    <string name="island_title">My Island</string>
-    <string name="is_new">New Island</string>
-    <string name="is_name">Enter the name of the island</string>
-    <string name="is_rename">Rename the island</string>
-    <string name="newname">New Name</string>
-    <string name="delete_island_title">Delete Island</string>
+    <string name="share_text">My island is called %1s, and my villagers are: %2s</string>
+    <string name="island_title">My island</string>
+    <string name="is_new">New island</string>
+    <string name="is_name">Enter the island name</string>
+    <string name="is_rename">Change the island name</string>
+    <string name="island_name_label">Island name</string>
+    <string name="create_island">Add island</string>
+    <string name="newname">New name</string>
+    <string name="delete_island_title">Delete island</string>
     <string name="delete_island_confirmation">Are you sure you want to delete the island?</string>
+    <string name="north">Northern Hemisphere</string>
+    <string name="south">Southern Hemisphere</string>
+    <string name="no_hemisphere">No hemisphere</string>
+    <string name="hemisphere_permission">Location permissions are required to create the island.</string>
+
+    <!-- LOANS -->
+    <string name="my_loans">My debts</string>
+    <string name="loans_bottom_nav">Debts</string>
+    <string name="bridge">Bridge</string>
+    <string name="stairs">Stairs</string>
+    <string name="house">House</string>
+    <string name="hemisphere_label">Hemisphere: %s</string>
+    <string name="debt_progress"> %d %s / %d %s</string>
+    <string name="bayas">bells</string>
+    <string name="title_complete_debt">Complete debt</string>
+    <string name="title_update_debt">Update debt</string>
+    <string name="message_complete_debt">Do you want to complete your debt?</string>
+    <string name="message_update_debt">Do you want to update your debt to %1$d?</string>
+    <string name="completed_loans">Completed</string>
+    <string name="uncompleted_loans">Incomplete</string>
+    <string name="no_island_error">You need to have an island created to add debts</string>
+    <string name="loan_title">Debt title</string>
+    <string name="loan_type">Debt type</string>
+    <string name="loan_amount_paid">Amount paid</string>
+    <string name="loan_amount_total">Total amount</string>
+    <string name="loan_completed_status">Completed</string>
+
+    <!-- PROFILE -->
+    <string name="following_count">Following: %d</string>
+    <string name="followers_count">Followers: %d</string>
+    <string name="assign_dream_code">"Click to assign a code"</string>
+    <string name="set_username">"Enter the new username"</string>
+    <string name="set_dream_code">"Enter the new dream code"</string>
+    <string name="tab_friends">Friends</string>
+    <string name="tab_followers">Followers</string>
+    <string name="tab_following">Following</string>
+    <string name="my_profile">My profile</string>
+    <string name="open_camera_error">Could not open the camera</string>
+    <string name="permission_camera_error">Permissions not granted</string>
+    <string name="load_image_error">Error loading image</string>
+    <string name="upload_image_error">Error uploading image</string>
+    <string name="update_image_error">Error updating image</string>
+    <string name="unfollow">Unfollow</string>
+    <string name="follow">Follow</string>
+    <string name="button_gallery">Gallery</string>
+    <string name="button_camera">Take Photo</string>
+    <string name="logout">Log out</string>
+    <string name="dream_code">Dream code</string>
+    <string name="edit_username_hint">Username…</string>
+    <string name="edit_title">Edit</string>
+
+    <!-- USER DETAIL -->
+    <string name="userIsland">%s\'s island</string>
+    <string name="user_no_island">This user has no island.</string>
+
+    <!-- USER LIST -->
+    <string name="users_bottom_nav">Users</string>
+    <string name="user_list">User list</string>
+    <string name="no_dream_code">No dream code assigned</string>
+
+
+    <!-- LOGIN AND REGISTER -->
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="login">Log in</string>
+    <string name="register">Register</string>
+    <string name="no_account">Don\'t have an account?</string>
+
+    <string name="banned_toast">This account is banned.</string>
+    <string name="login_success">Logged in successfully.</string>
+    <string name="login_fail">Failed to log in.</string>
+    <string name="validate_password">The password must have 1 uppercase, 1 number, and 8 characters.</string>
+    <string name="confirm_password_error">Passwords do not match</string>
+    <string name="error_register">Failed to create the account.</string>
 </resources>

@@ -1,14 +1,8 @@
 package com.example.animalcrossing.ui.profile
-
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.animalcrossing.data.repository.User
 import com.example.animalcrossing.data.repository.UserRepository
-import com.example.animalcrossing.data.repository.VillagerRepository
-import com.example.animalcrossing.ui.list.VillagerListUiState
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -132,18 +125,17 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
             // Following List
             val updatedFollowing = currentState.following.map { user ->
                 if (user.uid == uid) {
-                    val updatedFollowers = if (follow) {
+                    val newUpdatedFollowers = if (follow) {
                         user.followers?.toMutableList()?.apply { add(currentUserUid) } ?: listOf(currentUserUid)
                     } else {
                         user.followers?.filter { it != currentUserUid }
                     }
-                    user.copy(followers = updatedFollowers)
+                    user.copy(followers = newUpdatedFollowers)
                 } else {
                     user
                 }
             }
 
-            // Actualizar el estado de la UI
             _uiState.value = currentState.copy(
                 friends = updatedFriends,
                 followers = updatedFollowers,

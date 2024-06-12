@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,8 +21,6 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentProfileBinding
 import com.example.animalcrossing.databinding.GeneralDialogBinding
 import com.example.animalcrossing.ui.LoginActivity
-import com.example.animalcrossing.ui.userList.UserListAdapter
-import com.example.animalcrossing.ui.userList.UserListFragmentDirections
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,12 +42,12 @@ class ProfileFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
         return binding.root    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "My Profile"
+        (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.my_profile)
 
 
         binding.logoutButton.setOnClickListener {
@@ -117,7 +114,7 @@ class ProfileFragment : Fragment() {
                     } else {
                         Glide.with(requireContext()).clear(binding.profilePicture)
                     }
-                    var username = "@"+user?.username
+                    val username = "@"+user?.username
                     if (username.length > 10) {
                         binding.username.textSize = 23F
                     }
@@ -125,13 +122,13 @@ class ProfileFragment : Fragment() {
                         binding.username.textSize = 20F
                     }
                     binding.username.text = username
-                    binding.followedTextView.text = "Siguiendo: ${user?.following ?: 0}"
-                    binding.followersTextView.text = "Seguidores: ${user?.followers ?: 0}"
+                    binding.followedTextView.text = getString(R.string.following_count, user?.following ?: 0)
+                    binding.followersTextView.text = getString(R.string.followers_count, user?.followers ?: 0)
                     if (user?.dreamCode != "" && user?.dreamCode != null) {
                         binding.dreamCode.text = user.dreamCode
                         binding.dreamCode.textSize = 15F
                     } else {
-                        binding.dreamCode.text = "Haga click para asignar un código"
+                        binding.dreamCode.text = getString(R.string.no_dream_code)
                     }
 
                 }
@@ -150,13 +147,13 @@ class ProfileFragment : Fragment() {
 
         when (type) {
             "username" -> {
-                dialogBinding.generalView.text = "Introduzca el nuevo nombre de usuario"
+                dialogBinding.generalView.text = getString(R.string.set_username)
                 dialogBinding.generalEdit.setText(user.username)
                 dialogBinding.generalEdit.visibility = View.VISIBLE
                 dialogBinding.maskedEdit.visibility = View.GONE
             }
             "dreamcode" -> {
-                dialogBinding.generalView.text = "Introduzca el nuevo código de ensueño"
+                dialogBinding.generalView.text = getString(R.string.set_dream_code)
                 dialogBinding.generalEdit.visibility = View.GONE
                 dialogBinding.maskedEdit.visibility = View.VISIBLE
 
@@ -207,7 +204,7 @@ class ProfileFragment : Fragment() {
         }
 
         builder.setView(dialogView)
-            .setPositiveButton("okay") { dialog, id ->
+            .setPositiveButton(getString(R.string.accept)) { _, _ ->
                 val editText = if (type == "dreamcode") {
                     dialogBinding.maskedEdit.text.toString()
                 } else {
@@ -222,14 +219,13 @@ class ProfileFragment : Fragment() {
                         }
                         "dreamcode" -> {
                             user.dreamCode = editText
-                            Log.d("dreamcode", editText)
                             viewModel.changeDreamCode(user)
                         }
                     }
 
                 }
             }
-            .setNegativeButton("no") { dialog, id ->
+            .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                 dialog.cancel()
             }
         return builder.create()
@@ -237,9 +233,9 @@ class ProfileFragment : Fragment() {
 
     private fun setupTabs(adapter: ProfileUsersAdapter) {
         val tabLayout = binding.tabLayout
-        tabLayout.addTab(tabLayout.newTab().setText("Amigos"))
-        tabLayout.addTab(tabLayout.newTab().setText("Seguidores"))
-        tabLayout.addTab(tabLayout.newTab().setText("Siguiendo"))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_friends)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_followers)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_following)))
 
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

@@ -1,7 +1,7 @@
 package com.example.animalcrossing.ui.userDetail
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +12,8 @@ import coil.imageLoader
 import coil.load
 import coil.request.ImageRequest
 import com.example.animalcrossing.R
-import com.example.animalcrossing.data.repository.Island
 import com.example.animalcrossing.data.repository.Villager
-import com.example.animalcrossing.databinding.VillagerListItemBinding
 import com.example.animalcrossing.databinding.VillagerSlotItemBinding
-import com.example.animalcrossing.ui.list.VillagerListAdapter
 
 class UserIslandDetailAdapter(
     private val context: Context
@@ -48,6 +45,7 @@ class UserIslandDetailAdapter(
         override fun areItemsTheSame(oldItem: Villager, newItem: Villager) =
             oldItem.name == newItem.name
 
+        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Villager, newItem: Villager) = oldItem == newItem
     }
 

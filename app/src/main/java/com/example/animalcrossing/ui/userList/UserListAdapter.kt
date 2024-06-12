@@ -41,7 +41,7 @@ class UserListAdapter(
             if (u.dreamCode != null) {
                 binding.dreamCode.text = u.dreamCode
             } else {
-                binding.dreamCode.text = "Sin código de ensueño"
+                binding.dreamCode.text = context.getString(R.string.no_dream_code)
             }
 
             if (u.profile_picture != "") {
@@ -58,13 +58,13 @@ class UserListAdapter(
             }
 
             if (u.followers?.contains(currentUser?.uid) == true) {
-                binding.followButton.text = "Dejar de seguir"
+                binding.followButton.text = context.getString(R.string.unfollow)
             } else {
-                binding.followButton.text = "Seguir"
+                binding.followButton.text = context.getString(R.string.follow)
             }
 
-            binding.followedTextView.text = "Siguiendo: ${u.following?.size ?: 0}"
-            binding.followersTextView.text = "Seguidores: ${u.followers?.size ?: 0}"
+            binding.followedTextView.text = context.getString(R.string.following_count, u.following?.size ?: 0)
+            binding.followersTextView.text = context.getString(R.string.followers_count, u.followers?.size ?: 0)
 
             }
         }

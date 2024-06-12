@@ -1,6 +1,5 @@
 package com.example.animalcrossing.data.repository
 
-import android.util.Log
 import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.firebase.asEntityModel
 import com.example.animalcrossing.data.db.VillagerDBRepository
@@ -20,8 +19,7 @@ class VillagerRepository @Inject constructor(
 ) {
     val villager: Flow<List<Villager>>
         get() {
-            val list = dbRepository.allVillagers.map { it.asVillager() }
-            return list
+            return dbRepository.allVillagers.map { it.asVillager() }
         }
 
     suspend fun refreshList() {
