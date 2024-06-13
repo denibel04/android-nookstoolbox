@@ -15,6 +15,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for managing user detail information, including island details and villagers.
+ *
+ * @property repository UserRepository instance for fetching user details.
+ * @property villagerRepository VillagerRepository instance for fetching villager details.
+ */
 @HiltViewModel
 class UserDetailViewModel @Inject constructor(private val repository: UserRepository, private val villagerRepository: VillagerRepository):ViewModel(){
     private val _uiState = MutableStateFlow(UserDetailUiState())
@@ -23,6 +29,13 @@ class UserDetailViewModel @Inject constructor(private val repository: UserReposi
 
 
 
+    /**
+     * Retrieves user details based on the provided user ID (uid).
+     *
+     * Fetches user details including island information and associated villagers.
+     *
+     * @param uid User ID to retrieve user details.
+     */
     fun getUser(uid: String) {
         viewModelScope.launch {
             val user = repository.getUserDetail(uid)

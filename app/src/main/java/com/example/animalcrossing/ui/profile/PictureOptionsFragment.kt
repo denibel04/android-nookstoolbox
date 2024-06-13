@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,15 +22,24 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.FragmentPictureOptionsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.util.UUID
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.util.UUID
 
-class PictureOptionsFragment(private val profile: User, private val userRepository: UserRepository) : BottomSheetDialogFragment() {
+/**
+ * A bottom sheet dialog fragment for selecting and capturing profile pictures.
+ *
+ * @property profile The user profile for which the picture is being managed.
+ * @property userRepository The repository for user-related operations.
+ */
+class PictureOptionsFragment(
+    private val profile: User,
+    private val userRepository: UserRepository
+) : BottomSheetDialogFragment() {
 
     private lateinit var binding: FragmentPictureOptionsBinding
 
@@ -50,18 +58,22 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
             takePhoto()
         }
 
-
-
         return binding.root
     }
 
+    /**
+     * Opens the device's gallery to select an image.
+     */
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_GALLERY_IMAGE)
     }
 
-
+    /**
+     * Initiates the process to take a photo using the device's camera.
+     * Requests camera permission if not granted.
+     */
     private fun takePhoto() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
@@ -76,7 +88,9 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         }
     }
 
-
+    /**
+     * Opens the device's camera to capture an image.
+     */
     private fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(requireContext().packageManager) != null) {
@@ -90,6 +104,9 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         }
     }
 
+    /**
+     * Handles the result of permission requests for camera access.
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -111,6 +128,9 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         }
     }
 
+    /**
+     * Handles the result of activities for capturing or selecting an image.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -132,10 +152,15 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         }
     }
 
+    /**
+     * Uploads the selected or captured image to Firebase Storage and updates the user's profile picture.
+     *
+     * @param bitmap The Bitmap image to upload.
+     */
     private fun uploadAndSetProfilePicture(bitmap: Bitmap) {
         val storageRef = FirebaseStorage.getInstance().reference
         val imagesRef: StorageReference = storageRef.child("images/${UUID.randomUUID()}.jpg")
-    
+
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val imageData: ByteArray = baos.toByteArray()
@@ -158,6 +183,11 @@ class PictureOptionsFragment(private val profile: User, private val userReposito
         }
     }
 
+    /**
+     * Updates the user's profile picture URL in Firestore and locally in the app.
+     *
+     * @param profilePicture The URL of the new profile picture.
+     */
     private fun saveProfilePicture(profilePicture: String) {
         val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser

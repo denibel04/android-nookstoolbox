@@ -19,6 +19,12 @@ class FirebaseService @Inject constructor() {
     var auth = FirebaseAuth.getInstance()
 
     // VILLAGERS
+
+    /**
+     * Retrieves all villagers' details stored in Firebase Firestore.
+     *
+     * @return Suspended list of [VillagerDetail].
+     */
     suspend fun getAllVillagers(): List<VillagerDetail> {
         val villagers: MutableList<VillagerDetail> = mutableListOf()
             val villagerDocs = db.collection("villagers").get().await()
@@ -42,6 +48,12 @@ class FirebaseService @Inject constructor() {
 
 
     // ISLAND
+
+    /**
+     * Retrieves the island details of the current user from Firebase Firestore.
+     *
+     * @return Suspended detail of [IslandDetail].
+     */
     suspend fun getIsland(): IslandDetail {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -60,6 +72,13 @@ class FirebaseService @Inject constructor() {
         return IslandDetail("", "", "", emptyList())
     }
 
+
+    /**
+     * Creates a new island for the current user in Firebase Firestore.
+     *
+     * @param name Name of the island.
+     * @param hemisphere Hemisphere of the island.
+     */
     fun createIsland(name: String, hemisphere: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -74,6 +93,12 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+
+    /**
+     * Renames the current user's island in Firebase Firestore.
+     *
+     * @param name New name of the island.
+     */
     suspend fun renameIsland(name: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -92,7 +117,11 @@ class FirebaseService @Inject constructor() {
         }
 
 
-
+    /**
+     * Adds a villager to the current user's island in Firebase Firestore.
+     *
+     * @param name Name of the villager to add.
+     */
     suspend fun addVillagerToIsland(name: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -115,6 +144,11 @@ class FirebaseService @Inject constructor() {
             }
     }
 
+    /**
+     * Deletes a villager from the current user's island in Firebase Firestore.
+     *
+     * @param name Name of the villager to delete.
+     */
     suspend fun deleteVillagerFromIsland(name: String) {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -138,6 +172,9 @@ class FirebaseService @Inject constructor() {
             }
         }
 
+    /**
+     * Deletes the current user's island from Firebase Firestore.
+     */
     suspend fun deleteIsland() {
         val currentUser = auth.currentUser
         currentUser?.let { user ->
@@ -156,6 +193,11 @@ class FirebaseService @Inject constructor() {
 
     // LOANS
 
+    /**
+     * Retrieves the list of loans associated with the current user's island from Firebase Firestore.
+     *
+     * @return Suspended list of [LoansEntity].
+     */
     suspend fun getLoans(): List<LoansEntity> {
         val currentUser = auth.currentUser
 
@@ -183,6 +225,12 @@ class FirebaseService @Inject constructor() {
         return loansList
     }
 
+    /**
+     * Creates a new loan entry under the current user's island in Firebase Firestore.
+     *
+     * @param loan [LoansEntity] object representing the loan to create.
+     * @return Newly created loan ID.
+     */
     suspend fun createLoan(loan: LoansEntity): String {
         val currentUser = auth.currentUser
 
@@ -212,6 +260,11 @@ class FirebaseService @Inject constructor() {
         return ""
     }
 
+    /**
+     * Updates an existing loan entry under the current user's island in Firebase Firestore.
+     *
+     * @param newLoan Updated [Loan] object representing the loan to update.
+     */
     suspend fun editLoan(newLoan: Loan) {
         val currentUser = auth.currentUser
 
@@ -241,6 +294,11 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+    /**
+     * Deletes a loan entry from the current user's island in Firebase Firestore.
+     *
+     * @param firebaseId ID of the loan entry to delete.
+     */
     suspend fun deleteLoan(firebaseId: String) {
         val currentUser = auth.currentUser
 
@@ -263,9 +321,15 @@ class FirebaseService @Inject constructor() {
 
 
     // AUTH
+
+    /**
+     * Retrieves detailed information about the current authenticated user from Firebase Firestore.
+     *
+     * @return Suspended [UserDetail] object representing the current user.
+     */
     suspend fun getCurrentUser(): UserDetail {
         val currentUser = auth.currentUser
-        var profile = UserDetail("", "", "", "", "", emptyList(), emptyList())
+        var profile = UserDetail("", "", "", "", "", "", emptyList(), emptyList())
          if (currentUser != null) {
              val userDoc = db.collection("users").document(currentUser.uid).get().await()
              val followers = userDoc.get("followers") as? List<String> ?: emptyList()
@@ -276,6 +340,7 @@ class FirebaseService @Inject constructor() {
                  userDoc.getString("username") ?: "",
                  userDoc.getString("profile_picture") ?: "",
                     userDoc.getString("dream_code") ?: "",
+                 userDoc.getString("role") ?: "",
                     followers,
                     following
                 )
@@ -285,6 +350,11 @@ class FirebaseService @Inject constructor() {
         }
 
 
+    /**
+     * Retrieves a list of friends (mutual followers) of the current user from Firebase Firestore.
+     *
+     * @return Suspended list of [UserDetail] representing friends.
+     */
     suspend fun getFriends(): List<UserDetail> {
         val currentUser = auth.currentUser
         val users = mutableListOf<UserDetail>()
@@ -304,6 +374,7 @@ class FirebaseService @Inject constructor() {
                     doc["username"] as? String ?: "",
                     doc["profile_picture"] as? String ?: "",
                     doc["dream_code"] as? String,
+                    doc["role"] as? String ?: "",
                     (doc["followers"] as? List<String>),
                     (doc["following"] as? List<String>)
                 )
@@ -314,6 +385,11 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
+    /**
+     * Retrieves a list of followers of the current user from Firebase Firestore.
+     *
+     * @return Suspended list of [UserDetail] representing followers.
+     */
     suspend fun getFollowers(): List<UserDetail> {
         val currentUser = auth.currentUser
         val users = mutableListOf<UserDetail>()
@@ -330,6 +406,7 @@ class FirebaseService @Inject constructor() {
                     doc["username"] as? String ?: "",
                     doc["profile_picture"] as? String ?: "",
                     doc["dream_code"] as? String,
+                    doc["role"] as? String ?: "",
                     (doc["followers"] as? List<String>),
                     (doc["following"] as? List<String>)
                 )
@@ -340,6 +417,11 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
+    /**
+     * Retrieves a list of users followed by the current user from Firebase Firestore.
+     *
+     * @return Suspended list of [UserDetail] representing following.
+     */
     suspend fun getFollowing(): List<UserDetail> {
         val currentUser = auth.currentUser
         val users = mutableListOf<UserDetail>()
@@ -356,6 +438,7 @@ class FirebaseService @Inject constructor() {
                     doc["username"] as? String ?: "",
                     doc["profile_picture"] as? String ?: "",
                     doc["dream_code"] as? String,
+                    doc["role"] as? String ?: "",
                     (doc["followers"] as? List<String>),
                     (doc["following"] as? List<String>)
                 )
@@ -366,7 +449,12 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
-    suspend fun changeUsername(newUsername: String) {
+    /**
+     * Changes the username of the current authenticated user in Firebase Firestore.
+     *
+     * @param newUsername New username to set.
+     */
+    fun changeUsername(newUsername: String) {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
@@ -374,7 +462,12 @@ class FirebaseService @Inject constructor() {
         }
     }
 
-    suspend fun changeDreamCode(newDreamcode: String) {
+    /**
+     * Changes the dream code of the current authenticated user in Firebase Firestore.
+     *
+     * @param newDreamcode New dream code to set.
+     */
+    fun changeDreamCode(newDreamcode: String) {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
@@ -382,6 +475,11 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+    /**
+     * Retrieves a list of all users registered in Firebase Firestore, excluding the current user.
+     *
+     * @return Suspended list of [UserDetail] representing other users.
+     */
     suspend fun getUsers(): List<UserDetail> {
         val currentUser = auth.currentUser
         val users: MutableList<UserDetail> = mutableListOf()
@@ -397,6 +495,7 @@ class FirebaseService @Inject constructor() {
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
                 userData["dream_code"] as? String,
+                userData["role"] as? String ?: "",
                 (userData["followers"] as? List<String>),
                 (userData["following"] as? List<String>)
             )
@@ -405,6 +504,12 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
+    /**
+     * Retrieves detailed profile information of a specific user from Firebase Firestore.
+     *
+     * @param uid ID of the user to retrieve details for.
+     * @return Suspended [UserProfileDetail] representing the detailed profile of the user.
+     */
     suspend fun getUserDetail(uid: String): UserProfileDetail {
         val userRef = db.collection("users").document(uid)
 
@@ -438,6 +543,12 @@ class FirebaseService @Inject constructor() {
         return user
     }
 
+    /**
+     * Retrieves a filtered list of users whose usernames match the search query from Firebase Firestore.
+     *
+     * @param search Search query to filter usernames.
+     * @return Suspended list of [UserDetail] representing filtered users.
+     */
     suspend fun getFilteredUsers(search: String): List<UserDetail> {
         val currentUser = auth.currentUser
         val users: MutableList<UserDetail> = mutableListOf()
@@ -457,6 +568,7 @@ class FirebaseService @Inject constructor() {
                 userData["username"] as? String ?: "",
                 userData["profile_picture"] as? String ?: "",
                 userData["dream_code"] as? String,
+                userData["role"] as? String ?: "",
                 (userData["followers"] as? List<String>),
                 (userData["following"] as? List<String>)
             )
@@ -465,9 +577,13 @@ class FirebaseService @Inject constructor() {
         return users
     }
 
+    /**
+     * Follows another user by updating following and followers lists in Firebase Firestore.
+     *
+     * @param followedUid UID of the user to follow.
+     */
     suspend fun followUser(followedUid: String) {
         val currentUser = auth.currentUser
-    Log.d("userfollow", followedUid)
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)
             val followedUserRef = db.collection("users").document(followedUid)
@@ -477,9 +593,13 @@ class FirebaseService @Inject constructor() {
         }
     }
 
+    /**
+     * Unfollows a user by updating following and followers lists in Firebase Firestore.
+     *
+     * @param followedUid UID of the user to unfollow.
+     */
     suspend fun unfollowUser(followedUid: String) {
         val currentUser = auth.currentUser
-        Log.d("userunfollow", followedUid)
 
         if (currentUser != null) {
             val currentUserRef = db.collection("users").document(currentUser.uid)

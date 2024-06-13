@@ -14,7 +14,7 @@ class IslandDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
 
 
     @WorkerThread
-    suspend fun searchVillagers(query: String): Flow<List<VillagerEntity>> {
+    fun searchVillagers(query: String): Flow<List<VillagerEntity>> {
         val searchQuery = "${query}%"
         return acnhDao.searchVillagers(searchQuery)
     }

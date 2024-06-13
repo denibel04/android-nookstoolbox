@@ -8,6 +8,7 @@
     <string name="change">Cambiar</string>
     <string name="create">Crear</string>
     <string name="empty_name">El nombre no puede estar vacío</string>
+    <string name="no_internet_connection">"No hay conexión a Internet. Por favor, comprueba tu conexión e inténtalo de nuevo."</string>
 
 
 
@@ -46,7 +47,7 @@
     <string name="south">Hemisferio Sur</string>
     <string name="no_hemisphere">Sin hemispherio</string>
     <string name="hemisphere_permission">Los permisos de ubicación son necesarios para crear la isla.</string>
-
+    <string name="villager_already_in_island">%1s ya está en la isla</string>
 
     <!-- LOANS -->
     <string name="my_loans">Mis deudas</string>
@@ -69,6 +70,12 @@
     <string name="loan_amount_paid">Cantidad pagada</string>
     <string name="loan_amount_total">Cantidad total</string>
     <string name="loan_completed_status">Completada</string>
+    <string name="all_fields_required">Todos los campos tienen que estar completos.</string>
+    <string name="confirm_delete_loan_title">Confirmar borrado</string>
+    <string name="confirm_delete_loan_message">¿Estás seguro de que deseas eliminar esta deuda?</string>
+    <string name="loan_updated_toast">Se ha actualizado la deuda</string>
+    <string name="loan_created_toast">Se ha creado la deuda</string>
+
 
     <!-- PROFILE -->
     <string name="following_count">Siguiendo: %d</string>
@@ -93,6 +100,8 @@
     <string name="dream_code">Código de ensueño</string>
     <string name="edit_username_hint">Nombre de usuario…</string>
     <string name="edit_title">Editar</string>
+    <string name="edit_dreamcode_toast">Se ha actualizado el código de ensueño</string>
+    <string name="edit_username_toast">Se ha actualizado el nombre de usuario</string>
 
     <!-- USER DETAIL -->
     <string name="userIsland">Isla de %s</string>
@@ -102,6 +111,7 @@
     <string name="users_bottom_nav">Usuarios</string>
     <string name="user_list">Lista de usuarios</string>
     <string name="no_dream_code">Sin código de ensueño</string>
+    <string name="banned">Este usuario está baneado</string>
 
 
     <!-- LOGIN AND REGISTER -->

@@ -15,12 +15,27 @@ import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.VillagerSlotItemBinding
 
+/**
+ * Adapter for displaying user island details, specifically the list of villagers.
+ *
+ * @property context Context of the adapter.
+ */
 class UserIslandDetailAdapter(
     private val context: Context
 ) : ListAdapter<Villager, UserIslandDetailAdapter.UserIslandDetailViewHolder>(VillagerDiffCallback) {
 
+    /**
+     * ViewHolder for each villager slot item.
+     *
+     * @property binding View binding for the ViewHolder.
+     */
     inner class UserIslandDetailViewHolder(val binding: VillagerSlotItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        /**
+         * Binds villager data to the ViewHolder.
+         *
+         * @param v Villager object to bind.
+         */
         fun bind(v: Villager?) {
             if (v != null) {
                 binding.slotText.text = v.name

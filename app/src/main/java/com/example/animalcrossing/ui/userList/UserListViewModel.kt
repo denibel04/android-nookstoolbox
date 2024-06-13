@@ -11,23 +11,33 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel for managing the state of the user list in the UI.
+ *
+ * @property repository The UserRepository instance used for fetching and updating user data.
+ */
 @HiltViewModel
-class UserListViewModel @Inject constructor(private val repository: UserRepository) :
-    ViewModel() {
+class UserListViewModel @Inject constructor(private val repository: UserRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(UserListUiState())
     val uiState: StateFlow<UserListUiState> = _uiState.asStateFlow()
     val auth = FirebaseAuth.getInstance()
     val currentUser = auth.currentUser
 
+    /**
+     * Initializes the ViewModel and fetches the list of users.
+     */
     init {
-
         viewModelScope.launch {
-                val users = repository.getUsers()
-                _uiState.value = _uiState.value.copy(users = users)
+            val users = repository.getUsers()
+            _uiState.value = _uiState.value.copy(users = users)
         }
-
     }
 
+    /**
+     * Follows a user by their UID.
+     *
+     * @param uid The UID of the user to follow.
+     */
     fun followUser(uid: String) {
         viewModelScope.launch {
             updateUserState(uid, follow = true)
@@ -35,6 +45,11 @@ class UserListViewModel @Inject constructor(private val repository: UserReposito
         }
     }
 
+    /**
+     * Unfollows a user by their UID.
+     *
+     * @param uid The UID of the user to unfollow.
+     */
     fun unfollowUser(uid: String) {
         viewModelScope.launch {
             updateUserState(uid, follow = false)
@@ -42,6 +57,11 @@ class UserListViewModel @Inject constructor(private val repository: UserReposito
         }
     }
 
+    /**
+     * Retrieves a filtered list of users based on a search query.
+     *
+     * @param search The search query to filter users.
+     */
     fun getFilteredUsers(search: String) {
         viewModelScope.launch {
             val users = repository.getFilteredUsers(search)
@@ -49,6 +69,12 @@ class UserListViewModel @Inject constructor(private val repository: UserReposito
         }
     }
 
+    /**
+     * Updates the state of the user list when a user is followed or unfollowed.
+     *
+     * @param uid The UID of the user to update.
+     * @param follow A boolean indicating whether the user is being followed or unfollowed.
+     */
     private fun updateUserState(uid: String, follow: Boolean) {
         val currentState = _uiState.value
         val currentUserUid = currentUser?.uid
@@ -61,8 +87,7 @@ class UserListViewModel @Inject constructor(private val repository: UserReposito
                     } else {
                         user.followers?.filter { it != currentUserUid }
                     }
-                    val updatedUser = user.copy(followers = updatedFollowers)
-                    updatedUser
+                    user.copy(followers = updatedFollowers)
                 } else {
                     user
                 }

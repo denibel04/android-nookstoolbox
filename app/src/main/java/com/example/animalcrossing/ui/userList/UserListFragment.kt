@@ -15,6 +15,9 @@ import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment for displaying a list of users.
+ */
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
 
@@ -23,6 +26,14 @@ class UserListFragment : Fragment() {
     val auth = FirebaseAuth.getInstance()
     val currentUser = auth.currentUser
 
+    /**
+     * Inflates the fragment's view and initializes the view binding.
+     *
+     * @param inflater The LayoutInflater used to inflate the view.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState A Bundle containing the fragment's previously saved state.
+     * @return The root view of the fragment's layout.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -31,6 +42,12 @@ class UserListFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Sets up the fragment's UI components and initializes data fetching.
+     *
+     * @param view The fragment's root view.
+     * @param savedInstanceState A Bundle containing the fragment's previously saved state.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.supportActionBar?.title = getString(R.string.user_list)
 
@@ -48,7 +65,6 @@ class UserListFragment : Fragment() {
             findNavController().navigate(action)
         })
 
-
         val rv = binding.users
         rv.adapter = adapter
 
@@ -65,7 +81,5 @@ class UserListFragment : Fragment() {
                 adapter.submitList(state.users)
             }
         }
-
     }
 }
-

@@ -17,6 +17,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.animalcrossing.R
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment displaying a list of villagers.
+ */
 @AndroidEntryPoint
 class VillagerListFragment : Fragment() {
     private lateinit var binding: FragmentVillagerListBinding

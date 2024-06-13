@@ -77,7 +77,12 @@ class IslandDetailFragment : Fragment() {
                         binding.addIsland.visibility = View.GONE
                         binding.shareIsland.visibility = View.VISIBLE
                         binding.islandName.text = uiState.name
-                        binding.islandDescription.text = getString(R.string.hemisphere_label, uiState.hemisphere)
+                        val hemisphereText = when (uiState.hemisphere) {
+                            "north" -> getString(R.string.north)
+                            "south" -> getString(R.string.south)
+                            else -> getString(R.string.no_hemisphere)
+                        }
+                        binding.islandDescription.text = hemisphereText
                         viewModel.villagers.collectLatest { nuevosVillagers ->
                             adapter.submitList(nuevosVillagers)
                         }
@@ -223,14 +228,19 @@ class IslandDetailFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 val adapter = SearchResultAdapter(requireContext()) { villager ->
-                    viewModel.uiState.value.islandId?.let {
-                        viewModel.addVillagerToIsland(
-                            villager.name,
-                            it,
-                            slotIndex
-                        )
+                    viewModel.uiState.value.islandId?.let { islandId ->
+                        if (viewModel.isVillagerAlreadyInIsland(villager.name)) {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.villager_already_in_island, villager.name),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            dialog.dismiss()
+                        } else {
+                            viewModel.addVillagerToIsland(villager.name, islandId, slotIndex)
+                            dialog.dismiss()
+                        }
                     }
-                    dialog.dismiss()
                 }
                 recyclerView.adapter = adapter
                 searchVillagers("", adapter)

@@ -25,6 +25,7 @@ data class UserDetail (
     val username:String,
     val profile_picture:String,
     val dreamCode: String? = null,
+    val role: String? = null,
     val followers: List<String>? = null,
     val following: List<String>? = null
 )

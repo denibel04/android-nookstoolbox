@@ -12,6 +12,11 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel class for managing the profile screen data and logic.
+ *
+ * @property repository The repository for interacting with user-related data.
+ */
 @HiltViewModel
 class ProfileViewModel @Inject constructor(private val repository: UserRepository) :
     ViewModel() {
@@ -44,14 +49,29 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
 
     }
 
+    /**
+     * Changes the username of the current user.
+     *
+     * @param newUsername The new username to set.
+     */
     suspend fun changeUsername(newUsername: User) {
         repository.changeUsername(newUsername)
     }
 
+    /**
+     * Changes the dream code of the current user.
+     *
+     * @param newDreamCode The new dream code to set.
+     */
     suspend fun changeDreamCode(newDreamCode: User) {
         repository.changeDreamCode(newDreamCode)
     }
 
+    /**
+     * Sets the active tab in the profile screen and updates the corresponding list.
+     *
+     * @param position The position of the tab to set.
+     */
     fun setTab(position: Int) {
         viewModelScope.launch {
             when (position) {
@@ -73,6 +93,11 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         }
     }
 
+    /**
+     * Initiates the process of following a user identified by [uid].
+     *
+     * @param uid The user ID of the user to follow.
+     */
     fun followUser(uid: String) {
         viewModelScope.launch {
             updateUserState(uid, follow = true)
@@ -81,6 +106,11 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         }
     }
 
+    /**
+     * Initiates the process of unfollowing a user identified by [uid].
+     *
+     * @param uid The user ID of the user to unfollow.
+     */
     fun unfollowUser(uid: String) {
         viewModelScope.launch {
             updateUserState(uid, follow = false)
@@ -89,7 +119,13 @@ class ProfileViewModel @Inject constructor(private val repository: UserRepositor
         }
     }
 
-    private suspend fun updateUserState(uid: String, follow: Boolean) {
+    /**
+     * Updates the user state based on the follow/unfollow action for a user identified by [uid].
+     *
+     * @param uid The user ID of the user to update.
+     * @param follow Boolean indicating whether to follow (true) or unfollow (false) the user.
+     */
+    private fun updateUserState(uid: String, follow: Boolean) {
         val currentState = _uiState.value
         val currentUserUid = currentUser?.uid
 

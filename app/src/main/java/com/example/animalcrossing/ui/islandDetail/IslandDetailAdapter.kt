@@ -15,14 +15,32 @@ import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.Villager
 import com.example.animalcrossing.databinding.VillagerSlotItemBinding
 
+/**
+ * Adapter for displaying and managing the list of villagers in the island detail view.
+ *
+ * @property context The context in which the adapter is used.
+ * @property onSlotClicked Callback to handle click events on a slot in the list.
+ * @property onVillagerDeleteClicked Callback to handle click events on the delete button for a villager.
+ */
 class IslandDetailAdapter(
     private val context: Context,
     private val onSlotClicked: ((Int) -> Unit)? = null,
     private val onVillagerDeleteClicked: ((String?) -> Unit)? = null
 ) : ListAdapter<Villager, IslandDetailAdapter.IslandDetailViewHolder>(VillagerDiffCallback) {
 
+    /**
+     * ViewHolder class for holding and binding views for each item in the RecyclerView.
+     *
+     * @param binding The ViewBinding object for the item layout.
+     */
     inner class IslandDetailViewHolder(val binding: VillagerSlotItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        /**
+         * Binds data to the ViewHolder views.
+         *
+         * @param v The Villager object to bind.
+         */
         fun bind(v: Villager?) {
             if (v != null) {
                 binding.slotText.text = v.name
@@ -43,7 +61,9 @@ class IslandDetailAdapter(
         }
     }
 
-
+    /**
+     * DiffCallback for calculating the difference between two lists of Villagers.
+     */
     private object VillagerDiffCallback : DiffUtil.ItemCallback<Villager>() {
         override fun areItemsTheSame(oldItem: Villager, newItem: Villager) =
             oldItem.name == newItem.name
@@ -69,7 +89,4 @@ class IslandDetailAdapter(
             onVillagerDeleteClicked?.invoke(slot.name)
         }
     }
-
-
-
 }

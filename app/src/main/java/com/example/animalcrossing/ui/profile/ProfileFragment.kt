@@ -2,7 +2,10 @@ package com.example.animalcrossing.ui.profile
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -27,6 +31,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * Fragment that displays user profile details and manages interactions related to profile settings.
+ */
 @AndroidEntryPoint
 class ProfileFragment : Fragment() {
 
@@ -38,6 +45,8 @@ class ProfileFragment : Fragment() {
 
     @Inject
     lateinit var userRepository: UserRepository
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -139,6 +148,13 @@ class ProfileFragment : Fragment() {
 
         }
 
+    /**
+     * Shows a dialog for editing username or dream code.
+     *
+     * @param type The type of dialog to show ("username" or "dreamcode").
+     * @param user The User object representing the current user.
+     * @return Dialog instance.
+     */
     private fun showDialog(type: String, user: User): Dialog {
         val builder = AlertDialog.Builder(activity)
         val dialogBinding: GeneralDialogBinding = GeneralDialogBinding.inflate(LayoutInflater.from(requireContext()))
@@ -216,10 +232,16 @@ class ProfileFragment : Fragment() {
                         "username" -> {
                             user.username = editText
                             viewModel.changeUsername(user)
+                            if (isOnline()) {
+                                Toast.makeText(requireContext(), getString(R.string.edit_username_toast), Toast.LENGTH_SHORT).show()
+                            }
                         }
                         "dreamcode" -> {
                             user.dreamCode = editText
                             viewModel.changeDreamCode(user)
+                            if (isOnline()) {
+                                Toast.makeText(requireContext(), getString(R.string.edit_dreamcode_toast), Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
 
@@ -231,6 +253,11 @@ class ProfileFragment : Fragment() {
         return builder.create()
     }
 
+    /**
+     * Sets up tabs in the tab layout for displaying friends, followers, and following lists.
+     *
+     * @param adapter The adapter used for populating data in the RecyclerView.
+     */
     private fun setupTabs(adapter: ProfileUsersAdapter) {
         val tabLayout = binding.tabLayout
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_friends)))
@@ -267,6 +294,20 @@ class ProfileFragment : Fragment() {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+    }
+
+    /**
+     * Checks if the device is connected to the internet.
+     *
+     * @return true if the device is connected to the internet, false otherwise.
+     */
+    private fun isOnline(): Boolean {
+        val connectivityManager =
+            context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+        return networkCapabilities != null &&
+                networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
 }

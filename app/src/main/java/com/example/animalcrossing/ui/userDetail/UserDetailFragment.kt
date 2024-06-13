@@ -19,12 +19,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Fragment to display detailed user information including island details and villagers.
+ */
 @AndroidEntryPoint
 class UserDetailFragment : Fragment() {
     private val args: UserDetailFragmentArgs by navArgs()
     private lateinit var binding: FragmentUserDetailBinding
     private val viewModel: UserDetailViewModel by viewModels()
 
+    /**
+     * Inflates the fragment layout and initializes view binding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +40,9 @@ class UserDetailFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * Configures the UI components and observes ViewModel data changes.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -82,6 +91,9 @@ class UserDetailFragment : Fragment() {
 
     }
 
+    /**
+     * Cleans up resources when the view is destroyed, including resetting toolbar settings.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         (activity as? AppCompatActivity)?.supportActionBar?.setDisplayHomeAsUpEnabled(false)

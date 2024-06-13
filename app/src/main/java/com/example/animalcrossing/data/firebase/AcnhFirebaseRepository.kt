@@ -84,11 +84,11 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
         return service.getFollowing()
     }
 
-    suspend fun changeUsername(newUsername: String) {
+    fun changeUsername(newUsername: String) {
         service.changeUsername(newUsername)
     }
 
-    suspend fun changeDreamCode(newDreamCode: String) {
+    fun changeDreamCode(newDreamCode: String) {
         service.changeDreamCode(newDreamCode)
     }
 
@@ -111,12 +111,6 @@ class AcnhFirebaseRepository @Inject constructor(private val service: FirebaseSe
     suspend fun followUser(uid: String) {
         service.followUser(uid)
     }
-
-
-    // FETCH
-
-
-
 
 }
 

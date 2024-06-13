@@ -27,15 +27,6 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:visibility="visible"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/completedLoanList"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingHorizontal="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:visibility="gone"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

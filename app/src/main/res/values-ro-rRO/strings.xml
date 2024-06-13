@@ -8,6 +8,7 @@
     <string name="change">Schimbați</string>
     <string name="create">Creați</string>
     <string name="empty_name">Numele nu poate fi gol</string>
+    <string name="no_internet_connection">"Nu există conexiune la internet. Verificați conexiunea și încercați din nou."</string>
 
     <!-- VILLAGERS -->
     <string name="villager_bottom_nav">Săteni</string>
@@ -41,6 +42,7 @@
     <string name="south">Hemisfera sudică</string>
     <string name="no_hemisphere">Fără hemisferă</string>
     <string name="hemisphere_permission">Permisiunile de locație sunt necesare pentru a crea insula.</string>
+    <string name="villager_already_in_island">%1$s este deja pe insulă</string>
 
     <!-- LOANS -->
     <string name="my_loans">Datoriile mele</string>
@@ -63,6 +65,13 @@
     <string name="loan_amount_paid">Suma plătită</string>
     <string name="loan_amount_total">Suma totală</string>
     <string name="loan_completed_status">Finalizată</string>
+    <string name="all_fields_required">Toate câmpurile trebuie completate.</string>
+    <string name="confirm_delete_loan_title">Confirmare ștergere</string>
+    <string name="confirm_delete_loan_message">Sigur dorești să ștergi acest împrumut?</string>
+    <string name="loan_updated_toast">Împrumutul a fost actualizat</string>
+    <string name="loan_created_toast">Împrumutul a fost creat</string>
+
+
 
     <!-- PROFILE -->
     <string name="following_count">Urmăriri: %d</string>
@@ -87,6 +96,8 @@
     <string name="dream_code">Cod de vis</string>
     <string name="edit_username_hint">Nume de utilizator…</string>
     <string name="edit_title">Editați</string>
+    <string name="edit_dreamcode_toast">Codul de vis a fost actualizat</string>
+    <string name="edit_username_toast">Numele de utilizator a fost actualizat</string>
 
     <!-- USER DETAIL -->
     <string name="userIsland">Insula lui %s</string>
@@ -96,6 +107,7 @@
     <string name="users_bottom_nav">Utilizatori</string>
     <string name="user_list">Lista utilizatorilor</string>
     <string name="no_dream_code">"Fără cod de vis"</string>
+    <string name="banned">Acest utilizator este interzis</string>
 
     <!-- LOGIN AND REGISTER -->
     <string name="email">Adresă de e-mail</string>

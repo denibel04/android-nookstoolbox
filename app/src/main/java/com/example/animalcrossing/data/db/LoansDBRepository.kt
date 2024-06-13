@@ -17,11 +17,6 @@ class LoansDBRepository  @Inject constructor(private val acnhDao: AcnhDao) {
     }
 
     @WorkerThread
-    suspend fun getLoan(loanId: String): Flow<LoansEntity> {
-        return acnhDao.getLoan(loanId)
-    }
-
-    @WorkerThread
     suspend fun deleteLoan (firebaseId: String) {
         val loan = LoansEntity(firebaseId = firebaseId, title = "", type = "", amountPaid = 0, amountTotal = 0, completed = true)
         acnhDao.deleteLoan(loan)

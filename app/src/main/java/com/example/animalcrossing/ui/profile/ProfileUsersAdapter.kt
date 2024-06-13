@@ -14,17 +14,35 @@ import com.example.animalcrossing.data.firebase.UserDetail
 import com.example.animalcrossing.databinding.UserListItemBinding
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * Adapter for displaying a list of user profiles in a RecyclerView.
+ *
+ * @param context The context in which the adapter is used.
+ * @param onFollowClicked Callback to handle follow/unfollow button clicks.
+ * @param onUserClicked Callback to handle clicks on user profiles.
+ */
 class ProfileUsersAdapter(
     private val context: Context,
     private val onFollowClicked: ((UserDetail) -> Unit)? = null,
     private val onUserClicked: ((String) -> Unit)? = null
 ) : ListAdapter<UserDetail, ProfileUsersAdapter.ProfileUsersViewHolder>(UserDiffCallback) {
 
+    /**
+     * ViewHolder class for holding each user profile item's view.
+     *
+     * @param binding The view binding for the user list item.
+     */
     inner class ProfileUsersViewHolder(val binding: UserListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         val auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
+
+        /**
+         * Binds user details to the ViewHolder's views.
+         *
+         * @param u The UserDetail object representing the user's details.
+         */
         fun bind(u: UserDetail) {
             val username = "@"+u.username
             if (username.length > 10) {
@@ -65,7 +83,9 @@ class ProfileUsersAdapter(
         }
 
 
-
+    /**
+     * DiffCallback for calculating the difference between two lists of UserDetail objects.
+     */
     private object UserDiffCallback : DiffUtil.ItemCallback<UserDetail>() {
 
 
