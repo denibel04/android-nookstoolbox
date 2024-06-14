@@ -117,6 +117,7 @@
     <string name="login">Conectați-vă</string>
     <string name="register">Înregistrați-vă</string>
     <string name="no_account">Nu aveți un cont?</string>
+    <string name="already_account">Ai deja un cont?</string>
 
     <string name="banned_toast">Acest cont este interzis.</string>
     <string name="login_success">Conectare reușită.</string>

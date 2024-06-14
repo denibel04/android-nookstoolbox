@@ -105,6 +105,8 @@ class LoginActivity : AppCompatActivity() {
                             }
                     }
                 }
+            } .addOnFailureListener(this) { e ->
+                Toast.makeText(baseContext, getString(R.string.login_fail), Toast.LENGTH_SHORT).show()
             }
     }
 

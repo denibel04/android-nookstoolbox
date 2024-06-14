@@ -116,6 +116,7 @@
     <string name="login">Log in</string>
     <string name="register">Register</string>
     <string name="no_account">Don\'t have an account?</string>
+    <string name="already_account">Already have an account?</string>
 
     <string name="banned_toast">This account is banned.</string>
     <string name="login_success">Logged in successfully.</string>

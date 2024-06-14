@@ -122,6 +122,7 @@
     <string name="login">Iniciar sesión</string>
     <string name="register">Registrarse</string>
     <string name="no_account">¿No tienes cuenta?</string>
+    <string name="already_account">¿Ya tienes una cuenta?</string>
 
 
     <string name="banned_toast">Esta cuenta está baneada.</string>
