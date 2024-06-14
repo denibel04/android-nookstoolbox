@@ -2,6 +2,7 @@ package com.example.animalcrossing.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
@@ -13,6 +14,7 @@ import com.example.animalcrossing.data.repository.UserRepository
 import com.example.animalcrossing.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -78,10 +80,31 @@ class MainActivity : AppCompatActivity() {
     public override fun onStart() {
         super.onStart()
 
+        val db = FirebaseFirestore.getInstance()
+
         val currentUser = auth.currentUser
         if (currentUser == null) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        if (currentUser != null) {
+            db.collection("users").document(currentUser.uid).get()
+                .addOnSuccessListener { document ->
+                    if (document != null && document.exists()) {
+                        val role = document.getString("role")
+                        if (role == "banned") {
+                            Toast.makeText(
+                                baseContext,
+                                getString(R.string.banned_toast),
+                                Toast.LENGTH_SHORT,
+                            ).show()
+                            auth.signOut()
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
+                }
         }
     }
 
@@ -93,6 +116,7 @@ class MainActivity : AppCompatActivity() {
             userRepository.profile.collect {
                 binding.profile.text = it.username
             }
+
         }
     }
 

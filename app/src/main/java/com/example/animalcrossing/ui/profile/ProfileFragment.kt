@@ -269,26 +269,24 @@ class ProfileFragment : Fragment() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewModel.setTab(tab.position)
+                rv.scrollToPosition(0)
                 viewLifecycleOwner.lifecycleScope.launch {
                     when (tab.position) {
                         0 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.friends)
-                                rv.scrollToPosition(0)
                             }
                         }
 
                         1 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.followers)
-                                rv.scrollToPosition(0)
                             }
                         }
 
                         2 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.following)
-                                rv.scrollToPosition(0)
                             }
                         }
                     }
