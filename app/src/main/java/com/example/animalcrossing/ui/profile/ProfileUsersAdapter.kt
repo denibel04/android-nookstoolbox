@@ -51,14 +51,20 @@ class ProfileUsersAdapter(
             }
             if (username.length > 15) {
                 binding.username.textSize = 16F
+            } else {
+                binding.username.textSize = 25F
             }
             binding.username.text = username
+
             if (u.dreamCode != null) {
                 binding.dreamCode.text = u.dreamCode
+                binding.dreamCode.textSize = 15f
             } else {
                 binding.dreamCode.text = context.getString(R.string.no_dream_code)
                 binding.dreamCode.textSize = 13f
             }
+
+
             if (u.profile_picture != "") {
                 binding.profilePicture.load(u.profile_picture)
                 val imageRequest = ImageRequest.Builder(context)
@@ -85,6 +91,9 @@ class ProfileUsersAdapter(
             if (u.role == "banned") {
                 binding.root.setCardBackgroundColor(Color.parseColor("#FFE0E0"))
                 binding.bannedText.text = context.getString(R.string.banned)
+            } else {
+                binding.root.setCardBackgroundColor(Color.WHITE)
+                binding.bannedText.text = ""
             }
 
             }
