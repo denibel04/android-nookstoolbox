@@ -9,8 +9,15 @@ import com.example.animalcrossing.data.firebase.AcnhFirebaseRepository
 import com.example.animalcrossing.data.db.LoansDBRepository
 import com.example.animalcrossing.data.db.LoansEntity
 import com.example.animalcrossing.data.db.asLoan
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentChange
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,6 +41,13 @@ class LoanRepository @Inject constructor(
     private val apiRepository: AcnhFirebaseRepository,
     private val context: Context
 ) {
+    val db = FirebaseFirestore.getInstance()
+    var auth = FirebaseAuth.getInstance()
+    private var loansListenerRegistration: ListenerRegistration? = null
+
+    init {
+        setupLoansListener()
+    }
 
     /**
      * Flow representing all loans fetched from the local database.
@@ -43,6 +57,46 @@ class LoanRepository @Inject constructor(
         get() {
             return dbRepository.allLoans.map { it.asLoan() }
         }
+
+    private fun setupLoansListener() {
+        val currentUser = auth.currentUser
+        currentUser?.let { user ->
+            val islandRef = db.collection("users").document(user.uid).collection("island")
+
+            islandRef.get().addOnSuccessListener { document ->
+                val island = document.documents.firstOrNull()
+                island?.reference?.collection("loans")?.let { loansCollection ->
+                    loansListenerRegistration = loansCollection.addSnapshotListener { snapshots, e ->
+                        if (e != null) {
+                            return@addSnapshotListener
+                        }
+
+                        snapshots?.let {
+                            for (documentChange in snapshots.documentChanges) {
+                                val loanDocument = documentChange.document
+                                val loan = LoansEntity(
+                                    firebaseId = loanDocument.id,
+                                    title = loanDocument.getString("title") ?: "",
+                                    type = loanDocument.getString("type") ?: "",
+                                    amountPaid = loanDocument.getLong("amountPaid")?.toInt() ?: 0,
+                                    amountTotal = loanDocument.getLong("amountTotal")?.toInt() ?: 0,
+                                    completed = loanDocument.getBoolean("completed") ?: false
+                                )
+
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    when (documentChange.type) {
+                                        DocumentChange.Type.ADDED -> dbRepository.insert(loan)
+                                        DocumentChange.Type.MODIFIED -> dbRepository.updateLoan(Loan(loan.firebaseId, loan.title, loan.type, loan.amountPaid, loan.amountTotal, loan.completed))
+                                        DocumentChange.Type.REMOVED -> dbRepository.deleteLoan(loan.firebaseId)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * Adds a new loan locally and remotely if online.

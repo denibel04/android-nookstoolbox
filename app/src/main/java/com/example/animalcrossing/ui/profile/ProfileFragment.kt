@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.animalcrossing.R
 import com.example.animalcrossing.data.repository.User
@@ -84,7 +85,7 @@ class ProfileFragment : Fragment() {
         val rv = binding.friendList
         rv.adapter = adapter
 
-        setupTabs(adapter)
+        setupTabs(adapter, rv)
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect { uiState ->
@@ -258,7 +259,7 @@ class ProfileFragment : Fragment() {
      *
      * @param adapter The adapter used for populating data in the RecyclerView.
      */
-    private fun setupTabs(adapter: ProfileUsersAdapter) {
+    private fun setupTabs(adapter: ProfileUsersAdapter, rv: RecyclerView) {
         val tabLayout = binding.tabLayout
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_friends)))
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_followers)))
@@ -273,18 +274,21 @@ class ProfileFragment : Fragment() {
                         0 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.friends)
+                                rv.scrollToPosition(0)
                             }
                         }
 
                         1 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.followers)
+                                rv.scrollToPosition(0)
                             }
                         }
 
                         2 -> {
                             viewModel.uiState.collect { uiState ->
                                 adapter.submitList(uiState.following)
+                                rv.scrollToPosition(0)
                             }
                         }
                     }

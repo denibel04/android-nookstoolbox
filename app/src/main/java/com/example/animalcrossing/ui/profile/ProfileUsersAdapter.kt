@@ -45,17 +45,18 @@ class ProfileUsersAdapter(
          */
         fun bind(u: UserDetail) {
             val username = "@"+u.username
-            if (username.length > 10) {
-                binding.username.textSize = 23F
+            if (username.length >= 10) {
+                binding.username.textSize = 18F
             }
             if (username.length > 15) {
-                binding.username.textSize = 20F
+                binding.username.textSize = 16F
             }
             binding.username.text = username
             if (u.dreamCode != null) {
                 binding.dreamCode.text = u.dreamCode
             } else {
                 binding.dreamCode.text = context.getString(R.string.no_dream_code)
+                binding.dreamCode.textSize = 13f
             }
             if (u.profile_picture != "") {
                 binding.profilePicture.load(u.profile_picture)
@@ -71,8 +72,10 @@ class ProfileUsersAdapter(
 
             if (u.followers?.contains(currentUser?.uid) == true) {
                 binding.followButton.text = context.getString(R.string.unfollow)
+                binding.followButton.textSize = 10f
             } else {
                 binding.followButton.text = context.getString(R.string.follow)
+                binding.followButton.textSize = 15f
             }
 
             binding.followedTextView.text = context.getString(R.string.following_count, u.following?.size ?: 0)
