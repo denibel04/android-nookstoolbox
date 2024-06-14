@@ -64,15 +64,12 @@ class UserListAdapter(
             }
 
 
-            if (u.profile_picture != "") {
-                binding.profilePicture.load(u.profile_picture)
-                val imageRequest = ImageRequest.Builder(context)
-                    .data(u.profile_picture)
-                    .crossfade(true)
-                    .target(binding.profilePicture)
-                    .build()
-
-                context.imageLoader.enqueue(imageRequest)
+            if (u.profile_picture.isNotEmpty()) {
+                binding.profilePicture.load(u.profile_picture) {
+                    crossfade(false)
+                    placeholder(R.drawable.ic_account_circle)
+                    error(R.drawable.ic_account_circle)
+                }
             } else {
                 binding.profilePicture.load(R.drawable.ic_account_circle)
             }
