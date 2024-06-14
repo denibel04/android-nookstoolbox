@@ -8,7 +8,7 @@
     <string name="change">Schimbați</string>
     <string name="create">Creați</string>
     <string name="empty_name">Numele nu poate fi gol</string>
-    <string name="no_internet_connection">"Nu există conexiune la internet. Verificați conexiunea și încercați din nou."</string>
+    <string name="no_internet_connection">"Nu există conexiune la internet."</string>
 
     <!-- VILLAGERS -->
     <string name="villager_bottom_nav">Săteni</string>

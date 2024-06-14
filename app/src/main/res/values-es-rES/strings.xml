@@ -8,7 +8,7 @@
     <string name="change">Cambiar</string>
     <string name="create">Crear</string>
     <string name="empty_name">El nombre no puede estar vacío</string>
-    <string name="no_internet_connection">"No hay conexión a Internet. Por favor, comprueba tu conexión e inténtalo de nuevo."</string>
+    <string name="no_internet_connection">"No hay conexión a Internet."</string>
 
 
 

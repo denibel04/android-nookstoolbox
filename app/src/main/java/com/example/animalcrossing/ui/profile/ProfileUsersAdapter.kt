@@ -1,6 +1,7 @@
 package com.example.animalcrossing.ui.profile
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -80,6 +81,11 @@ class ProfileUsersAdapter(
 
             binding.followedTextView.text = context.getString(R.string.following_count, u.following?.size ?: 0)
             binding.followersTextView.text = context.getString(R.string.followers_count, u.followers?.size ?: 0)
+
+            if (u.role == "banned") {
+                binding.root.setCardBackgroundColor(Color.parseColor("#FFE0E0"))
+                binding.bannedText.text = context.getString(R.string.banned)
+            }
 
             }
 

@@ -8,7 +8,7 @@
     <string name="change">Change</string>
     <string name="create">Create</string>
     <string name="empty_name">The name cannot be empty</string>
-    <string name="no_internet_connection">"No internet connection. Please check your connection and try again."</string>
+    <string name="no_internet_connection">"No internet connection."</string>
 
     <!-- VILLAGERS -->
     <string name="villager_bottom_nav">Villagers</string>
